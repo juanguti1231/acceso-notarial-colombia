@@ -206,11 +206,24 @@ mensual desde enero de 2021 hasta abril de 2026.
 
 \subsection{Fuente 2 — DANE: Proyecciones de población}
 
-\textbf{Qué contiene:} Proyecciones de población por 
-departamento basadas en el Censo Nacional de Población 
-y Vivienda 2018. Variable de normalización fundamental 
-para calcular los actos per cápita.
+\textbf{Qué contiene:} Serie departamental de población 
+por área para el periodo 2018--2050, elaborada con base 
+en el Censo Nacional de Población y Vivienda (CNPV) 2018 
+y actualizada con información posterior a la pandemia de 
+COVID-19. Publicada por el Departamento Administrativo 
+Nacional de Estadística (DANE) el 8 de agosto de 2025.
 
+\textbf{Por qué es esencial:} Es la variable de 
+normalización fundamental del análisis. Sin datos de 
+población no es posible calcular los actos notariales 
+per cápita ni determinar si un departamento está sobre 
+o sub-servido en términos de acceso notarial.
+
+\textbf{Archivo descargado:} 
+\texttt{poblacion\_departamentos.xlsx}\\
+\textbf{Última actualización:} 8 de agosto de 2025\\
+\textbf{Cobertura:} 33 entidades territoriales, 
+periodo 2018--2050\\
 \textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/proyecciones-de-poblacion}
 
 \subsection{Fuente 3 — DANE: PIB departamental}
@@ -414,17 +427,239 @@ Registros Civiles Matrimonio &     23,150 \\
 
 \subsection{Próximos pasos}
 
+Con el índice de acceso notarial calculado y los 
+datos del DANE integrados, los siguientes pasos son:
+
 \begin{enumerate}
-    \item Descargar población y PIB por departamento 
-    del DANE e IPM del DNP
-    \item Calcular índice de actos per cápita 
-    por departamento
-    \item Calcular desviaciones respecto al 
-    promedio nacional
-    \item Clasificar departamentos según escala 
-    de acceso notarial
-    \item Correr modelo de regresión en Stata
-    \item Construir dashboard en Power BI
+    \item Correr el modelo de regresión múltiple 
+    en Stata para identificar qué variables 
+    explican las brechas de acceso
+    \item Análisis de panel 2021--2026 en Stata
+    \item Construir el dashboard en Power BI
+    \item Redactar las recomendaciones de 
+    política pública
 \end{enumerate}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Índice de acceso notarial 2025}
+% ─────────────────────────────────────────
+
+El cruce de los datos del SNR con las proyecciones 
+de población del DANE para 2025 permite calcular 
+el índice de actos notariales per cápita por 
+departamento y determinar las desviaciones respecto 
+al promedio nacional 
+($\bar{x} = 1.028$ actos per cápita).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{clrrl r}
+\toprule
+\textbf{Pos.} & \textbf{Departamento} & 
+\textbf{Per cápita} & \textbf{Desviación (\%)} & 
+\textbf{Clasificación} & \textbf{IPM (\%)} \\
+\midrule
+1  & Bogotá, D.C.        & 1.8206 & +77.02 & Sobre-servido  &  2.2 \\
+2  & Quindío             & 1.7398 & +69.16 & Sobre-servido  &  6.7 \\
+3  & Risaralda           & 1.6860 & +63.93 & Sobre-servido  &  4.9 \\
+4  & Guaviare            & 1.6408 & +59.53 & Sobre-servido  & 20.0 \\
+5  & Boyacá              & 1.5268 & +48.45 & Sobre promedio &  6.4 \\
+6  & Tolima              & 1.4179 & +37.86 & Sobre promedio & 12.2 \\
+7  & Meta                & 1.4170 & +37.77 & Sobre promedio & 12.3 \\
+8  & Antioquia           & 1.3721 & +33.41 & Sobre promedio &  9.5 \\
+9  & Caldas              & 1.3651 & +32.73 & Sobre promedio &  7.9 \\
+10 & Santander           & 1.3040 & +26.79 & Sobre promedio &  6.9 \\
+11 & Valle Del Cauca     & 1.2274 & +19.34 & Sobre promedio &  4.9 \\
+12 & Casanare            & 1.1692 & +13.68 & Sobre promedio &  8.9 \\
+13 & Arauca              & 1.1267 &  +9.55 & Promedio       & 12.7 \\
+14 & Guainía             & 1.1143 &  +8.34 & Promedio       & 51.8 \\
+15 & Huila               & 1.1106 &  +7.98 & Promedio       &  9.7 \\
+16 & Cundinamarca        & 0.9972 &  -3.04 & Promedio       &  4.1 \\
+17 & Bolívar             & 0.9199 & -10.56 & Sub-servido    & 17.0 \\
+18 & Norte De Santander  & 0.9048 & -12.03 & Sub-servido    & 13.3 \\
+19 & Atlántico           & 0.8453 & -17.81 & Sub-servido    &  8.2 \\
+20 & Chocó               & 0.7996 & -22.26 & Sub-servido    & 30.8 \\
+21 & Caquetá             & 0.7656 & -25.56 & Sub-servido    & 15.0 \\
+22 & Cesar               & 0.7389 & -28.16 & Sub-servido    & 14.8 \\
+23 & Vichada             & 0.7347 & -28.57 & Sub-servido    & 55.2 \\
+24 & Cauca               & 0.7298 & -29.04 & Sub-servido    & 13.0 \\
+25 & Sucre               & 0.7111 & -30.86 & Sub-servido    & 25.4 \\
+26 & Nariño              & 0.6621 & -35.62 & Sub-servido    & 13.2 \\
+27 & Vaupés              & 0.6467 & -37.12 & Sub-servido    & 41.7 \\
+28 & Magdalena           & 0.6355 & -38.21 & Sub-servido    & 17.6 \\
+29 & Putumayo            & 0.6060 & -41.08 & Sub-servido    & 13.6 \\
+30 & Córdoba             & 0.5876 & -42.87 & Sub-servido    & 19.8 \\
+31 & Amazonas            & 0.4868 & -52.67 & Brecha crítica & 18.1 \\
+32 & La Guajira          & 0.2798 & -72.80 & Brecha crítica & 40.1 \\
+\bottomrule
+\end{tabular}
+\caption{Índice de acceso notarial per cápita 
+por departamento, Colombia 2025}
+\end{table}
+
+\subsection{Hallazgos principales}
+
+\begin{itemize}
+    \item \textbf{Bogotá D.C.} lidera el índice 
+    con 1.82 actos per cápita (+77\% sobre el 
+    promedio nacional) y el IPM más bajo del 
+    país (2.2\%), confirmando la correlación 
+    entre desarrollo económico y acceso notarial.
+
+    \item \textbf{Guaviare} presenta una anomalía 
+    estadística relevante: ocupa el cuarto lugar 
+    en actos per cápita (1.64) pero tiene un IPM 
+    de 20\%, muy superior al de departamentos 
+    con acceso similar. Esto sugiere que factores 
+    distintos al desarrollo económico explican 
+    su actividad notarial.
+
+    \item \textbf{Guainía} también es anómalo: 
+    IPM de 51.8\% pero en posición 14 del índice. 
+    Posible explicación: alta actividad de 
+    registros civiles en comunidades indígenas.
+
+    \item \textbf{La Guajira} registra la brecha 
+    más crítica del país: 0.28 actos per cápita, 
+    -72.8\% del promedio nacional, con un IPM 
+    de 40.1\%. Es el departamento con mayor 
+    déficit de acceso notarial en Colombia.
+
+    \item \textbf{4 departamentos} presentan 
+    brecha crítica o sub-servicio severo con IPM 
+    superior al 40\%: La Guajira, Vichada, 
+    Guainía y Vaupés — todos departamentos 
+    fronterizos con alta proporción de población 
+    indígena y rural dispersa.
+\end{itemize}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Ambiente de trabajo y configuración del entorno}
+% ─────────────────────────────────────────
+
+Esta sección documenta el entorno técnico y las herramientas utilizadas
+para el desarrollo y la ejecución del análisis de datos.
+
+\subsection{Herramientas instaladas}
+
+El proyecto se desarrolla sobre un entorno de trabajo basado en macOS,
+con herramientas instaladas mediante Homebrew y configuraciones
+generales de control de versiones y edición.
+
+\begin{itemize}
+    \item \textbf{macOS} — sistema operativo principal, elegido por su
+    estabilidad y compatibilidad con herramientas de datos y LaTeX.
+    \item \textbf{Homebrew} — gestor de paquetes del sistema usado para
+    instalar Python, Tectonic y otras dependencias.
+    \item \textbf{Python 3.11} — instalado vía Homebrew. Lenguaje principal
+    para limpieza, procesamiento y análisis de datos.
+    \begin{verbatim}
+brew install python@3.11
+    \end{verbatim}
+    \item \textbf{Tectonic} — compilador LaTeX moderno instalado vía
+    Homebrew. Alternativa liviana a MiKTeX o TeX Live. Descarga
+    automáticamente los paquetes necesarios en el primer compilado.
+    \begin{verbatim}
+brew install tectonic
+tectonic main.tex
+    \end{verbatim}
+    \item \textbf{Git} — sistema de control de versiones configurado con
+    repositorio remoto en GitHub.
+    \begin{verbatim}
+git config --global user.name "TuNombre"
+git config --global user.email "email@gmail.com"
+    \end{verbatim}
+\end{itemize}
+
+\subsection{Extensiones de VS Code}
+
+\begin{itemize}
+    \item \textbf{LaTeX Workshop} (James Yu) — compila automáticamente el
+    \texttt{.tex} al guardar con \texttt{Cmd + S} y muestra el PDF en tiempo
+    real en pestaña lateral.
+    \item \textbf{Spreadsheet Viewer} (MESCIUS) — abre y visualiza archivos
+    \texttt{.xlsx} dentro de VS Code sin necesidad de Excel.
+    \item \textbf{Python} (Microsoft) — soporte completo para scripts Python
+    con autocompletado y terminal integrado.
+\end{itemize}
+
+\subsection{Librerías Python}
+
+\begin{itemize}
+    \item \texttt{pandas} — manipulación y limpieza de datos tabulares.
+    \begin{verbatim}
+pip install pandas --break-system-packages
+    \end{verbatim}
+    \item \texttt{openpyxl} — lectura de archivos Excel \texttt{.xlsx}.
+    \begin{verbatim}
+pip install openpyxl --break-system-packages
+    \end{verbatim}
+    \item \texttt{sqlite3} — base de datos local incluida en Python por
+    defecto. No requiere instalación adicional.
+\end{itemize}
+
+\subsection{Scripts del proyecto}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llp{6cm}}
+\toprule
+\textbf{Script} & \textbf{Ubicación} & 
+\textbf{Función} \\
+\midrule
+\texttt{explorar\_snr.py} & \texttt{01\_SNR/} & Carga el CSV del SNR, corrige encoding 
+latin-1, filtra Bogotá, calcula participación 
+de mercado y ranking departamental, exporta 
+a CSV y SQLite \\
+\addlinespace
+\texttt{cruzar\_datos.py} & \texttt{01\_SNR/} & Carga y cruza los archivos del DANE 
+(población, PIB, IPM) con el SNR, calcula 
+actos per cápita, desviaciones y clasificación 
+de acceso notarial, exporta índice completo 
+a CSV y SQLite \\
+\bottomrule
+\end{tabular}
+\caption{Scripts principales del proyecto y sus funciones}
+\end{table}
+
+\begin{verbatim}
+python 01_SNR/explorar_snr.py
+python 01_SNR/cruzar_datos.py
+\end{verbatim}
+
+\subsection{Base de datos SQLite}
+
+Archivo \texttt{06\_Consolidado/notaria74.db} 
+con las siguientes tablas:
+
+\begin{itemize}
+    \item \texttt{actos\_notariales} — datos SNR
+    \item \texttt{resumen\_departamento} — 
+    agregado por departamento y año
+    \item \texttt{ranking\_departamentos} — 
+    ranking 2025
+    \item \texttt{poblacion\_departamentos} — 
+    DANE 2021--2025
+    \item \texttt{pib\_departamentos} — 
+    PIB 2021--2024
+    \item \texttt{ipm\_departamentos} — 
+    IPM 2021--2025
+    \item \texttt{indice\_acceso} — índice 
+    central del análisis
+\end{itemize}
+
+\subsection{Repositorio y flujo de trabajo}
+
+\begin{verbatim}
+git add .
+git commit -m "Descripción del cambio"
+git push origin main
+\end{verbatim}
+
+\textbf{Repositorio:}
+\url{https://github.com/juanguti1231/notaria74-benchmarking-comparacion-con-competencia-}
 
 \end{document}
