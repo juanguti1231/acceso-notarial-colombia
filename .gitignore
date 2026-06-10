@@ -16,3 +16,8 @@ __pycache__/
 # Datos sensibles
 *.db
 05_Internos/
+# Imágenes
+imagenes/*.jpg
+imagenes/*.jpeg
+imagenes/*.png
+imagenes/*.pdf
