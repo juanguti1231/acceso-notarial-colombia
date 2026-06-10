@@ -1,0 +1,18 @@
+# LaTeX
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Datos sensibles
+*.db
+05_Internos/
