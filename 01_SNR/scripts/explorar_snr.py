@@ -6,7 +6,7 @@ import os
 # 1. CARGAR Y LIMPIAR
 # ─────────────────────────────────────────
 df = pd.read_csv(
-    '01_SNR/Actos_Jurídicos_Notariales_20260609.csv',
+    '01_SNR/fuentes/snr_actos/Actos_Jurídicos_Notariales_20260609.csv',
     encoding='latin-1',
     low_memory=False
 )
@@ -15,16 +15,15 @@ df = pd.read_csv(
 df['Departamento'] = df['Departamento'].str.encode(
     'latin-1').str.decode('utf-8', errors='ignore')
 
-# Detectar columnas numéricas automáticamente
-cols_excluir = [col for col in df.columns 
-                if any(x in col for x in 
-                       ['Fecha', 'Departamento', 'digo'])]
+# Detectar columnas numéricas
+cols_excluir = [c for c in df.columns
+                if any(x in c for x in ['Fecha', 'Departamento', 'digo'])]
 cols_numericas = df.columns.drop(cols_excluir)
 
 # Limpiar columnas numéricas
 for col in cols_numericas:
     df[col] = pd.to_numeric(
-        df[col].astype(str).str.replace(',', ''), 
+        df[col].astype(str).str.replace(',', ''),
         errors='coerce'
     )
 
@@ -93,13 +92,15 @@ print(bogota_2025.head(10).to_string())
 # ─────────────────────────────────────────
 os.makedirs('06_Consolidado', exist_ok=True)
 
-resumen.to_csv('06_Consolidado/resumen_departamento.csv',
-               index=False, encoding='utf-8-sig')
-ultimo_año.to_csv('06_Consolidado/ranking_2025.csv',
-                  index=False, encoding='utf-8-sig')
+resumen.to_csv(
+    '06_Consolidado/resumen_departamento.csv',
+    index=False, encoding='utf-8-sig')
+ultimo_año.to_csv(
+    '06_Consolidado/ranking_2025.csv',
+    index=False, encoding='utf-8-sig')
 
-conn = sqlite3.connect('06_Consolidado/notaria74.db')
-df.to_sql('actos_notariales', conn, 
+conn = sqlite3.connect('06_Consolidado/acceso_notarial_colombia.db')
+df.to_sql('actos_notariales', conn,
           if_exists='replace', index=False)
 resumen.to_sql('resumen_departamento', conn,
                if_exists='replace', index=False)
@@ -108,6 +109,6 @@ ultimo_año.to_sql('ranking_departamentos', conn,
 conn.close()
 
 print("\n=== ARCHIVOS GENERADOS ===")
-print("✓ resumen_departamento.csv")
-print("✓ ranking_2025.csv")
-print("✓ notaria74.db")
+print("✓ 06_Consolidado/resumen_departamento.csv")
+print("✓ 06_Consolidado/ranking_2025.csv")
+print("✓ 06_Consolidado/acceso_notarial_colombia.db")

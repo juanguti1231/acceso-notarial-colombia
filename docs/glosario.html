@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glosario — Análisis de Acceso Notarial Colombiano</title>
+<style>
+  /* ── Tokens ── */
+  :root {
+    --bg:        #0F1117;
+    --bg2:       #181C26;
+    --bg3:       #1F2535;
+    --border:    #2A3147;
+    --accent:    #4F8EF7;
+    --accent2:   #7B5EA7;
+    --accent3:   #3ABFA0;
+    --accent4:   #E8A23A;
+    --text:      #E8EBF4;
+    --text2:     #9AA3BC;
+    --text3:     #5C6480;
+    --tag-bg:    #1A2240;
+    --tag-text:  #7B9EE8;
+    --radius:    10px;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .shell {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    margin-bottom: 40px;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+  .header p {
+    color: var(--text2);
+    font-size: 14px;
+    max-width: 580px;
+  }
+
+  /* ── Search ── */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    font-size: 15px;
+    pointer-events: none;
+  }
+  #search {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px 10px 38px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color .15s;
+  }
+  #search::placeholder { color: var(--text3); }
+  #search:focus { border-color: var(--accent); }
+
+  /* ── Category tabs ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tab {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--text); }
+  .tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── Count ── */
+  .count {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+  .count span { color: var(--accent); font-weight: 600; }
+
+  /* ── Cards grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    transition: border-color .15s, transform .15s;
+    cursor: default;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .card-term {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .card-abbr {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 5px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .card-def {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .cat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cat-label {
+    font-size: 11px;
+    color: var(--text3);
+    font-weight: 500;
+  }
+
+  /* category colors */
+  .cat-entidad   { background: var(--accent); }
+  .cat-estadistica { background: var(--accent3); }
+  .cat-metodologia { background: var(--accent2); }
+  .cat-herramienta { background: var(--accent4); }
+  .cat-legal     { background: #E85A5A; }
+
+  /* ── No results ── */
+  .empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 60px 0;
+    color: var(--text3);
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 12px; }
+  .empty p { font-size: 14px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 22px; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="shell">
+
+  <div class="header">
+    <div class="header-eyebrow">Proyecto · Acceso Notarial Colombia</div>
+    <h1>Glosario de términos</h1>
+    <p>Definiciones de entidades, indicadores, metodologías y herramientas utilizadas en el análisis de acceso notarial colombiano por departamento.</p>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="search" type="text" placeholder="Buscar término, sigla o definición…">
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-cat="all">Todos</button>
+    <button class="tab" data-cat="entidad">Entidades</button>
+    <button class="tab" data-cat="estadistica">Estadísticas</button>
+    <button class="tab" data-cat="metodologia">Metodología</button>
+    <button class="tab" data-cat="herramienta">Herramientas</button>
+    <button class="tab" data-cat="legal">Marco legal</button>
+  </div>
+
+  <div class="count">Mostrando <span id="count-num">0</span> términos</div>
+
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+const terms = [
+  // ── ENTIDADES ──
+  {
+    term: "Superintendencia de Notariado y Registro",
+    abbr: "SNR",
+    def: "Entidad del Estado colombiano encargada de la inspección, vigilancia y control de los servicios notariales y del registro del estado civil. Publica los datos oficiales de actos jurídicos notariales desagregados por departamento.",
+    cat: "entidad"
+  },
+  {
+    term: "Departamento Administrativo Nacional de Estadística",
+    abbr: "DANE",
+    def: "Entidad responsable de la planeación, levantamiento, procesamiento, análisis y difusión de las estadísticas oficiales de Colombia. Fuente de los datos de población, PIB departamental y encuestas de calidad de vida.",
+    cat: "entidad"
+  },
+  {
+    term: "Departamento Nacional de Planeación",
+    abbr: "DNP",
+    def: "Entidad técnica asesora del Gobierno Nacional. Desarrolló el Índice de Pobreza Multidimensional (IPM) colombiano con base en la metodología Alkire-Foster. El cálculo oficial del IPM es responsabilidad del DANE desde 2012.",
+    cat: "entidad"
+  },
+  {
+    term: "Círculo Notarial",
+    abbr: null,
+    def: "Unidad territorial de jurisdicción notarial en Colombia. Cada círculo tiene una o varias notarías asignadas según la densidad poblacional y el volumen de trámites. El círculo de Bogotá D.C. es el más grande del país con más de 80 notarías.",
+    cat: "entidad"
+  },
+  {
+    term: "Notaría",
+    abbr: null,
+    def: "Oficina pública a cargo de un Notario, funcionario que da fe pública de los actos y contratos que ante él se celebran. En Colombia las notarías son de libre concurrencia pero con tarifas reguladas por la SNR.",
+    cat: "entidad"
+  },
+  {
+    term: "Bogotá, D.C.",
+    abbr: "D.C.",
+    def: "Distrito Capital de Colombia. Aunque no es un departamento, la SNR y el DANE la tratan como entidad territorial independiente en sus estadísticas. Es la entidad con mayor volumen de actos notariales del país.",
+    cat: "entidad"
+  },
+
+  // ── ESTADÍSTICAS ──
+  {
+    term: "Actos Jurídicos Notariales",
+    abbr: null,
+    def: "Conjunto de trámites y documentos otorgados o autenticados ante un notario. Incluye 40 tipos: compraventas, hipotecas, matrimonios, divorcios, sucesiones, autenticaciones, registros civiles, entre otros. Principal variable del análisis.",
+    cat: "estadistica"
+  },
+  {
+    term: "Actos Notariales per Cápita",
+    abbr: null,
+    def: "Cociente entre el total de actos notariales de un departamento y su población. Permite comparar el acceso notarial entre departamentos de distintos tamaños. Fórmula: actos_per_capita = total_actos / población.",
+    cat: "estadistica"
+  },
+  {
+    term: "Índice de Pobreza Multidimensional",
+    abbr: "IPM",
+    def: "Medida de pobreza que evalúa privaciones en cinco dimensiones: condiciones educativas, niñez y juventud, salud, trabajo y acceso a servicios públicos. Un hogar es pobre si su índice ponderado supera 1/3 de las variables. Se expresa en porcentaje de la población.",
+    cat: "estadistica"
+  },
+  {
+    term: "Producto Interno Bruto Departamental",
+    abbr: "PIB",
+    def: "Valor total de bienes y servicios producidos en un departamento durante un período. El DANE publica el PIB departamental a precios corrientes en miles de millones de pesos. Variable explicativa del volumen notarial en el modelo de regresión.",
+    cat: "estadistica"
+  },
+  {
+    term: "Proyecciones de Población",
+    abbr: "PPED",
+    def: "Estimaciones oficiales del DANE sobre la evolución de la población colombiana por departamento, elaboradas con base en el Censo Nacional de Población y Vivienda (CNPV) 2018 y actualizadas con datos post-COVID. Cubren el periodo 2018–2050.",
+    cat: "estadistica"
+  },
+  {
+    term: "Compraventa",
+    abbr: null,
+    def: "Acto notarial mediante el cual una parte (vendedor) transfiere la propiedad de un bien inmueble a otra (comprador) a cambio de un precio. Es el acto notarial más relevante para el análisis del mercado inmobiliario departamental.",
+    cat: "estadistica"
+  },
+  {
+    term: "Autenticación",
+    abbr: null,
+    def: "Acto notarial por el cual el notario da fe de la identidad de las personas que firman un documento y de la fecha en que se realiza. Es el acto más frecuente en Bogotá D.C. (87% del total de actos en 2025).",
+    cat: "estadistica"
+  },
+  {
+    term: "Censo Nacional de Población y Vivienda",
+    abbr: "CNPV 2018",
+    def: "Operación estadística del DANE realizada en 2018, base de las proyecciones de población actuales. Reemplazó al Censo General 2005 como referencia demográfica oficial de Colombia.",
+    cat: "estadistica"
+  },
+
+  // ── METODOLOGÍA ──
+  {
+    term: "Índice de Acceso Notarial",
+    abbr: null,
+    def: "Indicador construido en este proyecto que mide el acceso relativo de cada departamento a servicios notariales, calculado como actos per cápita normalizados respecto al promedio nacional. Clasifica los departamentos en cinco niveles: sobre-servido, sobre promedio, promedio, sub-servido y brecha crítica.",
+    cat: "metodologia"
+  },
+  {
+    term: "Desviación respecto al promedio nacional",
+    abbr: null,
+    def: "Diferencia porcentual entre el índice per cápita de un departamento y el promedio nacional. Fórmula: desviación = (actos_per_capita_i - media) / media × 100. Un valor positivo indica sobre-servicio; negativo indica sub-servicio.",
+    cat: "metodologia"
+  },
+  {
+    term: "Análisis descriptivo",
+    abbr: null,
+    def: "Primera fase del análisis. Responde ¿qué sucedió? Describe el estado actual del sistema notarial colombiano: volumen de actos, participación departamental y distribución geográfica.",
+    cat: "metodologia"
+  },
+  {
+    term: "Análisis diagnóstico",
+    abbr: null,
+    def: "Segunda fase del análisis. Responde ¿por qué sucedió? Identifica las causas de las brechas de acceso notarial mediante el cruce de fuentes y modelos de regresión en Stata.",
+    cat: "metodologia"
+  },
+  {
+    term: "Análisis predictivo",
+    abbr: null,
+    def: "Tercera fase del análisis. Responde ¿qué podría pasar? Proyecta la evolución del índice de acceso notarial por departamento usando series de tiempo y regresión múltiple en Stata.",
+    cat: "metodologia"
+  },
+  {
+    term: "Análisis prescriptivo",
+    abbr: null,
+    def: "Cuarta fase del análisis. Responde ¿qué debería hacerse? Genera recomendaciones de política pública basadas en los hallazgos, visualizadas en un dashboard interactivo de Power BI.",
+    cat: "metodologia"
+  },
+  {
+    term: "Regresión múltiple",
+    abbr: null,
+    def: "Modelo estadístico que estima la relación entre una variable dependiente (actos per cápita) y múltiples variables independientes (PIB per cápita, IPM, urbanización, número de notarías). Corrido en Stata para identificar qué factores explican las brechas de acceso.",
+    cat: "metodologia"
+  },
+  {
+    term: "Análisis de panel",
+    abbr: null,
+    def: "Método estadístico que combina datos de múltiples departamentos (corte transversal) a lo largo del tiempo 2021–2026 (serie temporal). Permite controlar efectos fijos departamentales y detectar tendencias en el acceso notarial.",
+    cat: "metodologia"
+  },
+  {
+    term: "KPI",
+    abbr: "KPI",
+    def: "Key Performance Indicator — Indicador Clave de Desempeño. Número que mide qué tan bien está funcionando algo que importa para el objetivo del proyecto. En este análisis los KPIs incluyen: actos per cápita, participación departamental, desviación vs. promedio y clasificación de acceso.",
+    cat: "metodologia"
+  },
+  {
+    term: "Benchmarking",
+    abbr: null,
+    def: "Proceso de comparación sistemática de una entidad frente a otras para identificar su posición relativa, ventajas y brechas. En este proyecto se aplica a nivel departamental comparando el acceso notarial de cada departamento frente al promedio nacional.",
+    cat: "metodologia"
+  },
+  {
+    term: "Metodología Alkire-Foster",
+    abbr: null,
+    def: "Marco metodológico desarrollado por Sabina Alkire y James Foster (2007) para medir pobreza multidimensional. Base del IPM colombiano. Construye una matriz de privaciones (0/1) por hogar y calcula un índice ponderado. Un hogar es pobre si supera 1/3 de privaciones.",
+    cat: "metodologia"
+  },
+
+  // ── HERRAMIENTAS ──
+  {
+    term: "Python con pandas",
+    abbr: null,
+    def: "Lenguaje de programación y librería usados para la limpieza, transformación y consolidación de los datos del SNR y el DANE. Genera el índice de acceso notarial y carga los resultados a la base de datos SQLite.",
+    cat: "herramienta"
+  },
+  {
+    term: "SQLite",
+    abbr: null,
+    def: "Sistema de base de datos relacional embebido, sin servidor, que almacena todos los datos del proyecto en un único archivo .db. Permite consultas SQL cruzadas entre las cuatro fuentes y se conecta directamente a Power BI y Stata.",
+    cat: "herramienta"
+  },
+  {
+    term: "Stata",
+    abbr: null,
+    def: "Software estadístico estándar en investigación económica y política pública en Colombia. Usado en este proyecto para regresiones múltiples, análisis de panel y series de tiempo. Compatible con los formatos de datos del SNR y el DANE.",
+    cat: "herramienta"
+  },
+  {
+    term: "Power BI",
+    abbr: null,
+    def: "Herramienta de inteligencia de negocios de Microsoft usada para construir el dashboard interactivo del proyecto. Se conecta directamente a la base de datos SQLite y genera el mapa de Colombia coloreado por índice de acceso notarial.",
+    cat: "herramienta"
+  },
+  {
+    term: "Tectonic",
+    abbr: null,
+    def: "Compilador LaTeX moderno instalado vía Homebrew. Alternativa liviana a MiKTeX o TeX Live. Descarga automáticamente los paquetes LaTeX necesarios y genera el PDF del informe directamente desde el archivo .tex.",
+    cat: "herramienta"
+  },
+  {
+    term: "datos.gov.co",
+    abbr: null,
+    def: "Portal Nacional de Datos Abiertos de Colombia, administrado por el MinTIC. Repositorio donde la SNR publica el dataset de Actos Jurídicos Notariales. Los datos son públicos, gratuitos y descargables en CSV bajo licencia abierta.",
+    cat: "herramienta"
+  },
+
+  // ── MARCO LEGAL ──
+  {
+    term: "Fe pública notarial",
+    abbr: null,
+    def: "Presunción legal de veracidad y autenticidad que otorga el notario a los actos y contratos celebrados ante él. Es el fundamento jurídico de la actividad notarial en Colombia y la razón por la que ciertos actos deben realizarse obligatoriamente ante notario.",
+    cat: "legal"
+  },
+  {
+    term: "Ley 1712 de 2014",
+    abbr: null,
+    def: "Ley de Transparencia y del Derecho de Acceso a la Información Pública Nacional de Colombia. Obliga a las entidades públicas a publicar información en formatos abiertos y reutilizables. Fundamento legal de los datos abiertos del SNR en datos.gov.co.",
+    cat: "legal"
+  },
+  {
+    term: "Decreto 1652 de 2021",
+    abbr: null,
+    def: "Decreto colombiano que establece las normas para la certificación oficial de población. Define el uso de las proyecciones del DANE como cifras oficiales para fines administrativos y legales. Base del uso de las proyecciones poblacionales en este análisis.",
+    cat: "legal"
+  },
+  {
+    term: "CONPES 150 de 2012",
+    abbr: null,
+    def: "Documento del Consejo Nacional de Política Económica y Social que adoptó públicamente el IPM como medida oficial de pobreza complementaria en Colombia. Estableció al DANE como responsable de su cálculo anual.",
+    cat: "legal"
+  },
+];
+
+// ── Render ──
+const grid = document.getElementById('grid');
+const searchEl = document.getElementById('#search') || document.getElementById('search');
+const countEl = document.getElementById('count-num');
+let activeCat = 'all';
+let query = '';
+
+const catColors = {
+  entidad:     'cat-entidad',
+  estadistica: 'cat-estadistica',
+  metodologia: 'cat-metodologia',
+  herramienta: 'cat-herramienta',
+  legal:       'cat-legal',
+};
+
+const catLabels = {
+  entidad:     'Entidad',
+  estadistica: 'Estadística',
+  metodologia: 'Metodología',
+  herramienta: 'Herramienta',
+  legal:       'Marco legal',
+};
+
+function render() {
+  const filtered = terms.filter(t => {
+    const matchCat = activeCat === 'all' || t.cat === activeCat;
+    const q = query.toLowerCase();
+    const matchQ = !q ||
+      t.term.toLowerCase().includes(q) ||
+      (t.abbr && t.abbr.toLowerCase().includes(q)) ||
+      t.def.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  countEl.textContent = filtered.length;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔍</div>
+        <p>No se encontraron términos para "<strong>${query}</strong>"</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => `
+    <div class="card">
+      <div class="card-top">
+        <span class="card-term">${t.term}</span>
+        ${t.abbr ? `<span class="card-abbr">${t.abbr}</span>` : ''}
+      </div>
+      <p class="card-def">${t.def}</p>
+      <div class="card-footer">
+        <span class="cat-dot ${catColors[t.cat]}"></span>
+        <span class="cat-label">${catLabels[t.cat]}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Events ──
+document.getElementById('search').addEventListener('input', e => {
+  query = e.target.value;
+  render();
+});
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    activeCat = tab.dataset.cat;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
