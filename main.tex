@@ -2,24 +2,429 @@
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{margin=2.5cm}
+\graphicspath{{imagenes/}}
 
-\title{Analítica de Datos\\Notaría 74 de Bogotá}
-\author{Juan Gutiérrez}
+\title{\textbf{Análisis de Acceso y Eficiencia del Sistema\\
+Notarial Colombiano}\\
+\large Un enfoque departamental con datos del SNR y el DANE}
+\author{Juan Felipe Gutiérrez}
 \date{Junio 2026}
 
 \begin{document}
 
 \maketitle
+\tableofcontents
+\newpage
 
-\section{Introducción}
-En este documento se trata el desarrollo del análisis 
-de datos enfocado en notarías con un enfoque en la 
-Notaría 74 del círculo de Bogotá.
+% ─────────────────────────────────────────
+\section{Introducción y razón del análisis}
+% ─────────────────────────────────────────
 
-\section{Pasos de recolección de los datos}
-Para obtener el primer paquete de datos usamos la fuente 
-\texttt{datos.gov.co}, disponible en el siguiente enlace:
+Colombia cuenta con 32 departamentos y el Distrito Capital 
+de Bogotá, cada uno con realidades económicas, demográficas 
+y sociales profundamente distintas. Sin embargo, el sistema 
+notarial opera con tarifas uniformes reguladas por la 
+Superintendencia de Notariado y Registro (SNR), sin importar 
+si el servicio se presta en Bogotá o en Vaupés.
 
-\url{https://www.datos.gov.co/Justicia-y-Derecho/Actos-Jur-dicos-Notariales/qktb-5f8m/about_data}
+Esta uniformidad regulatoria plantea una pregunta que hasta 
+ahora no ha sido respondida con datos:
+
+\begin{center}
+\textit{¿El acceso a servicios notariales en Colombia es 
+equitativo entre departamentos, o existen brechas 
+sistemáticas donde la población tiene menor acceso 
+relativo a estos servicios?}
+\end{center}
+
+Este proyecto construye un \textbf{índice de acceso y 
+eficiencia notarial por departamento}, cruzando datos 
+oficiales del SNR con variables demográficas y económicas 
+del DANE y el DNP, para responder tres preguntas concretas:
+
+\begin{enumerate}
+    \item \textbf{¿Dónde hay más actos notariales de los 
+    esperados} para el tamaño poblacional y económico del 
+    departamento? — Departamentos sobre-servidos.
+    \item \textbf{¿Dónde hay menos actos de los esperados?} 
+    — Departamentos sub-servidos con posible brecha de acceso.
+    \item \textbf{¿Qué variables explican mejor el volumen 
+    notarial?} — Para entender qué mueve el mercado 
+    notarial colombiano.
+\end{enumerate}
+
+\subsection{Relevancia e impacto del análisis}
+
+\begin{itemize}
+    \item \textbf{SNR y Estado colombiano:} Insumo para 
+    política pública de distribución equitativa de notarías 
+    y acceso a servicios formales.
+    \item \textbf{Operadores del sector notarial:} Identifica 
+    departamentos con demanda notarial insatisfecha.
+    \item \textbf{Academia e investigación:} Primer análisis 
+    cuantitativo del mercado notarial colombiano con datos 
+    abiertos, replicable y actualizable anualmente.
+    \item \textbf{Ciudadanos y sociedad civil:} Evidencia 
+    sobre inequidades en el acceso a servicios jurídicos 
+    formales entre regiones.
+\end{itemize}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Marco de análisis de datos}
+% ─────────────────────────────────────────
+
+Este proyecto sigue el marco estándar de los cuatro tipos 
+de análisis de datos, aplicados en secuencia:
+
+\begin{enumerate}
+    \item \textbf{Análisis descriptivo} 
+    (\textit{¿qué sucedió?}): Volumen de actos notariales 
+    por departamento, participación de mercado y distribución 
+    geográfica. Provee la fotografía del estado actual del 
+    sistema notarial colombiano.
+
+    \item \textbf{Análisis diagnóstico} 
+    (\textit{¿por qué sucedió?}): Construcción del índice 
+    per cápita y cálculo de desviaciones respecto al promedio 
+    nacional. Cruce con variables demográficas y económicas 
+    del DANE para identificar causas de las brechas. 
+    Regresiones y análisis de panel en Stata.
+
+    \item \textbf{Análisis predictivo} 
+    (\textit{¿qué podría pasar?}): Con la serie histórica 
+    2021--2026 del SNR se proyecta la evolución del acceso 
+    notarial por departamento. Modelos de series de tiempo 
+    y regresión múltiple en Stata.
+
+    \item \textbf{Análisis prescriptivo} 
+    (\textit{¿qué debería hacerse?}): Recomendaciones de 
+    política pública y estrategia basadas en los hallazgos, 
+    visualizadas en Power BI.
+\end{enumerate}
+
+\subsection{Indicadores clave de desempeño (KPIs)}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{KPI} & \textbf{Fuente} & \textbf{Fase} \\
+\midrule
+Actos notariales per cápita & SNR + DANE & Descriptiva \\
+Participación departamental (\%) & SNR & Descriptiva \\
+Posición en ranking nacional & SNR & Descriptiva \\
+Desviación vs.\ promedio nacional & SNR + DANE & Diagnóstica \\
+Clasificación acceso notarial & Índice propio & Diagnóstica \\
+Correlación PIB--volumen notarial & SNR + DANE & Diagnóstica \\
+Correlación IPM--volumen notarial & SNR + DNP & Diagnóstica \\
+Proyección de crecimiento (\%) & SNR histórico & Predictiva \\
+Índice de brecha de acceso & Modelo Stata & Predictiva \\
+\bottomrule
+\end{tabular}
+\caption{KPIs del análisis de acceso notarial colombiano}
+\end{table}
+
+\subsection{Metodología central: proporciones y desviaciones}
+
+El índice central del análisis es el cociente de actos 
+notariales per cápita por departamento:
+
+\begin{equation}
+\text{Actos per cápita}_i = 
+\frac{\text{Total actos notariales}_i}{\text{Población}_i}
+\end{equation}
+
+La desviación respecto al promedio nacional se calcula como:
+
+\begin{equation}
+\text{Desviación}_i = 
+\frac{\text{Actos per cápita}_i - \bar{x}}{\bar{x}} 
+\times 100
+\end{equation}
+
+donde $\bar{x}$ es el promedio nacional ponderado por 
+población. Un valor positivo indica un departamento 
+\textbf{sobre-servido}; un valor negativo indica un 
+departamento \textbf{sub-servido}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Desviación} & \textbf{Clasificación} & 
+\textbf{Interpretación} \\
+\midrule
+$> +50\%$ & Sobre-servido & 
+Muy por encima del promedio \\
+$+10\%$ a $+50\%$ & Sobre promedio & 
+Por encima del promedio \\
+$-10\%$ a $+10\%$ & Promedio & 
+En la media nacional \\
+$-10\%$ a $-50\%$ & Sub-servido & 
+Por debajo del promedio \\
+$< -50\%$ & Brecha crítica & 
+Muy por debajo del promedio \\
+\bottomrule
+\end{tabular}
+\caption{Escala de clasificación de acceso notarial}
+\end{table}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Fuentes de datos y pipeline}
+% ─────────────────────────────────────────
+
+El proyecto usa cuatro fuentes de datos públicas, 
+procesadas automáticamente con Python:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{stack_tecnologico.png}
+    \caption{Pipeline completo — fuentes, recolección, 
+    procesamiento y análisis}
+    \label{fig:pipeline}
+\end{figure}
+
+\subsection{Fuente 1 — SNR: Actos Jurídicos Notariales}
+
+\textbf{Qué contiene:} Base de datos publicada en 
+\texttt{datos.gov.co} con 40 tipos de actos notariales 
+desagregados por departamento y fecha, con cobertura 
+mensual desde enero de 2021 hasta abril de 2026.
+
+\textbf{Cobertura:} 33 entidades territoriales 
+(32 departamentos + Bogotá D.C.)\\
+\textbf{Última actualización:} 5 de junio de 2026\\
+\textbf{URL:} \url{https://www.datos.gov.co/Justicia-y-Derecho/Actos-Jur-dicos-Notariales/qktb-5f8m/about_data}
+
+\subsection{Fuente 2 — DANE: Proyecciones de población}
+
+\textbf{Qué contiene:} Proyecciones de población por 
+departamento basadas en el Censo Nacional de Población 
+y Vivienda 2018. Variable de normalización fundamental 
+para calcular los actos per cápita.
+
+\textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/proyecciones-de-poblacion}
+
+\subsection{Fuente 3 — DANE: PIB departamental}
+
+\textbf{Qué contiene:} Producto Interno Bruto por 
+departamento a precios corrientes. Permite determinar 
+si las brechas en acceso notarial se explican por 
+diferencias en actividad económica.
+
+\textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/cuentas-nacionales/cuentas-nacionales-departamentales}
+
+\subsection{Fuente 4 — DNP: Índice de Pobreza 
+Multidimensional (IPM)}
+
+\textbf{Qué contiene:} Medida de pobreza que combina 
+múltiples dimensiones — educación, salud, vivienda, 
+trabajo y condiciones de vida — por departamento. 
+Permite evaluar si las brechas de acceso notarial 
+se relacionan con condiciones de pobreza estructural.
+
+\textbf{URL:} \url{https://www.datos.gov.co}\\
+\textbf{Búsqueda:} \textit{``índice pobreza 
+multidimensional departamento''}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Herramientas y stack tecnológico}
+% ─────────────────────────────────────────
+
+\subsection{Python con pandas}
+
+\textbf{Para qué se usa:} Limpieza y transformación 
+de los datos del SNR, DANE y DNP. Cálculo del índice 
+per cápita, desviaciones y clasificaciones. Carga 
+automática a SQLite.
+
+\textbf{Librerías:}
+\begin{itemize}
+    \item \texttt{pandas} — manipulación de datos
+    \item \texttt{matplotlib} / \texttt{seaborn} — 
+    visualizaciones para el informe
+    \item \texttt{sqlite3} — conexión a la base de datos
+\end{itemize}
+
+\subsection{SQLite y SQL}
+
+\textbf{Para qué se usa:} Base de datos central del 
+proyecto. Almacena todas las fuentes y permite 
+consultas cruzadas entre ellas.
+
+\textbf{Tablas principales:}
+\begin{itemize}
+    \item \texttt{actos\_notariales} — datos SNR
+    \item \texttt{poblacion\_departamentos} — DANE
+    \item \texttt{pib\_departamentos} — DANE
+    \item \texttt{ipm\_departamentos} — DNP
+    \item \texttt{indice\_acceso} — KPIs consolidados
+\end{itemize}
+
+\textbf{Consulta central del análisis:}
+\begin{verbatim}
+SELECT a.Departamento,
+       a.total_actos,
+       p.poblacion,
+       ROUND(a.total_actos * 1.0 
+           / p.poblacion, 4) AS actos_per_capita,
+       ROUND((a.total_actos * 1.0 / p.poblacion 
+           - avg_nacional) / avg_nacional 
+           * 100, 2) AS desviacion_pct
+FROM resumen_departamento a
+JOIN poblacion_departamentos p 
+    ON a.Departamento = p.Departamento
+ORDER BY desviacion_pct DESC;
+\end{verbatim}
+
+\subsection{Stata}
+
+\textbf{Modelo de regresión principal:}
+
+\begin{equation}
+\text{actos\_per\_cápita}_i = \beta_0 + 
+\beta_1 \cdot \text{PIB\_per\_cápita}_i + 
+\beta_2 \cdot \text{urbanización}_i + 
+\beta_3 \cdot \text{IPM}_i + 
+\beta_4 \cdot \text{num\_notarías}_i + 
+\varepsilon_i
+\end{equation}
+
+\textbf{Análisis:}
+\begin{itemize}
+    \item Regresión múltiple por corte transversal
+    \item Análisis de panel 2021--2026
+    \item Series de tiempo por departamento
+    \item Tests de significancia estadística
+\end{itemize}
+
+\subsection{Power BI}
+
+Dashboard interactivo con mapa de Colombia coloreado 
+por índice de acceso notarial, ranking departamental 
+y evolución temporal 2021--2026. Conectado directamente 
+a la base de datos SQLite.
+
+\subsection{LaTeX con Tectonic}
+
+Informe final compilado desde VS Code con actualización 
+automática. Versionado en GitHub.
+
+\textbf{Repositorio:}
+\url{https://github.com/juanguti1231/notaria74-benchmarking-comparacion-con-competencia-}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Resultados descriptivos preliminares}
+% ─────────────────────────────────────────
+
+\subsection{Cobertura del dataset}
+
+El dataset del SNR cubre enero 2021 -- abril 2026, 
+con datos mensuales para las 33 entidades territoriales 
+de Colombia. El total supera las 57,000 filas con 
+40 variables de tipos de actos notariales.
+
+\subsection{Participación de Bogotá en compraventas}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+\toprule
+\textbf{Año} & \textbf{Participación (\%)} \\
+\midrule
+2021 & 15.22 \\
+2022 & 15.95 \\
+2023 & 14.87 \\
+2024 & 15.08 \\
+2025 & 15.00 \\
+2026 & 16.06 \\
+\bottomrule
+\end{tabular}
+\caption{Participación de Bogotá D.C. en compraventas 
+notariales nacionales 2021--2026}
+\end{table}
+
+\subsection{Ranking departamental 2025}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{clrr}
+\toprule
+\textbf{Pos.} & \textbf{Departamento} & 
+\textbf{Total actos} & \textbf{Compraventas} \\
+\midrule
+1  & Bogotá D.C.     & 12,492,643 &  96,795 \\
+2  & Antioquia       &  6,250,292 & 112,231 \\
+3  & Valle del Cauca &  3,958,684 &  54,043 \\
+4  & Cundinamarca    &  1,897,069 &  40,906 \\
+5  & Santander       &  1,815,181 &  40,719 \\
+6  & Atlántico       &  1,741,451 &  18,510 \\
+7  & Bolívar         &  1,284,247 &  13,152 \\
+8  & Meta            &  1,274,090 &  23,855 \\
+9  & Risaralda       &  1,181,143 &  17,435 \\
+10 & Tolima          &  1,044,383 &  29,362 \\
+\bottomrule
+\end{tabular}
+\caption{Ranking departamental por total de actos 
+notariales 2025}
+\end{table}
+
+\subsection{Hallazgo clave: Bogotá vs Antioquia}
+
+Aunque Bogotá lidera en total de actos (12.49M vs 6.25M), 
+\textbf{Antioquia supera a Bogotá en compraventas} 
+(112,231 vs 96,795), lo que sugiere que el mercado 
+inmobiliario antioqueño es proporcionalmente más activo. 
+Bogotá concentra su actividad principalmente en 
+\textbf{autenticaciones} (10.89 millones — 87\% 
+de su total).
+
+\subsection{Top de actos en Bogotá 2025}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\toprule
+\textbf{Tipo de acto} & \textbf{Cantidad} \\
+\midrule
+Autenticaciones              & 10,897,340 \\
+Copias del Registro Civil    &    882,159 \\
+Declaraciones Extra Juicio   &    226,332 \\
+Compraventas                 &     96,795 \\
+Cancelaciones de Hipotecas   &     73,301 \\
+Registros Civiles Nacimiento &     66,615 \\
+Registros Civiles Defunción  &     60,162 \\
+Otras --- Bien Inmueble      &     40,193 \\
+Vivienda de Interés Social   &     38,748 \\
+Registros Civiles Matrimonio &     23,150 \\
+\bottomrule
+\end{tabular}
+\caption{Top 10 actos notariales en Bogotá D.C. 2025}
+\end{table}
+
+\subsection{Próximos pasos}
+
+\begin{enumerate}
+    \item Descargar población y PIB por departamento 
+    del DANE e IPM del DNP
+    \item Calcular índice de actos per cápita 
+    por departamento
+    \item Calcular desviaciones respecto al 
+    promedio nacional
+    \item Clasificar departamentos según escala 
+    de acceso notarial
+    \item Correr modelo de regresión en Stata
+    \item Construir dashboard en Power BI
+\end{enumerate}
 
 \end{document}
