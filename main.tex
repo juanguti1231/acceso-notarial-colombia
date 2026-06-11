@@ -57,7 +57,7 @@ del DANE y el DNP, para responder tres preguntas concretas:
     esperados} para el tamaño poblacional y económico del 
     departamento? — Departamentos de alta utilización.
     \item \textbf{¿Dónde hay menos actos de los esperados?} 
-    — Departamentos de baja utilización con posible brecha de utilización.
+    — Departamentos con menor utilización relativa.
     \item \textbf{¿Qué variables presentan una mayor asociación con el volumen 
     notarial?} — Para entender qué mueve la actividad 
     notarial colombiana.
@@ -98,19 +98,19 @@ de análisis de datos, aplicados en secuencia:
     (\textit{¿por qué sucedió?}): Construcción del índice 
     per cápita y cálculo de desviaciones respecto al promedio 
     nacional. Cruce con variables demográficas y económicas 
-    del DANE para explorar posibles factores asociados a las brechas. 
-    Regresiones y análisis de panel en Stata.
+    del DANE para explorar posibles factores asociados a las diferencias territoriales. 
+    Se propone realizar regresiones y análisis de panel en Stata.
 
     \item \textbf{Análisis predictivo} 
     (\textit{¿qué podría pasar?}): Con la serie histórica 
-    2021--2026 del SNR se proyecta la evolución de la 
-    utilización notarial por departamento. Modelos de series 
+    2021--2026 del SNR se propone proyectar la evolución de la 
+    utilización notarial por departamento. En etapas posteriores se implementarán modelos de series 
     de tiempo y regresión múltiple en Stata.
 
     \item \textbf{Análisis prescriptivo} 
     (\textit{¿qué debería hacerse?}): Recomendaciones de 
     política pública y estrategia basadas en los hallazgos, 
-    visualizadas en Power BI.
+    para ser visualizadas en Power BI.
 \end{enumerate}
 
 \subsection{Indicadores clave de desempeño (KPIs)}
@@ -129,7 +129,7 @@ Clasificación utilización notarial & Índice propio & Diagnóstica \\
 Correlación PIB--volumen notarial & SNR + DANE & Diagnóstica \\
 Correlación IPM--volumen notarial & SNR + DNP & Diagnóstica \\
 Proyección de crecimiento (\%) & SNR histórico & Predictiva \\
-Índice de brecha de utilización & Modelo Stata & Predictiva \\
+Índice de menor utilización relativa & Modelo Stata & Predictiva \\
 \bottomrule
 \end{tabular}
 \caption{KPIs del análisis de utilización notarial colombiano}
@@ -179,6 +179,11 @@ Muy por debajo del promedio \\
 \end{tabular}
 \caption{Escala de clasificación de utilización notarial}
 \end{table}
+
+Los intervalos de esta escala fueron definidos con fines analíticos 
+e interpretativos y no corresponden a una clasificación oficial. 
+Los umbrales de $\pm 10\%$ y $\pm 50\%$ buscan separar diferencias moderadas 
+de diferencias sustanciales respecto al promedio nacional.
 
 \newpage
 % ─────────────────────────────────────────
@@ -235,7 +240,7 @@ periodo 2018--2050\\
 
 \textbf{Qué contiene:} Producto Interno Bruto por 
 departamento a precios corrientes. Permite explorar 
-si las brechas en utilización notarial se asocian con 
+si las diferencias territoriales en utilización notarial se asocian con 
 diferencias en actividad económica departamental.
 
 \textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/cuentas-nacionales/cuentas-nacionales-departamentales}
@@ -246,7 +251,7 @@ Multidimensional (IPM)}
 \textbf{Qué contiene:} Medida de pobreza que evalúa 
 privaciones en cinco dimensiones — educación, salud, 
 vivienda, trabajo y condiciones de vida — por 
-departamento. Permite explorar si las brechas de 
+departamento. Permite explorar si las diferencias territoriales de 
 utilización notarial se asocian con condiciones de 
 pobreza estructural.
 
@@ -325,7 +330,7 @@ y la intensidad de utilización del sistema notarial.
 
 \subsection{Stata}
 
-\textbf{Modelo de regresión principal:}
+\textbf{Modelo de regresión principal (propuesto):}
 
 \begin{equation}
 \text{actos\_per\_cápita}_i = \beta_0 + 
@@ -336,19 +341,20 @@ y la intensidad de utilización del sistema notarial.
 \varepsilon_i
 \end{equation}
 
-\textbf{Análisis:}
+\textbf{Implementación propuesta:}
 \begin{itemize}
-    \item Regresión múltiple por corte transversal
-    \item Análisis de panel 2021--2026
-    \item Series de tiempo por departamento
-    \item Tests de significancia estadística
+    \item Se propone realizar regresión múltiple por corte transversal
+    \item Análisis de panel 2021--2026 a implementar en etapas posteriores
+    \item Series de tiempo por departamento para etapas futuras
+    \item Tests de significancia estadística como parte del modelo
 \end{itemize}
 
 \subsection{Power BI}
 
-Dashboard interactivo con mapa de Colombia coloreado 
+En etapas posteriores del proyecto se propone construir un dashboard 
+interactivo con mapa de Colombia coloreado 
 por índice de utilización notarial, ranking departamental 
-y evolución temporal 2021--2026. Conectado directamente 
+y evolución temporal 2021--2026, conectado directamente 
 a la base de datos SQLite.
 
 \subsection{LaTeX con Tectonic}
@@ -420,8 +426,8 @@ notariales 2025}
 
 Aunque Bogotá lidera en total de actos (12.49M vs 6.25M), 
 \textbf{Antioquia supera a Bogotá en compraventas} 
-(112,231 vs 96,795), lo que sugiere que el mercado 
-inmobiliario antioqueño es proporcionalmente más activo. 
+(112,231 vs 96,795), lo que evidencia una 
+mayor cantidad de compraventas registradas en Antioquia durante 2025. 
 Bogotá concentra su actividad principalmente en 
 \textbf{autenticaciones} (10.89 millones — 87\% 
 de su total).
@@ -457,7 +463,7 @@ datos del DANE integrados, los siguientes pasos son:
 \begin{enumerate}
     \item Correr el modelo de regresión múltiple 
     en Stata para identificar qué variables 
-    se asocian con las brechas de utilización
+    se asocian con las diferencias territoriales de utilización
     \item Análisis de panel 2021--2026 en Stata
     \item Construir el dashboard en Power BI
     \item Redactar las recomendaciones de 
@@ -594,11 +600,11 @@ por departamento, Colombia 2025}
     IPM de 51.8\% pero en posición 14 del índice. 
     Este comportamiento representa un caso atípico que requerirá análisis adicional para identificar posibles factores asociados.
 
-    \item \textbf{La Guajira} registra la brecha 
-    más crítica del país: 0.28 actos per cápita, 
+    \item \textbf{La Guajira} registra la menor 
+    utilización relativa del país: 0.28 actos per cápita, 
     -72.8\% del promedio nacional, con un IPM 
-    de 40.1\%. Es el departamento con mayor 
-    déficit de utilización notarial en Colombia.
+    de 40.1\%. Presenta la menor utilización notarial 
+    relativa observada en el análisis.
 
     \item \textbf{4 departamentos} presentan 
     utilización crítica o baja utilización severa con IPM 
@@ -621,11 +627,12 @@ por departamento, Colombia 2025}
 
 \newpage
 % ─────────────────────────────────────────
-\section{Ambiente de trabajo y configuración del entorno}
+\appendix
+\section{Anexo técnico — Documentación del entorno}
 % ─────────────────────────────────────────
 
-Esta sección documenta el entorno técnico y las herramientas utilizadas
-para el desarrollo y la ejecución del análisis de datos.
+Este anexo documenta el entorno técnico con fines de replicabilidad. 
+No forma parte del análisis principal.
 
 \subsection{Herramientas instaladas}
 
