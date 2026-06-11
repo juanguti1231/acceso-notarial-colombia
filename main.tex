@@ -94,14 +94,15 @@ de análisis de datos, aplicados en secuencia:
     geográfica. Provee la fotografía del estado actual del 
     sistema notarial colombiano.
 
-    \item \textbf{Análisis diagnóstico} 
-    (\textit{¿por qué sucedió?}): Construcción del índice 
-    per cápita y cálculo de desviaciones respecto al promedio 
-    nacional. Cruce con variables demográficas y económicas 
-    del DANE para explorar posibles factores asociados a las 
-    diferencias territoriales. Esta fase incluye correlaciones, 
-    agrupación por K-Means, regresión múltiple y análisis de 
-    panel, implementados en Python con statsmodels.
+    \item \textbf{Análisis diagnóstico}
+    (\textit{¿por qué sucedió?}): Construcción del índice
+    per cápita y cálculo de desviaciones respecto al promedio
+    nacional. Cruce con variables demográficas, económicas y de
+    oferta institucional para explorar los factores asociados a las
+    diferencias territoriales. Esta fase incluye correlaciones,
+    agrupación por K-Means, regresión múltiple, análisis de panel
+    e incorporación de la densidad notarial por habitante,
+    implementados en Python con statsmodels.
 
     \item \textbf{Análisis predictivo} 
     (\textit{¿qué podría pasar?}): Con la serie histórica 
@@ -132,6 +133,8 @@ Correlación PIB--volumen notarial & SNR + DANE & Diagnóstica \\
 Correlación IPM--volumen notarial & SNR + DNP & Diagnóstica \\
 Proyección de crecimiento (\%) & SNR histórico & Predictiva \\
 Índice de menor utilización relativa & Modelo statsmodels & Predictiva \\
+Densidad notarial (notarías por 100k hab.) & SNR + DANE & Diagnóstica \\
+Actos por notaría & SNR & Diagnóstica \\
 \bottomrule
 \end{tabular}
 \caption{KPIs del análisis de utilización notarial colombiano}
@@ -192,7 +195,7 @@ de diferencias sustanciales respecto al promedio nacional.
 \section{Fuentes de datos y pipeline}
 % ─────────────────────────────────────────
 
-El proyecto usa cuatro fuentes de datos públicas, 
+El proyecto usa cinco fuentes de datos públicas,
 procesadas automáticamente con Python:
 
 \begin{figure}[H]
@@ -262,6 +265,36 @@ pobreza estructural.
 \textbf{Última actualización:} 14 de abril de 2026\\
 \textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/pobreza-y-condiciones-de-vida/pobreza-multidimensional}
 
+\subsection{Fuente 5 — SNR: Directorio Oficial de Notarías}
+
+\textbf{Qué contiene:} Listado oficial de las 920 notarías habilitadas
+en Colombia, con código DANE municipal, nombre del notario, dirección,
+teléfono y correo electrónico institucional, publicado por la
+Superintendencia de Notariado y Registro (SNR) en formato PDF.
+
+\textbf{Por qué es esencial:} Permite cuantificar la oferta estructural
+del servicio notarial por departamento y construir dos indicadores
+derivados: la densidad notarial por cada 100.000 habitantes y los actos
+por notaría. Estas variables hacen posible evaluar si las diferencias
+departamentales en utilización se asocian con restricciones de oferta o
+con condiciones de demanda.
+
+\textbf{Procedimiento de extracción:} El archivo PDF se procesó
+programáticamente con la biblioteca \texttt{pdfplumber}. Cada notaría
+se reconoce mediante una expresión regular que captura el código DANE
+municipal (de 8 o 9 dígitos) seguido del nombre del departamento.
+La validación cruzada exige que los dos primeros dígitos del código DANE
+coincidan con el código oficial del departamento nombrado, lo que
+permitió descartar cinco falsos positivos asociados a nombres propios
+homónimos. El resultado se consolidó en
+\texttt{notarias\_por\_departamento.csv} con los 33 entes correctamente
+emparejados y un total de 920 notarías.
+
+\textbf{Archivo descargado:} \texttt{Directorio\_Notarias2024.pdf}\\
+\textbf{Corte:} mayo 2024\\
+\textbf{Cobertura:} 33 entidades territoriales, 920 notarías\\
+\textbf{Fuente:} Superintendencia de Notariado y Registro
+
 \newpage
 % ─────────────────────────────────────────
 \section{Herramientas y stack tecnológico}
@@ -313,22 +346,27 @@ JOIN poblacion_departamentos p
 ORDER BY desviacion_pct DESC;
 \end{verbatim}
 
-\subsection{Número de notarías y cobertura institucional}
+\subsection{Número de notarías y oferta del servicio}
 
-La versión actual del análisis utiliza actos notariales y población
-como variables principales. Futuros desarrollos del modelo incluirán 
-variables de infraestructura institucional para aproximar mejor la 
-capacidad de atención del sistema notarial departamental.
+La presente versión del análisis incorpora la dimensión de oferta del
+servicio notarial mediante la integración del directorio oficial de la
+SNR. A partir de los 920 registros validados se construyeron dos
+indicadores:
 
-Estas variables clave son:
 \begin{itemize}
-    \item Número de notarías por departamento.
-    \item Habitantes por notaría.
-    \item Actos por notaría.
+    \item \textbf{Densidad notarial:} número de notarías por cada
+    100.000 habitantes ($\text{not}_{100k} = N_{\text{notarias}} / P
+    \times 10^{5}$).
+    \item \textbf{Actos por notaría:} razón entre el total
+    departamental de actos y el número de notarías del mismo
+    departamento, como aproximación a la carga de trabajo del servicio.
 \end{itemize}
 
-Esto permitirá evaluar de forma más directa la cobertura institucional 
-y la intensidad de utilización del sistema notarial.
+La densidad notarial se incorpora al modelo de regresión como variable
+explicativa adicional, y los actos por notaría se utilizan como
+indicador descriptivo de saturación del servicio en territorios con
+oferta limitada. Los resultados de este análisis se presentan en la
+subsección~\ref{subsec:densidad}.
 
 \subsection{Regresión múltiple — Python statsmodels}
 
@@ -457,16 +495,16 @@ Registros Civiles Matrimonio &     23,150 \\
 
 \subsection{Próximos pasos}
 
-Con el índice calculado y el análisis diagnóstico realizado 
-(correlaciones, clustering, regresión y panel temporal), 
-los siguientes pasos son:
+Con el índice calculado, el análisis diagnóstico realizado
+(correlaciones, clustering, regresión, panel temporal y densidad
+notarial) y la oferta institucional ya incorporada al modelo, los
+siguientes pasos del proyecto son:
 
 \begin{enumerate}
-    \item Incorporar la variable número de notarías 
-    por departamento
-    \item Construir el dashboard interactivo
-    \item Redactar las recomendaciones de 
-    política pública
+    \item Redactar las recomendaciones de política pública con base
+    en los hallazgos consolidados.
+    \item Construir el dashboard interactivo de soporte visual.
+    \item Publicar el repositorio con documentación de replicabilidad.
 \end{enumerate}
 
 \newpage
@@ -660,7 +698,7 @@ El modelo completo reporta $R^{2}=0.51$. Resultados:
     \item \textbf{IPM}: no significativo al incluir PIB (p = 0.26), consistente con la correlación entre ambas variables ($r = -0.66$): el PIB absorbe el efecto asociado a pobreza.
     \item El mejor modelo según AIC incluye únicamente PIB per cápita ($R^{2}=0.49$, AIC = 11.77).
     \item VIF = 1.78 descarta multicolinealidad severa.
-    \item Cerca del 49\% de la varianza permanece sin explicar, lo que sugiere factores no incluidos: número de notarías, ruralidad, distancias.
+    \item Cerca del 49\% de la varianza permanece sin explicar. La incorporación posterior de la densidad notarial (subsección~\ref{subsec:densidad}) no mejora el ajuste, lo que sugiere que los factores no observados son de demanda u otra naturaleza estructural (ruralidad, distancias municipales, características productivas locales) y no de oferta del servicio.
 \end{itemize}
 
 La figura \texttt{regresion\_observado\_predicho.png} muestra el ajuste observado vs. predicho del modelo final y evidencia la variabilidad no explicada por el conjunto reducido de covariables.
@@ -671,6 +709,140 @@ La figura \texttt{regresion\_observado\_predicho.png} muestra el ajuste observad
     \caption{Comparación observado vs. predicho — modelo OLS (PIB per cápita ± IPM)}
     \label{fig:regresion_obs_pred}
 \end{figure}
+
+\subsection{Densidad notarial y oferta del servicio}
+\label{subsec:densidad}
+
+Una hipótesis intuitiva sobre las diferencias de utilización notarial
+entre departamentos es que estas podrían reflejar diferencias en la
+oferta disponible: es decir, que los departamentos con menor número de
+notarías por habitante presentarían menor número de actos per cápita
+por una restricción estructural de acceso. Esta hipótesis se evaluó
+con los dos indicadores construidos a partir del directorio de la SNR.
+
+\subsubsection*{Distribución de la oferta}
+
+La densidad notarial varía desde 0.75 notarías por 100.000 habitantes
+en La Guajira hasta 4.19 en Boyacá, una razón aproximada de cinco a
+uno entre los extremos. El cuadro~\ref{tab:densidad-resumen} resume los
+entes con mayor y menor densidad.
+
+\begin{table}[H]
+\centering
+\caption{Densidad notarial: extremos del ordenamiento (2025).}
+\label{tab:densidad-resumen}
+\small
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Departamento} & \textbf{Notarías} & \textbf{Densidad (por 100k)} & \textbf{Actos/notaría} \\
+\midrule
+\multicolumn{4}{l}{\textit{Mayor densidad}} \\
+Boyacá             & 54 & 4.19 &  12.221 \\
+Guainía            &  2 & 3.35 &   8.966 \\
+San Andrés y Prov. &  2 & 3.15 &   2.686 \\
+Caldas             & 29 & 2.75 &  25.336 \\
+Tolima             & 38 & 2.74 &  27.484 \\
+\midrule
+\multicolumn{4}{l}{\textit{Menor densidad}} \\
+Guaviare           &  1 & 1.18 & 114.669 \\
+Amazonas           &  1 & 1.18 &  17.102 \\
+Bogotá D.C.        & 81 & 1.02 & 154.230 \\
+Atlántico          & 28 & 0.98 &  62.195 \\
+La Guajira         &  8 & 0.75 &  13.011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{Asociación con la utilización}
+
+La correlación entre densidad notarial y actos per cápita resulta débil
+y no estadísticamente significativa (Pearson $r = -0.19$, $p = 0.29$;
+Spearman $\rho = -0.15$, $p = 0.40$; $n = 33$). La
+figura~\ref{fig:densidad-utilizacion} hace evidente la ausencia de
+patrón: Bogotá D.C., con la segunda menor densidad del país, exhibe la
+mayor utilización; Boyacá, con la mayor densidad, presenta utilización
+media; y La Guajira combina la menor densidad con utilización baja,
+mientras Atlántico, con densidad igualmente baja, alcanza utilización
+media. No se observa una relación monotónica entre oferta y
+utilización.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{scatter_densidad_utilizacion.png}
+    \caption{Densidad notarial frente a utilización por departamento
+    (2025). Las líneas punteadas indican las medianas.}
+    \label{fig:densidad-utilizacion}
+\end{figure}
+
+Complementariamente, la densidad notarial \emph{tampoco} muestra
+asociación con las variables socioeconómicas del análisis:
+$r = -0.05$ ($p = 0.77$) respecto al PIB per cápita y
+$r = +0.14$ ($p = 0.43$) respecto al IPM. Esto sugiere que la
+distribución actual de notarías en el territorio no sigue un patrón
+económico marcado, y por tanto no opera como un mecanismo
+diferenciador adicional entre departamentos con distintos niveles de
+desarrollo.
+
+\subsubsection*{Inclusión en el modelo de regresión}
+
+Para evaluar formalmente si la oferta aporta capacidad explicativa
+incremental, se estimaron dos especificaciones OLS: un modelo base con
+PIB per cápita e IPM como regresores, y un modelo extendido que añade
+la densidad notarial. Ambos se estiman sobre $n = 32$ entes (se excluye
+San Andrés por carecer de medición oficial de IPM). Los resultados se
+reportan en el cuadro~\ref{tab:regresion-oferta}.
+
+\begin{table}[H]
+\centering
+\caption{Comparación de modelos OLS para la utilización notarial.}
+\label{tab:regresion-oferta}
+\small
+\begin{tabular}{lcc}
+\toprule
+                          & \textbf{Modelo A} & \textbf{Modelo B} \\
+                          & \textit{(base)}   & \textit{(con oferta)} \\
+\midrule
+Constante                 & $+0.1120$          & $+0.2750$ \\
+PIB per cápita (millones) & $+0.0181$ ($p=0.003$) & $+0.0183$ ($p=0.003$) \\
+IPM                       & $-0.0058$ ($p=0.26$)  & $-0.0053$ ($p=0.31$) \\
+Densidad notarial         & ---                & $-0.0442$ ($p=0.53$)  \\
+\midrule
+$R^{2}$                   & $0.514$          & $0.521$ \\
+$R^{2}$ ajustado          & $0.481$          & $0.470$ \\
+AIC                       & $12.37$          & $13.92$ \\
+$\Delta R^{2}$            & ---                & $+0.007$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La incorporación de la densidad notarial al modelo \emph{no mejora} la
+capacidad explicativa: el incremento en $R^{2}$ es marginal
+($+0.007$), el coeficiente del nuevo regresor no es
+estadísticamente significativo ($p = 0.53$), el $R^{2}$ ajustado
+disminuye y el AIC aumenta. En conjunto, estos resultados son
+consistentes con que la oferta estructural de notarías no constituye un
+determinante relevante de las diferencias departamentales de
+utilización una vez controladas las condiciones económicas.
+
+\subsubsection*{Saturación por punto único de servicio}
+
+Si bien la densidad notarial no resulta predictiva, el indicador
+complementario \emph{actos por notaría} permite identificar un fenómeno
+diferenciado: la concentración del servicio en territorios con notaría
+única. En Guaviare, Amazonas y Vaupés (una sola notaría cada uno) el
+volumen de actos por notaría refleja la totalidad de la demanda
+departamental sin redistribución posible. El caso de Guaviare es
+particularmente notable, pues registra 114.669 actos por notaría en
+2025 ---tercera carga más alta del país, solo detrás de Bogotá D.C.
+(154.230) y Atlántico (62.195)--- pese a contar con una población
+pequeña y un IPM elevado. Esto matiza la interpretación de su elevado
+índice departamental: el volumen por habitante no refleja
+necesariamente un nivel de utilización comparable al de los
+departamentos económicamente más desarrollados, sino que puede estar
+reflejando una concentración estructural del servicio en un único
+punto territorial. Una caracterización plena de este fenómeno
+requeriría datos a nivel municipal, que escapan al alcance del presente
+trabajo.
 
 \subsection{Evolución temporal 2021--2025}
 
@@ -729,12 +901,21 @@ frente al promedio nacional.
 \subsection{Limitaciones del estudio}
 
 \begin{itemize}
-    \item Los actos notariales miden volumen de actividad 
+    \item Los actos notariales miden volumen de actividad
     formal registrada, no acceso ni calidad del servicio.
-    \item Pueden existir diferencias en la demanda real entre departamentos 
+    \item Pueden existir diferencias en la demanda real entre departamentos
     que no se observan únicamente con actos notariales.
     \item No se consideran tiempos de atención ni costos de los servicios.
     \item Los resultados son correlacionales y no permiten afirmar causalidad.
+    \item Aunque se incorporó al análisis el número de notarías por
+    departamento como aproximación a la oferta del servicio, el
+    directorio de la SNR permite también clasificar cada notaría a
+    nivel municipal. El presente trabajo no explota esa granularidad y
+    trabaja exclusivamente con agregados departamentales. Una extensión
+    natural sería caracterizar la cobertura subdepartamental,
+    especialmente relevante en departamentos extensos con notaría
+    única, donde la distancia del usuario al punto de servicio podría
+    ser un factor relevante.
 \end{itemize}
 
 \newpage
@@ -824,6 +1005,19 @@ actos per cápita, desviaciones y clasificación
 de utilización notarial, exporta índice completo 
 a CSV y SQLite \\
 \addlinespace
+\texttt{integrar\_notarias.py} & \texttt{01\_SNR/scripts/} & Integra el directorio de notarías de la SNR
+al consolidado departamental, calcula la densidad
+notarial (\texttt{notarias\_per\_100k}) y los
+actos por notaría, y exporta el índice enriquecido
+a \texttt{indice\_con\_notarias\_2025.csv} \\
+\addlinespace
+\texttt{grafica\_oferta.py} & \texttt{01\_SNR/scripts/} & Genera el diagrama de dispersión entre la
+densidad notarial y los actos per cápita por
+departamento; lee \texttt{indice\_con\_notarias\_2025.csv}
+y calcula los coeficientes de correlación de Pearson
+directamente sobre los datos para incorporar esos
+valores en el subtítulo de la figura \\
+\addlinespace
 \texttt{visualizaciones.py} & \texttt{01\_SNR/scripts/} & Genera 
 los gráficos del informe: ranking per cápita, scatter IPM 
 y distribución por clasificación \\
@@ -852,6 +1046,13 @@ relativos por departamento; genera la evolución temporal \\
 \begin{verbatim}
 python 01_SNR/scripts/explorar_snr.py
 python 01_SNR/scripts/cruzar_datos.py
+python 01_SNR/scripts/correlaciones.py
+python 01_SNR/scripts/clustering.py
+python 01_SNR/scripts/regresion.py
+python 01_SNR/scripts/panel.py
+python 01_SNR/scripts/integrar_notarias.py
+python 01_SNR/scripts/grafica_oferta.py
+python 01_SNR/scripts/visualizaciones.py
 \end{verbatim}
 
 \subsection{Base de datos SQLite}
