@@ -96,7 +96,7 @@ snr['Fecha'] = pd.to_datetime(snr['Fecha'], errors='coerce')
 snr['Año'] = snr['Fecha'].dt.year
 
 cols_excluir = [c for c in snr.columns
-                if any(x in c for x in ['Fecha', 'Departamento', 'digo'])]
+                if any(x in c for x in ['Fecha', 'Departamento', 'digo', 'Año'])]
 cols_num = snr.columns.drop(cols_excluir)
 for c in cols_num:
     snr[c] = pd.to_numeric(
@@ -131,11 +131,11 @@ df['desviacion_pct'] = (
     (df['actos_per_capita'] - promedio) / promedio * 100).round(2)
 
 def clasificar(d):
-    if d > 50:     return 'Sobre-servido'
+    if d > 50:     return 'Alta utilización'
     elif d > 10:   return 'Sobre promedio'
     elif d >= -10: return 'Promedio'
-    elif d >= -50: return 'Sub-servido'
-    else:          return 'Brecha crítica'
+    elif d >= -50: return 'Bajo promedio'
+    else:          return 'Utilización crítica'
 
 df['clasificacion'] = df['desviacion_pct'].apply(clasificar)
 df = df.sort_values(

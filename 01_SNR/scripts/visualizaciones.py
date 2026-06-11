@@ -14,11 +14,11 @@ os.makedirs('imagenes', exist_ok=True)
 
 # Paleta por clasificación
 colores = {
-    'Sobre-servido':  '#4F8EF7',
-    'Sobre promedio': '#3ABFA0',
-    'Promedio':       '#E8A23A',
-    'Sub-servido':    '#E85A8A',
-    'Brecha crítica': '#E85A5A'
+    'Alta utilización':    '#4F8EF7',
+    'Sobre promedio':      '#3ABFA0',
+    'Promedio':            '#E8A23A',
+    'Bajo promedio':       '#E85A8A',
+    'Utilización crítica': '#E85A5A'
 }
 df['color'] = df['clasificacion'].map(colores)
 
@@ -142,8 +142,8 @@ print("✓ imagenes/scatter_ipm_percapita.png")
 # GRÁFICO 3 — Distribución por clasificación
 # ─────────────────────────────────────────
 conteo = df['clasificacion'].value_counts().reindex([
-    'Sobre-servido', 'Sobre promedio', 'Promedio',
-    'Sub-servido', 'Brecha crítica'
+    'Alta utilización', 'Sobre promedio', 'Promedio',
+    'Bajo promedio', 'Utilización crítica'
 ])
 
 fig, ax = plt.subplots(figsize=(8, 5))
