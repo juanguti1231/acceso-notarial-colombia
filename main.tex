@@ -99,13 +99,13 @@ de análisis de datos, aplicados en secuencia:
     per cápita y cálculo de desviaciones respecto al promedio 
     nacional. Cruce con variables demográficas y económicas 
     del DANE para explorar posibles factores asociados a las diferencias territoriales. 
-    Se propone realizar regresiones y análisis de panel en Stata.
+    Se propone realizar regresiones y análisis de panel en Python con statsmodels.
 
     \item \textbf{Análisis predictivo} 
     (\textit{¿qué podría pasar?}): Con la serie histórica 
     2021--2026 del SNR se propone proyectar la evolución de la 
     utilización notarial por departamento. En etapas posteriores se implementarán modelos de series 
-    de tiempo y regresión múltiple en Stata.
+    de tiempo y regresión múltiple en Python con statsmodels.
 
     \item \textbf{Análisis prescriptivo} 
     (\textit{¿qué debería hacerse?}): Recomendaciones de 
@@ -129,7 +129,7 @@ Clasificación utilización notarial & Índice propio & Diagnóstica \\
 Correlación PIB--volumen notarial & SNR + DANE & Diagnóstica \\
 Correlación IPM--volumen notarial & SNR + DNP & Diagnóstica \\
 Proyección de crecimiento (\%) & SNR histórico & Predictiva \\
-Índice de menor utilización relativa & Modelo Stata & Predictiva \\
+Índice de menor utilización relativa & Modelo statsmodels & Predictiva \\
 \bottomrule
 \end{tabular}
 \caption{KPIs del análisis de utilización notarial colombiano}
@@ -328,26 +328,24 @@ Estas variables clave son:
 Esto permitirá evaluar de forma más directa la cobertura institucional 
 y la intensidad de utilización del sistema notarial.
 
-\subsection{Stata}
+\subsection{Regresión múltiple — Python statsmodels}
 
-\textbf{Modelo de regresión principal (propuesto):}
+Inicialmente se propuso implementar los modelos econométricos en 
+Stata. Sin embargo, al no contar con licencia de este software 
+comercial, la implementación se realizó en Python con la librería 
+\texttt{statsmodels}, que produce resultados equivalentes 
+(estimación OLS, errores estándar, tests de significancia) y 
+mantiene todo el análisis en un pipeline replicable y de código 
+abierto.
+
+\textbf{Modelo estimado:}
 
 \begin{equation}
 \text{actos\_per\_cápita}_i = \beta_0 + 
-\beta_1 \cdot \text{PIB\_per\_cápita}_i + 
-\beta_2 \cdot \text{urbanización}_i + 
-\beta_3 \cdot \text{IPM}_i + 
-\beta_4 \cdot \text{num\_notarías}_i + 
+\beta_1 \cdot \text{IPM}_i + 
+\beta_2 \cdot \text{PIB\_per\_cápita}_i + 
 \varepsilon_i
 \end{equation}
-
-\textbf{Implementación propuesta:}
-\begin{itemize}
-    \item Se propone realizar regresión múltiple por corte transversal
-    \item Análisis de panel 2021--2026 a implementar en etapas posteriores
-    \item Series de tiempo por departamento para etapas futuras
-    \item Tests de significancia estadística como parte del modelo
-\end{itemize}
 
 \subsection{Power BI}
 
@@ -457,15 +455,16 @@ Registros Civiles Matrimonio &     23,150 \\
 
 \subsection{Próximos pasos}
 
-Con el índice de utilización notarial calculado y los 
-datos del DANE integrados, los siguientes pasos son:
+Con el índice calculado y el análisis diagnóstico realizado 
+(correlaciones, clustering y regresión), los siguientes 
+pasos son:
 
 \begin{enumerate}
-    \item Correr el modelo de regresión múltiple 
-    en Stata para identificar qué variables 
-    se asocian con las diferencias territoriales de utilización
-    \item Análisis de panel 2021--2026 en Stata
-    \item Construir el dashboard en Power BI
+    \item Análisis de panel 2021--2025 para evaluar 
+    la evolución temporal de las diferencias territoriales
+    \item Incorporar la variable número de notarías 
+    por departamento
+    \item Construir el dashboard interactivo
     \item Redactar las recomendaciones de 
     política pública
 \end{enumerate}
@@ -613,6 +612,59 @@ por departamento, Colombia 2025}
     fronterizos con alta proporción de población 
     indígena y rural dispersa.
 \end{itemize}
+
+\section{Análisis diagnóstico: correlaciones, clusters y regresión}
+
+\subsection{Matriz de correlaciones}
+
+La matriz de correlaciones entre las variables clave muestra las siguientes relaciones destacadas: \textbf{PIB per cápita} con \textbf{actos per cápita} ($r = +0.65$, $p<0.01$); \textbf{IPM} con \textbf{actos per cápita} presenta correlación Pearson $r = -0.49$ pero Spearman $\rho = -0.67$, lo que indica una relación monótona no lineal; la variable \textbf{población} no resulta significativa en correlación simple con el volumen notarial. La figura \texttt{matriz\_correlaciones.png} resume visualmente estos coeficientes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{matriz_correlaciones.png}
+    \caption{Matriz de correlaciones entre PIB per cápita, IPM, población y actos per cápita}
+    \label{fig:matriz_correlaciones}
+\end{figure}
+
+\subsection{Agrupación por K-Means}
+
+Se aplicó K-Means para identificar agrupamientos territoriales con $k=4$ (seleccionado usando el método del codo mostrado en \texttt{metodo\_codo.png}). Los cuatro clusters obtenidos son interpretados como:
+
+\begin{itemize}
+    \item Economías potentes: Bogotá, Meta, Santander, Casanare.
+    \item Región andina consolidada: 11 departamentos (incluye la anomalía Guaviare).
+    \item Periferia Caribe y sur: 12 departamentos.
+    \item Frontera en pobreza extrema: Guainía, Chocó, Vichada, Vaupés, La Guajira.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{metodo_codo.png}
+    \includegraphics[width=0.48\textwidth]{clusters_kmeans.png}
+    \caption{Izquierda: método del codo para selección de $k$. Derecha: mapa/clustering resultante (K-Means, $k=4$).}
+    \label{fig:kmeans}
+\end{figure}
+
+\subsection{Regresión múltiple}
+
+El modelo de regresión múltiple estimado con \texttt{statsmodels} reporta un $R^{2}=0.43$. Los resultados principales son:
+
+\begin{itemize}
+    \item \textbf{PIB per cápita}: coeficiente $\hat{\beta}_{PIB}=0.019$ (p = 0.004), estadísticamente significativo.
+    \item \textbf{IPM}: pierde significancia al incluir PIB en el modelo (p = 0.58), lo cual es consistente con la alta correlación entre IPM y PIB ($r = -0.66$), de modo que el PIB absorbe parte del efecto asociado a pobreza.
+    \item El mejor modelo según AIC es el que incluye únicamente \textbf{PIB per cápita}.
+    \item VIF promedio = 1.78, lo que descarta multicolinealidad severa en las covariables incluidas.
+    \item Aproximadamente el 57\% de la varianza permanece sin explicar, indicando la probable existencia de factores relevantes no incluidos en este modelo (por ejemplo: número de notarías, ruralidad, distancias y otras variables institucionales).
+\end{itemize}
+
+La figura \texttt{regresion\_observado\_predicho.png} muestra el ajuste observado vs. predicho del modelo final y evidencia la variabilidad no explicada por el conjunto reducido de covariables.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{regresion_observado_predicho.png}
+    \caption{Comparación observado vs. predicho — modelo OLS (PIB per cápita ± IPM)}
+    \label{fig:regresion_obs_pred}
+\end{figure}
 
 \subsection{Limitaciones del estudio}
 

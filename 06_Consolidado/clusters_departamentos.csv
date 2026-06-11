@@ -1,0 +1,33 @@
+﻿Departamento,actos_per_capita,IPM,PIB_per_capita,clasificacion,cluster
+"Bogotá, D.C.",1.8206,2.2,54155639.0,Sobre-servido,0
+Quindío,1.7398,6.7,26146913.0,Sobre-servido,2
+Risaralda,1.686,4.9,28583134.0,Sobre-servido,2
+Guaviare,1.6408,20.0,16487471.0,Sobre-servido,2
+Boyacá,1.5268,6.4,35053265.0,Sobre promedio,2
+Tolima,1.4179,12.2,26720578.0,Sobre promedio,2
+Meta,1.417,12.3,47385425.0,Sobre promedio,0
+Antioquia,1.3721,9.5,36550055.0,Sobre promedio,2
+Caldas,1.3651,7.9,27332733.0,Sobre promedio,2
+Santander,1.304,6.9,45670718.0,Sobre promedio,0
+Valle Del Cauca,1.2274,4.9,35330247.0,Sobre promedio,2
+Casanare,1.1692,8.9,49846436.0,Sobre promedio,0
+Arauca,1.1267,12.7,32985859.0,Promedio,2
+Guainía,1.1143,51.8,10140803.0,Promedio,1
+Huila,1.1106,9.7,24248639.0,Promedio,2
+Cundinamarca,0.9972,4.1,30608229.0,Promedio,2
+Bolívar,0.9199,17.0,27299042.0,Sub-servido,3
+Norte De Santander,0.9048,13.3,16023433.0,Sub-servido,3
+Atlántico,0.8453,8.2,26812382.0,Sub-servido,3
+Chocó,0.7996,30.8,12783458.0,Sub-servido,1
+Caquetá,0.7656,15.0,15921615.0,Sub-servido,3
+Cesar,0.7389,14.8,21163247.0,Sub-servido,3
+Vichada,0.7347,55.2,7847260.0,Sub-servido,1
+Cauca,0.7298,13.0,19449644.0,Sub-servido,3
+Sucre,0.7111,25.4,13315454.0,Sub-servido,3
+Nariño,0.6621,13.2,15076534.0,Sub-servido,3
+Vaupés,0.6467,41.7,10690318.0,Sub-servido,1
+Magdalena,0.6355,17.6,15555677.0,Sub-servido,3
+Putumayo,0.606,13.6,15588902.0,Sub-servido,3
+Córdoba,0.5876,19.8,15531329.0,Sub-servido,3
+Amazonas,0.4868,18.1,15643143.0,Brecha crítica,3
+La Guajira,0.2798,40.1,16516342.0,Brecha crítica,1
