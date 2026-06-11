@@ -763,6 +763,22 @@ a CSV y SQLite \\
 actos per cápita, desviaciones y clasificación 
 de utilización notarial, exporta índice completo 
 a CSV y SQLite \\
+\addlinespace
+\texttt{visualizaciones.py} & \texttt{01\_SNR/scripts/} & Genera 
+los gráficos del informe: ranking per cápita, scatter IPM 
+y distribución por clasificación \\
+\addlinespace
+\texttt{correlaciones.py} & \texttt{01\_SNR/scripts/} & Calcula 
+correlaciones Pearson y Spearman entre utilización, IPM, PIB 
+y población; genera la matriz de correlaciones \\
+\addlinespace
+\texttt{clustering.py} & \texttt{01\_SNR/scripts/} & Aplica 
+K-Means (k=4) sobre actos per cápita, IPM y PIB; genera el 
+método del codo y el gráfico de clusters \\
+\addlinespace
+\texttt{regresion.py} & \texttt{01\_SNR/scripts/} & Estima 
+los modelos OLS con statsmodels, compara modelos por AIC, 
+calcula VIF y genera el gráfico observado vs predicho \\
 \bottomrule
 \end{tabular}
 \caption{Scripts principales del proyecto y sus funciones}
