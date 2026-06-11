@@ -38,8 +38,8 @@ aún no respondida con datos:
 
 \begin{center}
 \textit{¿Qué tan grandes son las diferencias en la utilización de servicios 
-notariales entre los departamentos de Colombia y qué factores 
-socioeconómicos las explican?}
+notariales entre los departamentos de Colombia y qué variables 
+socioeconómicas se asocian con dichas diferencias?}
 \end{center}
 
 El objetivo de este proyecto es cuantificar las diferencias 
@@ -58,7 +58,7 @@ del DANE y el DNP, para responder tres preguntas concretas:
     departamento? — Departamentos de alta utilización.
     \item \textbf{¿Dónde hay menos actos de los esperados?} 
     — Departamentos de baja utilización con posible brecha de utilización.
-    \item \textbf{¿Qué variables explican mejor el volumen 
+    \item \textbf{¿Qué variables presentan una mayor asociación con el volumen 
     notarial?} — Para entender qué mueve la actividad 
     notarial colombiana.
 \end{enumerate}
@@ -220,7 +220,7 @@ Nacional de Estadística (DANE) el 8 de agosto de 2025.
 \textbf{Por qué es esencial:} Es la variable de 
 normalización fundamental del análisis. Sin datos de 
 población no es posible calcular los actos notariales 
-per cápita ni determinar si un departamento está de alta 
+per cápita ni evaluar si un departamento presenta alta 
 utilización, sobre promedio, promedio, bajo promedio o 
 utilización crítica.
 
@@ -234,24 +234,26 @@ periodo 2018--2050\\
 \subsection{Fuente 3 — DANE: PIB departamental}
 
 \textbf{Qué contiene:} Producto Interno Bruto por 
-departamento a precios corrientes. Permite determinar 
-si las brechas en utilización notarial se explican por 
-diferencias en actividad económica.
+departamento a precios corrientes. Permite explorar 
+si las brechas en utilización notarial se asocian con 
+diferencias en actividad económica departamental.
 
 \textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/cuentas-nacionales/cuentas-nacionales-departamentales}
 
 \subsection{Fuente 4 — DNP: Índice de Pobreza 
 Multidimensional (IPM)}
 
-\textbf{Qué contiene:} Medida de pobreza que combina 
-múltiples dimensiones — educación, salud, vivienda, 
-trabajo y condiciones de vida — por departamento. 
-Permite evaluar si las brechas de utilización notarial 
-se relacionan con condiciones de pobreza estructural.
+\textbf{Qué contiene:} Medida de pobreza que evalúa 
+privaciones en cinco dimensiones — educación, salud, 
+vivienda, trabajo y condiciones de vida — por 
+departamento. Permite explorar si las brechas de 
+utilización notarial se asocian con condiciones de 
+pobreza estructural.
 
-\textbf{URL:} \url{https://www.datos.gov.co}\\
-\textbf{Búsqueda:} \textit{``índice pobreza 
-multidimensional departamento''}
+\textbf{Archivo descargado:} 
+\texttt{ipm\_departamentos.xlsx}\\
+\textbf{Última actualización:} 14 de abril de 2026\\
+\textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/pobreza-y-condiciones-de-vida/pobreza-multidimensional}
 
 \newpage
 % ─────────────────────────────────────────
@@ -285,7 +287,7 @@ consultas cruzadas entre ellas.
     \item \texttt{poblacion\_departamentos} — DANE
     \item \texttt{pib\_departamentos} — DANE
     \item \texttt{ipm\_departamentos} — DNP
-    \item \texttt{indice\_acceso} — KPIs consolidados
+    \item \texttt{indice\_utilización} — KPIs consolidados
 \end{itemize}
 
 \textbf{Consulta central del análisis:}
@@ -522,7 +524,7 @@ según la clasificación del índice.
 El cruce de los datos del SNR con las proyecciones 
 de población del DANE para 2025 permite calcular 
 el índice de actos notariales per cápita por 
-departamento y determinar las desviaciones respecto 
+por departamento y evaluar las desviaciones respecto 
 al promedio nacional 
 ($\bar{x} = 1.028$ actos per cápita).
 
@@ -579,21 +581,18 @@ por departamento, Colombia 2025}
     \item \textbf{Bogotá D.C.} lidera el índice 
     con 1.82 actos per cápita (+77\% sobre el 
     promedio nacional) y el IPM más bajo del 
-    país (2.2\%), reforzando la asociación 
-    entre desarrollo económico y utilización notarial.
+    país (2.2\%). Bogotá presenta simultáneamente alta utilización notarial y bajos niveles de pobreza, lo que sugiere una posible relación entre desarrollo económico y utilización del sistema.
 
     \item \textbf{Guaviare} presenta una anomalía 
     estadística relevante: ocupa el cuarto lugar 
     en actos per cápita (1.64) pero tiene un IPM 
     de 20\%, muy superior al de departamentos 
-    con utilización similar. Esto sugiere que factores 
-    distintos al desarrollo económico explican 
-    su actividad notarial.
+    con utilización similar. Podrían existir otros factores 
+    asociados a su actividad notarial que no son capturados únicamente por las variables analizadas.
 
     \item \textbf{Guainía} también es anómalo: 
     IPM de 51.8\% pero en posición 14 del índice. 
-    Posible explicación: alta actividad de 
-    registros civiles en comunidades indígenas.
+    Este comportamiento representa un caso atípico que requerirá análisis adicional para identificar posibles factores asociados.
 
     \item \textbf{La Guajira} registra la brecha 
     más crítica del país: 0.28 actos per cápita, 
@@ -612,9 +611,8 @@ por departamento, Colombia 2025}
 \subsection{Limitaciones del estudio}
 
 \begin{itemize}
-    \item Los actos notariales no miden directamente acceso; 
-    miden volumen de utilización formal registrada.
-    \item El análisis identifica utilización y no calidad del servicio.
+    \item Los actos notariales miden volumen de actividad 
+    formal registrada, no acceso ni calidad del servicio.
     \item Pueden existir diferencias en la demanda real entre departamentos 
     que no se observan únicamente con actos notariales.
     \item No se consideran tiempos de atención ni costos de los servicios.
@@ -712,8 +710,8 @@ a CSV y SQLite \\
 \end{table}
 
 \begin{verbatim}
-python 01_SNR/explorar_snr.py
-python 01_SNR/cruzar_datos.py
+python 01_SNR/scripts/explorar_snr.py
+python 01_SNR/scripts/cruzar_datos.py
 \end{verbatim}
 
 \subsection{Base de datos SQLite}
