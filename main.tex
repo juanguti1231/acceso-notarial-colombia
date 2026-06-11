@@ -98,8 +98,10 @@ de análisis de datos, aplicados en secuencia:
     (\textit{¿por qué sucedió?}): Construcción del índice 
     per cápita y cálculo de desviaciones respecto al promedio 
     nacional. Cruce con variables demográficas y económicas 
-    del DANE para explorar posibles factores asociados a las diferencias territoriales. 
-    Se propone realizar regresiones y análisis de panel en Python con statsmodels.
+    del DANE para explorar posibles factores asociados a las 
+    diferencias territoriales. Esta fase incluye correlaciones, 
+    agrupación por K-Means, regresión múltiple y análisis de 
+    panel, implementados en Python con statsmodels.
 
     \item \textbf{Análisis predictivo} 
     (\textit{¿qué podría pasar?}): Con la serie histórica 
@@ -456,12 +458,10 @@ Registros Civiles Matrimonio &     23,150 \\
 \subsection{Próximos pasos}
 
 Con el índice calculado y el análisis diagnóstico realizado 
-(correlaciones, clustering y regresión), los siguientes 
-pasos son:
+(correlaciones, clustering, regresión y panel temporal), 
+los siguientes pasos son:
 
 \begin{enumerate}
-    \item Análisis de panel 2021--2025 para evaluar 
-    la evolución temporal de las diferencias territoriales
     \item Incorporar la variable número de notarías 
     por departamento
     \item Construir el dashboard interactivo
@@ -672,6 +672,60 @@ La figura \texttt{regresion\_observado\_predicho.png} muestra el ajuste observad
     \label{fig:regresion_obs_pred}
 \end{figure}
 
+\subsection{Evolución temporal 2021--2025}
+
+Para evaluar si las diferencias territoriales se amplían o se 
+reducen en el tiempo, se construyó un panel con el índice per 
+cápita de cada departamento para cada año del periodo 
+2021--2025. La tabla siguiente resume la dispersión entre 
+departamentos año a año.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+\textbf{Año} & \textbf{Media} & \textbf{Desv.\ est.} & 
+\textbf{Coef.\ variación} & \textbf{Máx/Mín} \\
+\midrule
+2021 & 0.4825 & 0.3630 & 0.7524 & 53.79 \\
+2022 & 0.4947 & 0.3850 & 0.7782 & 33.01 \\
+2023 & 0.4687 & 0.3747 & 0.7996 & 72.60 \\
+2024 & 0.4862 & 0.3497 & 0.7192 & 30.20 \\
+2025 & 0.5385 & 0.3920 & 0.7281 & 19.37 \\
+\bottomrule
+\end{tabular}
+\caption{Dispersión de la utilización notarial per cápita 
+entre departamentos, 2021--2025}
+\end{table}
+
+El coeficiente de variación —medida de dispersión robusta al 
+no depender de un único departamento extremo— oscila entre 
+0.72 y 0.80 sin una tendencia clara de aumento o disminución. 
+Esto sugiere que las diferencias territoriales en la 
+utilización notarial \textbf{se mantienen relativamente 
+estables} en el periodo: no se observa ni convergencia 
+sostenida entre departamentos ni un ensanchamiento progresivo 
+de las diferencias. La razón Máx/Mín es más volátil porque 
+depende del departamento con menor utilización en cada año, 
+por lo que el coeficiente de variación ofrece una lectura más 
+confiable.
+
+A nivel individual, los mayores aumentos relativos en 
+utilización per cápita entre 2021 y 2025 corresponden a 
+San Andrés (+221.6\%), Casanare (+107.4\%) y Caldas (+57.7\%), 
+mientras que las mayores caídas se registran en Amazonas 
+($-37.1\%$), Putumayo ($-22.3\%$) y Sucre ($-11.7\%$). La 
+figura siguiente muestra la trayectoria de casos seleccionados 
+frente al promedio nacional.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{evolucion_panel.png}
+    \caption{Evolución de la utilización notarial per cápita, 
+    casos seleccionados, Colombia 2021--2025}
+    \label{fig:evolucion_panel}
+\end{figure}
+
 \subsection{Limitaciones del estudio}
 
 \begin{itemize}
@@ -785,6 +839,11 @@ método del codo y el gráfico de clusters \\
 \texttt{regresion.py} & \texttt{01\_SNR/scripts/} & Estima 
 los modelos OLS con statsmodels, compara modelos por AIC, 
 calcula VIF y genera el gráfico observado vs predicho \\
+\addlinespace
+\texttt{panel.py} & \texttt{01\_SNR/scripts/} & Construye 
+el panel 2021--2025 con el índice per cápita por año, calcula 
+la dispersión anual (coeficiente de variación) y los cambios 
+relativos por departamento; genera la evolución temporal \\
 \bottomrule
 \end{tabular}
 \caption{Scripts principales del proyecto y sus funciones}
