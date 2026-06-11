@@ -10,7 +10,7 @@
 \geometry{margin=2.5cm}
 \graphicspath{{imagenes/}}
 
-\title{\textbf{Análisis de Acceso y Eficiencia del Sistema\\
+\title{\textbf{Análisis de la Utilización del Sistema\\
 Notarial Colombiano}\\
 \large Un enfoque departamental con datos del SNR y el DANE}
 \author{Juan Felipe Gutiérrez}
@@ -28,35 +28,39 @@ Notarial Colombiano}\\
 
 Colombia cuenta con 32 departamentos y el Distrito Capital 
 de Bogotá, cada uno con realidades económicas, demográficas 
-y sociales profundamente distintas. Sin embargo, el sistema 
-notarial opera con tarifas uniformes reguladas por la 
-Superintendencia de Notariado y Registro (SNR), sin importar 
-si el servicio se presta en Bogotá o en Vaupés.
+y geográficas profundamente distintas. El sistema notarial 
+existe en todas estas entidades territoriales, pero hay poca 
+evidencia pública sobre si su capacidad de atención alcanza 
+proporcionalmente a toda la población colombiana.
 
-Esta uniformidad regulatoria plantea una pregunta que hasta 
-ahora no ha sido respondida con datos:
+Esta ausencia de evidencia pública plantea una pregunta 
+aún no respondida con datos:
 
 \begin{center}
-\textit{¿El acceso a servicios notariales en Colombia es 
-equitativo entre departamentos, o existen brechas 
-sistemáticas donde la población tiene menor acceso 
-relativo a estos servicios?}
+\textit{¿Qué tan grandes son las diferencias en la utilización de servicios 
+notariales entre los departamentos de Colombia y qué factores 
+socioeconómicos las explican?}
 \end{center}
 
-Este proyecto construye un \textbf{índice de acceso y 
-eficiencia notarial por departamento}, cruzando datos 
+El objetivo de este proyecto es cuantificar las diferencias 
+territoriales en la utilización de servicios notariales en Colombia 
+y analizar la relación entre dichas diferencias y variables 
+socioeconómicas como población, pobreza multidimensional y 
+actividad económica departamental.
+
+Este proyecto construye un \textbf{índice de utilización notarial por departamento}, cruzando datos 
 oficiales del SNR con variables demográficas y económicas 
 del DANE y el DNP, para responder tres preguntas concretas:
 
 \begin{enumerate}
     \item \textbf{¿Dónde hay más actos notariales de los 
     esperados} para el tamaño poblacional y económico del 
-    departamento? — Departamentos sobre-servidos.
+    departamento? — Departamentos de alta utilización.
     \item \textbf{¿Dónde hay menos actos de los esperados?} 
-    — Departamentos sub-servidos con posible brecha de acceso.
+    — Departamentos de baja utilización con posible brecha de utilización.
     \item \textbf{¿Qué variables explican mejor el volumen 
-    notarial?} — Para entender qué mueve el mercado 
-    notarial colombiano.
+    notarial?} — Para entender qué mueve la actividad 
+    notarial colombiana.
 \end{enumerate}
 
 \subsection{Relevancia e impacto del análisis}
@@ -64,15 +68,15 @@ del DANE y el DNP, para responder tres preguntas concretas:
 \begin{itemize}
     \item \textbf{SNR y Estado colombiano:} Insumo para 
     política pública de distribución equitativa de notarías 
-    y acceso a servicios formales.
+    y utilización de servicios formales.
     \item \textbf{Operadores del sector notarial:} Identifica 
-    departamentos con demanda notarial insatisfecha.
-    \item \textbf{Academia e investigación:} Primer análisis 
-    cuantitativo del mercado notarial colombiano con datos 
+    departamentos con baja utilización relativa.
+    \item \textbf{Academia e investigación:} Una aproximación 
+    cuantitativa al sistema notarial colombiano con datos 
     abiertos, replicable y actualizable anualmente.
     \item \textbf{Ciudadanos y sociedad civil:} Evidencia 
-    sobre inequidades en el acceso a servicios jurídicos 
-    formales entre regiones.
+    sobre diferencias territoriales en la utilización de 
+    servicios jurídicos formales entre regiones.
 \end{itemize}
 
 \newpage
@@ -94,14 +98,14 @@ de análisis de datos, aplicados en secuencia:
     (\textit{¿por qué sucedió?}): Construcción del índice 
     per cápita y cálculo de desviaciones respecto al promedio 
     nacional. Cruce con variables demográficas y económicas 
-    del DANE para identificar causas de las brechas. 
+    del DANE para explorar posibles factores asociados a las brechas. 
     Regresiones y análisis de panel en Stata.
 
     \item \textbf{Análisis predictivo} 
     (\textit{¿qué podría pasar?}): Con la serie histórica 
-    2021--2026 del SNR se proyecta la evolución del acceso 
-    notarial por departamento. Modelos de series de tiempo 
-    y regresión múltiple en Stata.
+    2021--2026 del SNR se proyecta la evolución de la 
+    utilización notarial por departamento. Modelos de series 
+    de tiempo y regresión múltiple en Stata.
 
     \item \textbf{Análisis prescriptivo} 
     (\textit{¿qué debería hacerse?}): Recomendaciones de 
@@ -121,14 +125,14 @@ Actos notariales per cápita & SNR + DANE & Descriptiva \\
 Participación departamental (\%) & SNR & Descriptiva \\
 Posición en ranking nacional & SNR & Descriptiva \\
 Desviación vs.\ promedio nacional & SNR + DANE & Diagnóstica \\
-Clasificación acceso notarial & Índice propio & Diagnóstica \\
+Clasificación utilización notarial & Índice propio & Diagnóstica \\
 Correlación PIB--volumen notarial & SNR + DANE & Diagnóstica \\
 Correlación IPM--volumen notarial & SNR + DNP & Diagnóstica \\
 Proyección de crecimiento (\%) & SNR histórico & Predictiva \\
-Índice de brecha de acceso & Modelo Stata & Predictiva \\
+Índice de brecha de utilización & Modelo Stata & Predictiva \\
 \bottomrule
 \end{tabular}
-\caption{KPIs del análisis de acceso notarial colombiano}
+\caption{KPIs del análisis de utilización notarial colombiano}
 \end{table}
 
 \subsection{Metodología central: proporciones y desviaciones}
@@ -151,8 +155,8 @@ La desviación respecto al promedio nacional se calcula como:
 
 donde $\bar{x}$ es el promedio nacional ponderado por 
 población. Un valor positivo indica un departamento 
-\textbf{sobre-servido}; un valor negativo indica un 
-departamento \textbf{sub-servido}.
+\textbf{de alta utilización}; un valor negativo indica un 
+departamento \textbf{de baja utilización}.
 
 \begin{table}[H]
 \centering
@@ -161,19 +165,19 @@ departamento \textbf{sub-servido}.
 \textbf{Desviación} & \textbf{Clasificación} & 
 \textbf{Interpretación} \\
 \midrule
-$> +50\%$ & Sobre-servido & 
+$> +50\%$ & Alta utilización & 
 Muy por encima del promedio \\
 $+10\%$ a $+50\%$ & Sobre promedio & 
 Por encima del promedio \\
 $-10\%$ a $+10\%$ & Promedio & 
 En la media nacional \\
-$-10\%$ a $-50\%$ & Sub-servido & 
+$-10\%$ a $-50\%$ & Bajo promedio & 
 Por debajo del promedio \\
-$< -50\%$ & Brecha crítica & 
+$< -50\%$ & Utilización crítica & 
 Muy por debajo del promedio \\
 \bottomrule
 \end{tabular}
-\caption{Escala de clasificación de acceso notarial}
+\caption{Escala de clasificación de utilización notarial}
 \end{table}
 
 \newpage
@@ -216,8 +220,9 @@ Nacional de Estadística (DANE) el 8 de agosto de 2025.
 \textbf{Por qué es esencial:} Es la variable de 
 normalización fundamental del análisis. Sin datos de 
 población no es posible calcular los actos notariales 
-per cápita ni determinar si un departamento está sobre 
-o sub-servido en términos de acceso notarial.
+per cápita ni determinar si un departamento está de alta 
+utilización, sobre promedio, promedio, bajo promedio o 
+utilización crítica.
 
 \textbf{Archivo descargado:} 
 \texttt{poblacion\_departamentos.xlsx}\\
@@ -230,7 +235,7 @@ periodo 2018--2050\\
 
 \textbf{Qué contiene:} Producto Interno Bruto por 
 departamento a precios corrientes. Permite determinar 
-si las brechas en acceso notarial se explican por 
+si las brechas en utilización notarial se explican por 
 diferencias en actividad económica.
 
 \textbf{URL:} \url{https://www.dane.gov.co/index.php/estadisticas-por-tema/cuentas-nacionales/cuentas-nacionales-departamentales}
@@ -241,7 +246,7 @@ Multidimensional (IPM)}
 \textbf{Qué contiene:} Medida de pobreza que combina 
 múltiples dimensiones — educación, salud, vivienda, 
 trabajo y condiciones de vida — por departamento. 
-Permite evaluar si las brechas de acceso notarial 
+Permite evaluar si las brechas de utilización notarial 
 se relacionan con condiciones de pobreza estructural.
 
 \textbf{URL:} \url{https://www.datos.gov.co}\\
@@ -299,6 +304,23 @@ JOIN poblacion_departamentos p
 ORDER BY desviacion_pct DESC;
 \end{verbatim}
 
+\subsection{Número de notarías y cobertura institucional}
+
+La versión actual del análisis utiliza actos notariales y población
+como variables principales. Futuros desarrollos del modelo incluirán 
+variables de infraestructura institucional para aproximar mejor la 
+capacidad de atención del sistema notarial departamental.
+
+Estas variables clave son:
+\begin{itemize}
+    \item Número de notarías por departamento.
+    \item Habitantes por notaría.
+    \item Actos por notaría.
+\end{itemize}
+
+Esto permitirá evaluar de forma más directa la cobertura institucional 
+y la intensidad de utilización del sistema notarial.
+
 \subsection{Stata}
 
 \textbf{Modelo de regresión principal:}
@@ -323,7 +345,7 @@ ORDER BY desviacion_pct DESC;
 \subsection{Power BI}
 
 Dashboard interactivo con mapa de Colombia coloreado 
-por índice de acceso notarial, ranking departamental 
+por índice de utilización notarial, ranking departamental 
 y evolución temporal 2021--2026. Conectado directamente 
 a la base de datos SQLite.
 
@@ -427,13 +449,13 @@ Registros Civiles Matrimonio &     23,150 \\
 
 \subsection{Próximos pasos}
 
-Con el índice de acceso notarial calculado y los 
+Con el índice de utilización notarial calculado y los 
 datos del DANE integrados, los siguientes pasos son:
 
 \begin{enumerate}
     \item Correr el modelo de regresión múltiple 
     en Stata para identificar qué variables 
-    explican las brechas de acceso
+    se asocian con las brechas de utilización
     \item Análisis de panel 2021--2026 en Stata
     \item Construir el dashboard en Power BI
     \item Redactar las recomendaciones de 
@@ -445,13 +467,13 @@ datos del DANE integrados, los siguientes pasos son:
 \section{Visualizaciones del análisis}
 % ─────────────────────────────────────────
 
-\subsection{Índice de acceso notarial per cápita}
+\subsection{Índice de utilización notarial per cápita}
 
 La siguiente figura muestra el ranking de los 33 
 departamentos de Colombia ordenados por actos 
 notariales per cápita en 2025. La línea punteada 
 representa el promedio nacional. Los colores 
-indican el nivel de acceso notarial según la 
+indican el nivel de utilización notarial según la 
 escala de clasificación definida.
 
 \begin{figure}[H]
@@ -462,7 +484,7 @@ escala de clasificación definida.
     \label{fig:ranking}
 \end{figure}
 
-\subsection{Relación entre pobreza e acceso notarial}
+\subsection{Relación entre pobreza y utilización notarial}
 
 El siguiente diagrama de dispersión muestra la 
 relación entre el Índice de Pobreza 
@@ -478,23 +500,23 @@ representa la tendencia general.
     \label{fig:scatter}
 \end{figure}
 
-\subsection{Distribución por nivel de acceso}
+\subsection{Distribución por nivel de utilización}
 
 La siguiente figura resume cuántos departamentos 
-se encuentran en cada nivel de acceso notarial 
+se encuentran en cada nivel de utilización notarial 
 según la clasificación del índice.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{distribucion_clasificacion.png}
     \caption{Número de departamentos por nivel 
-    de acceso notarial, Colombia 2025}
+    de utilización notarial, Colombia 2025}
     \label{fig:distribucion}
 \end{figure}
 
 \newpage
 % ─────────────────────────────────────────
-\section{Índice de acceso notarial 2025}
+\section{Índice de utilización notarial 2025}
 % ─────────────────────────────────────────
 
 El cruce de los datos del SNR con las proyecciones 
@@ -513,10 +535,10 @@ al promedio nacional
 \textbf{Per cápita} & \textbf{Desviación (\%)} & 
 \textbf{Clasificación} & \textbf{IPM (\%)} \\
 \midrule
-1  & Bogotá, D.C.        & 1.8206 & +77.02 & Sobre-servido  &  2.2 \\
-2  & Quindío             & 1.7398 & +69.16 & Sobre-servido  &  6.7 \\
-3  & Risaralda           & 1.6860 & +63.93 & Sobre-servido  &  4.9 \\
-4  & Guaviare            & 1.6408 & +59.53 & Sobre-servido  & 20.0 \\
+1  & Bogotá, D.C.        & 1.8206 & +77.02 & Alta utilización  &  2.2 \\
+2  & Quindío             & 1.7398 & +69.16 & Alta utilización  &  6.7 \\
+3  & Risaralda           & 1.6860 & +63.93 & Alta utilización  &  4.9 \\
+4  & Guaviare            & 1.6408 & +59.53 & Alta utilización  & 20.0 \\
 5  & Boyacá              & 1.5268 & +48.45 & Sobre promedio &  6.4 \\
 6  & Tolima              & 1.4179 & +37.86 & Sobre promedio & 12.2 \\
 7  & Meta                & 1.4170 & +37.77 & Sobre promedio & 12.3 \\
@@ -529,25 +551,25 @@ al promedio nacional
 14 & Guainía             & 1.1143 &  +8.34 & Promedio       & 51.8 \\
 15 & Huila               & 1.1106 &  +7.98 & Promedio       &  9.7 \\
 16 & Cundinamarca        & 0.9972 &  -3.04 & Promedio       &  4.1 \\
-17 & Bolívar             & 0.9199 & -10.56 & Sub-servido    & 17.0 \\
-18 & Norte De Santander  & 0.9048 & -12.03 & Sub-servido    & 13.3 \\
-19 & Atlántico           & 0.8453 & -17.81 & Sub-servido    &  8.2 \\
-20 & Chocó               & 0.7996 & -22.26 & Sub-servido    & 30.8 \\
-21 & Caquetá             & 0.7656 & -25.56 & Sub-servido    & 15.0 \\
-22 & Cesar               & 0.7389 & -28.16 & Sub-servido    & 14.8 \\
-23 & Vichada             & 0.7347 & -28.57 & Sub-servido    & 55.2 \\
-24 & Cauca               & 0.7298 & -29.04 & Sub-servido    & 13.0 \\
-25 & Sucre               & 0.7111 & -30.86 & Sub-servido    & 25.4 \\
-26 & Nariño              & 0.6621 & -35.62 & Sub-servido    & 13.2 \\
-27 & Vaupés              & 0.6467 & -37.12 & Sub-servido    & 41.7 \\
-28 & Magdalena           & 0.6355 & -38.21 & Sub-servido    & 17.6 \\
-29 & Putumayo            & 0.6060 & -41.08 & Sub-servido    & 13.6 \\
-30 & Córdoba             & 0.5876 & -42.87 & Sub-servido    & 19.8 \\
-31 & Amazonas            & 0.4868 & -52.67 & Brecha crítica & 18.1 \\
-32 & La Guajira          & 0.2798 & -72.80 & Brecha crítica & 40.1 \\
+17 & Bolívar             & 0.9199 & -10.56 & Bajo promedio    & 17.0 \\
+18 & Norte De Santander  & 0.9048 & -12.03 & Bajo promedio    & 13.3 \\
+19 & Atlántico           & 0.8453 & -17.81 & Bajo promedio    &  8.2 \\
+20 & Chocó               & 0.7996 & -22.26 & Bajo promedio    & 30.8 \\
+21 & Caquetá             & 0.7656 & -25.56 & Bajo promedio    & 15.0 \\
+22 & Cesar               & 0.7389 & -28.16 & Bajo promedio    & 14.8 \\
+23 & Vichada             & 0.7347 & -28.57 & Bajo promedio    & 55.2 \\
+24 & Cauca               & 0.7298 & -29.04 & Bajo promedio    & 13.0 \\
+25 & Sucre               & 0.7111 & -30.86 & Bajo promedio    & 25.4 \\
+26 & Nariño              & 0.6621 & -35.62 & Bajo promedio    & 13.2 \\
+27 & Vaupés              & 0.6467 & -37.12 & Bajo promedio    & 41.7 \\
+28 & Magdalena           & 0.6355 & -38.21 & Bajo promedio    & 17.6 \\
+29 & Putumayo            & 0.6060 & -41.08 & Bajo promedio    & 13.6 \\
+30 & Córdoba             & 0.5876 & -42.87 & Bajo promedio    & 19.8 \\
+31 & Amazonas            & 0.4868 & -52.67 & Utilización crítica & 18.1 \\
+32 & La Guajira          & 0.2798 & -72.80 & Utilización crítica & 40.1 \\
 \bottomrule
 \end{tabular}
-\caption{Índice de acceso notarial per cápita 
+\caption{Índice de utilización notarial per cápita 
 por departamento, Colombia 2025}
 \end{table}
 
@@ -557,14 +579,14 @@ por departamento, Colombia 2025}
     \item \textbf{Bogotá D.C.} lidera el índice 
     con 1.82 actos per cápita (+77\% sobre el 
     promedio nacional) y el IPM más bajo del 
-    país (2.2\%), confirmando la correlación 
-    entre desarrollo económico y acceso notarial.
+    país (2.2\%), reforzando la asociación 
+    entre desarrollo económico y utilización notarial.
 
     \item \textbf{Guaviare} presenta una anomalía 
     estadística relevante: ocupa el cuarto lugar 
     en actos per cápita (1.64) pero tiene un IPM 
     de 20\%, muy superior al de departamentos 
-    con acceso similar. Esto sugiere que factores 
+    con utilización similar. Esto sugiere que factores 
     distintos al desarrollo económico explican 
     su actividad notarial.
 
@@ -577,14 +599,26 @@ por departamento, Colombia 2025}
     más crítica del país: 0.28 actos per cápita, 
     -72.8\% del promedio nacional, con un IPM 
     de 40.1\%. Es el departamento con mayor 
-    déficit de acceso notarial en Colombia.
+    déficit de utilización notarial en Colombia.
 
     \item \textbf{4 departamentos} presentan 
-    brecha crítica o sub-servicio severo con IPM 
+    utilización crítica o baja utilización severa con IPM 
     superior al 40\%: La Guajira, Vichada, 
     Guainía y Vaupés — todos departamentos 
     fronterizos con alta proporción de población 
     indígena y rural dispersa.
+\end{itemize}
+
+\subsection{Limitaciones del estudio}
+
+\begin{itemize}
+    \item Los actos notariales no miden directamente acceso; 
+    miden volumen de utilización formal registrada.
+    \item El análisis identifica utilización y no calidad del servicio.
+    \item Pueden existir diferencias en la demanda real entre departamentos 
+    que no se observan únicamente con actos notariales.
+    \item No se consideran tiempos de atención ni costos de los servicios.
+    \item Los resultados son correlacionales y no permiten afirmar causalidad.
 \end{itemize}
 
 \newpage
@@ -662,15 +696,15 @@ pip install openpyxl --break-system-packages
 \textbf{Script} & \textbf{Ubicación} & 
 \textbf{Función} \\
 \midrule
-\texttt{explorar\_snr.py} & \texttt{01\_SNR/} & Carga el CSV del SNR, corrige encoding 
+\texttt{explorar\_snr.py} & \texttt{01\_SNR/scripts/} & Carga el CSV del SNR, corrige encoding 
 latin-1, filtra Bogotá, calcula participación 
 de mercado y ranking departamental, exporta 
 a CSV y SQLite \\
 \addlinespace
-\texttt{cruzar\_datos.py} & \texttt{01\_SNR/} & Carga y cruza los archivos del DANE 
+\texttt{cruzar\_datos.py} & \texttt{01\_SNR/scripts/} & Carga y cruza los archivos del DANE 
 (población, PIB, IPM) con el SNR, calcula 
 actos per cápita, desviaciones y clasificación 
-de acceso notarial, exporta índice completo 
+de utilización notarial, exporta índice completo 
 a CSV y SQLite \\
 \bottomrule
 \end{tabular}
@@ -684,7 +718,7 @@ python 01_SNR/cruzar_datos.py
 
 \subsection{Base de datos SQLite}
 
-Archivo \texttt{06\_Consolidado/notaria74.db} 
+Archivo \texttt{06\_Consolidado/acceso\_notarial\_colombia.db} 
 con las siguientes tablas:
 
 \begin{itemize}
@@ -699,7 +733,7 @@ con las siguientes tablas:
     PIB 2021--2024
     \item \texttt{ipm\_departamentos} — 
     IPM 2021--2025
-    \item \texttt{indice\_acceso} — índice 
+    \item \texttt{indice\_utilización} — índice 
     central del análisis
 \end{itemize}
 
