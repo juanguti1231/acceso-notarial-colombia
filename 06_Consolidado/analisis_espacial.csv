@@ -1,0 +1,32 @@
+﻿Departamento,actos_per_capita,lisa_q,lisa_p,lisa_sig
+Antioquia,0.9021,1,0.215,False
+Atlántico,0.6078,4,0.104,False
+Bolívar,0.573,4,0.062,False
+Boyacá,0.5114,2,0.217,False
+Caldas,0.6968,1,0.006,True
+Caquetá,0.3173,2,0.133,False
+Cauca,0.2891,3,0.487,False
+Cesar,0.342,3,0.213,False
+Córdoba,0.295,3,0.446,False
+Cundinamarca,0.5366,1,0.012,True
+Chocó,0.144,2,0.004,True
+Huila,0.5879,1,0.246,False
+La Guajira,0.0976,3,0.258,False
+Magdalena,0.2264,3,0.127,False
+Meta,1.1018,1,0.04,True
+Nariño,0.3075,3,0.49,False
+Norte De Santander,0.4214,3,0.396,False
+Quindío,1.0864,1,0.02,True
+Risaralda,1.1773,1,0.072,False
+Santander,0.7569,1,0.252,False
+Sucre,0.2176,3,0.204,False
+Tolima,0.7533,1,0.011,True
+Valle Del Cauca,0.8408,1,0.037,True
+Arauca,0.5247,4,0.421,False
+Casanare,0.6556,1,0.285,False
+Putumayo,0.1085,3,0.348,False
+Amazonas,0.2011,3,0.273,False
+Guainía,0.3004,2,0.19,False
+Guaviare,1.3539,4,0.471,False
+Vaupés,0.0962,2,0.219,False
+Vichada,0.0812,2,0.296,False

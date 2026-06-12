@@ -10,8 +10,8 @@
 \geometry{margin=2.5cm}
 \graphicspath{{imagenes/}}
 
-\title{\textbf{Análisis de la Utilización del Sistema\\
-Notarial Colombiano}\\
+\title{\textbf{Análisis de la Intensidad de Actividad Notarial\\
+en Colombia}\\
 \large Un enfoque departamental con datos del SNR y el DANE}
 \author{Juan Felipe Gutiérrez}
 \date{Junio 2026}
@@ -29,38 +29,51 @@ Notarial Colombiano}\\
 Colombia cuenta con 32 departamentos y el Distrito Capital 
 de Bogotá, cada uno con realidades económicas, demográficas 
 y geográficas profundamente distintas. El sistema notarial 
-existe en todas estas entidades territoriales, pero hay poca 
-evidencia pública sobre si su capacidad de atención alcanza 
-proporcionalmente a toda la población colombiana.
+existe en todas estas entidades territoriales, pero existe escasa evidencia pública sobre las diferencias territoriales en la intensidad de utilización de los servicios notariales entre los departamentos del país.
 
 Esta ausencia de evidencia pública plantea una pregunta 
 aún no respondida con datos:
 
 \begin{center}
-\textit{¿Qué tan grandes son las diferencias en la utilización de servicios 
-notariales entre los departamentos de Colombia y qué variables 
-socioeconómicas se asocian con dichas diferencias?}
+\textit{¿Qué factores se asocian con la intensidad de actividad notarial
+formal en Colombia y qué diferencias territoriales presenta dicha
+intensidad entre los departamentos del país?}
 \end{center}
 
-El objetivo de este proyecto es cuantificar las diferencias 
-territoriales en la utilización de servicios notariales en Colombia 
-y analizar la relación entre dichas diferencias y variables 
-socioeconómicas como población, pobreza multidimensional y 
-actividad económica departamental.
+El objetivo de este proyecto es \textbf{analizar las diferencias
+territoriales en la intensidad de actividad notarial en Colombia y
+explorar su asociación con variables socioeconómicas y de oferta
+institucional.}
 
-Este proyecto construye un \textbf{índice de utilización notarial por departamento}, cruzando datos 
-oficiales del SNR con variables demográficas y económicas 
-del DANE y el DNP, para responder tres preguntas concretas:
+\medskip
+\noindent El término \emph{intensidad} se refiere exclusivamente
+al volumen de actos formalmente registrados ante notaría y no
+constituye una medida directa de acceso, cobertura o calidad del
+servicio. A lo largo del documento se emplea el acrónimo
+\textbf{IIAN} (Índice de Intensidad de Actividad Notarial) para
+referirse a este indicador.
+
+\medskip
+\noindent\textit{Nota metodológica:} a lo largo del documento se emplea
+el término \emph{utilización} como aproximación al volumen formal de
+actos registrados ante notaría, y no debe interpretarse como una medida
+directa de acceso, calidad del servicio ni necesidad satisfecha.
+Lo que se mide es la intensidad de actividad notarial formal observada
+en los registros del SNR.
+
+Este proyecto construye el \textbf{Índice de Intensidad de Actividad
+Notarial (IIAN)} por departamento, cruzando datos oficiales del SNR
+con variables demográficas y económicas del DANE y el DNP, para
+responder tres preguntas concretas:
 
 \begin{enumerate}
-    \item \textbf{¿Dónde hay más actos notariales de los 
-    esperados} para el tamaño poblacional y económico del 
-    departamento? — Departamentos de alta utilización.
-    \item \textbf{¿Dónde hay menos actos de los esperados?} 
-    — Departamentos con menor utilización relativa.
-    \item \textbf{¿Qué variables presentan una mayor asociación con el volumen 
-    notarial?} — Para entender qué mueve la actividad 
-    notarial colombiana.
+    \item \textbf{¿Qué departamentos presentan mayor intensidad relativa?}
+    — Departamentos de alta intensidad notarial.
+    \item \textbf{¿Qué departamentos presentan menor intensidad relativa?}
+    — Departamentos de baja intensidad notarial.
+    \item \textbf{¿Qué variables muestran una mayor asociación con el volumen
+    notarial?} — Para caracterizar las relaciones observadas
+    entre las variables analizadas.
 \end{enumerate}
 
 \subsection{Relevancia e impacto del análisis}
@@ -84,36 +97,31 @@ del DANE y el DNP, para responder tres preguntas concretas:
 \section{Marco de análisis de datos}
 % ─────────────────────────────────────────
 
-Este proyecto sigue el marco estándar de los cuatro tipos 
-de análisis de datos, aplicados en secuencia:
+Este proyecto implementa tres fases analíticas y propone una cuarta
+como extensión futura:
 
 \begin{enumerate}
-    \item \textbf{Análisis descriptivo} 
-    (\textit{¿qué sucedió?}): Volumen de actos notariales 
-    por departamento, participación de mercado y distribución 
-    geográfica. Provee la fotografía del estado actual del 
-    sistema notarial colombiano.
+    \item \textbf{Análisis descriptivo}
+    (\textit{¿qué se observa?}): Volumen de actos notariales
+    por departamento, participación y distribución geográfica.
+    Provee la fotografía del estado actual del sistema notarial
+    colombiano.
 
     \item \textbf{Análisis diagnóstico}
-    (\textit{¿por qué sucedió?}): Construcción del índice
-    per cápita y cálculo de desviaciones respecto al promedio
-    nacional. Cruce con variables demográficas, económicas y de
-    oferta institucional para explorar los factores asociados a las
-    diferencias territoriales. Esta fase incluye correlaciones,
-    agrupación por K-Means, regresión múltiple, análisis de panel
-    e incorporación de la densidad notarial por habitante,
-    implementados en Python con statsmodels.
+    (\textit{¿con qué variables se asocia?}): Construcción del IIAN,
+    correlaciones, agrupación exploratoria por K-Means, regresión
+    OLS múltiple, análisis de panel temporal, análisis espacial
+    (Moran's I) y diagnóstico de influencia (Cook's D).
 
-    \item \textbf{Análisis predictivo} 
-    (\textit{¿qué podría pasar?}): Con la serie histórica 
-    2021--2026 del SNR se propone proyectar la evolución de la 
-    utilización notarial por departamento. En etapas posteriores se implementarán modelos de series 
-    de tiempo y regresión múltiple en Python con statsmodels.
+    \item \textbf{Análisis prescriptivo}
+    (\textit{¿qué se puede sugerir?}): Insumos para política pública
+    derivados directamente de los hallazgos, con lenguaje condicional
+    consistente con la naturaleza exploratoria del estudio.
 
-    \item \textbf{Análisis prescriptivo} 
-    (\textit{¿qué debería hacerse?}): Recomendaciones de 
-    política pública y estrategia basadas en los hallazgos, 
-    para ser visualizadas en Power BI.
+    \item \textbf{Extensión futura — análisis predictivo}
+    (\textit{¿qué podría ocurrir?}): La serie histórica 2021--2026
+    permitiría proyectar la evolución departamental mediante modelos
+    de series de tiempo. No se implementa en el presente trabajo.
 \end{enumerate}
 
 \subsection{Indicadores clave de desempeño (KPIs)}
@@ -124,7 +132,7 @@ de análisis de datos, aplicados en secuencia:
 \toprule
 \textbf{KPI} & \textbf{Fuente} & \textbf{Fase} \\
 \midrule
-Actos notariales per cápita & SNR + DANE & Descriptiva \\
+Actos notariales per cápita (2025) & SNR + DANE & Descriptiva \\
 Participación departamental (\%) & SNR & Descriptiva \\
 Posición en ranking nacional & SNR & Descriptiva \\
 Desviación vs.\ promedio nacional & SNR + DANE & Diagnóstica \\
@@ -132,7 +140,7 @@ Clasificación utilización notarial & Índice propio & Diagnóstica \\
 Correlación PIB--volumen notarial & SNR + DANE & Diagnóstica \\
 Correlación IPM--volumen notarial & SNR + DNP & Diagnóstica \\
 Proyección de crecimiento (\%) & SNR histórico & Predictiva \\
-Índice de menor utilización relativa & Modelo statsmodels & Predictiva \\
+Índice de menor utilización relativa & Índice propio & Diagnóstica\\
 Densidad notarial (notarías por 100k hab.) & SNR + DANE & Diagnóstica \\
 Actos por notaría & SNR & Diagnóstica \\
 \bottomrule
@@ -158,10 +166,26 @@ La desviación respecto al promedio nacional se calcula como:
 \times 100
 \end{equation}
 
-donde $\bar{x}$ es el promedio nacional ponderado por 
-población. Un valor positivo indica un departamento 
-\textbf{de alta utilización}; un valor negativo indica un 
-departamento \textbf{de baja utilización}.
+donde $\bar{x}$ es el valor de referencia nacional, equivalente al
+cociente entre el total nacional de actos y la población nacional
+(lo que corresponde implícitamente a una media ponderada por
+población). Valores positivos representan niveles superiores al
+promedio nacional; valores negativos, inferiores.
+
+\medskip
+\noindent\textbf{Cobertura temporal de las variables.}
+El numerador de la fórmula anterior corresponde a los actos
+notariales registrados por la SNR durante el \textbf{año calendario
+2025}; el denominador, a las proyecciones de población del DANE para
+el \textbf{mismo año}. Las variables socioeconómicas empleadas en el
+análisis de regresión corresponden al año más reciente disponible
+para cada fuente: el IPM al \textbf{año 2025} (DNP) y el PIB per
+cápita al \textbf{año 2024} (DANE), por ser el último con cifras
+departamentales definitivas publicadas al momento del análisis.
+Esta diferencia de un año entre el PIB y las demás variables es
+inherente a la disponibilidad de datos y no afecta la validez del
+análisis, dado que el PIB departamental exhibe alta persistencia
+entre años consecutivos.
 
 \begin{table}[H]
 \centering
@@ -170,25 +194,33 @@ departamento \textbf{de baja utilización}.
 \textbf{Desviación} & \textbf{Clasificación} & 
 \textbf{Interpretación} \\
 \midrule
-$> +50\%$ & Alta utilización & 
+$> +50\%$ & Alta intensidad &
 Muy por encima del promedio \\
-$+10\%$ a $+50\%$ & Sobre promedio & 
+$+10\%$ a $+50\%$ & Sobre promedio &
 Por encima del promedio \\
-$-10\%$ a $+10\%$ & Promedio & 
+$-10\%$ a $+10\%$ & Promedio &
 En la media nacional \\
-$-10\%$ a $-50\%$ & Bajo promedio & 
+$-10\%$ a $-50\%$ & Baja intensidad &
 Por debajo del promedio \\
-$< -50\%$ & Utilización crítica & 
+$< -50\%$ & Muy baja intensidad &
 Muy por debajo del promedio \\
 \bottomrule
 \end{tabular}
-\caption{Escala de clasificación de utilización notarial}
+\caption{Escala de clasificación del IIAN (fines analíticos)}
 \end{table}
 
-Los intervalos de esta escala fueron definidos con fines analíticos 
-e interpretativos y no corresponden a una clasificación oficial. 
-Los umbrales de $\pm 10\%$ y $\pm 50\%$ buscan separar diferencias moderadas 
+Los intervalos de esta escala fueron definidos con fines analíticos
+e interpretativos y no corresponden a una clasificación oficial.
+Los umbrales de $\pm 10\%$ y $\pm 50\%$ buscan separar diferencias moderadas
 de diferencias sustanciales respecto al promedio nacional.
+
+\medskip
+\noindent\textbf{Nota sobre el tamaño muestral.} La unidad de análisis
+son las 33 entidades territoriales de Colombia, por lo que el tamaño
+muestral es necesariamente reducido ($n=33$). En consecuencia, los
+resultados deben interpretarse como asociaciones exploratorias y no
+como inferencias poblacionales. Esta limitación se discute en detalle
+en la sección~\ref{subsec:robustez} y en la de limitaciones del estudio.
 
 \newpage
 % ─────────────────────────────────────────
@@ -277,7 +309,7 @@ del servicio notarial por departamento y construir dos indicadores
 derivados: la densidad notarial por cada 100.000 habitantes y los actos
 por notaría. Estas variables hacen posible evaluar si las diferencias
 departamentales en utilización se asocian con restricciones de oferta o
-con condiciones de demanda.
+con variables adicionales vinculadas a la utilización.
 
 \textbf{Procedimiento de extracción:} El archivo PDF se procesó
 programáticamente con la biblioteca \texttt{pdfplumber}. Cada notaría
@@ -323,11 +355,18 @@ consultas cruzadas entre ellas.
 
 \textbf{Tablas principales:}
 \begin{itemize}
-    \item \texttt{actos\_notariales} — datos SNR
-    \item \texttt{poblacion\_departamentos} — DANE
-    \item \texttt{pib\_departamentos} — DANE
-    \item \texttt{ipm\_departamentos} — DNP
-    \item \texttt{indice\_utilización} — KPIs consolidados
+    \item \texttt{actos\_notariales} — datos crudos SNR (58.114 filas)
+    \item \texttt{resumen\_departamento} — agregado por departamento y año
+    \item \texttt{poblacion\_departamentos} — DANE 2021--2025
+    \item \texttt{pib\_departamentos} — PIB departamental
+    \item \texttt{ipm\_departamentos} — IPM por departamento
+    \item \texttt{indice\_2025} — índice de utilización per cápita 2025
+    \item \texttt{indice\_con\_notarias} — índice enriquecido con
+    densidad notarial y actos por notaría
+    \item \texttt{panel\_temporal} — serie 2021--2025 por departamento
+    \item \texttt{clusters} — asignación K-Means por departamento
+    \item \texttt{ranking} — ranking completo 2025
+    \item \texttt{notarias\_por\_departamento} — directorio SNR agregado
 \end{itemize}
 
 \textbf{Consulta central del análisis:}
@@ -363,8 +402,8 @@ indicadores:
 \end{itemize}
 
 La densidad notarial se incorpora al modelo de regresión como variable
-explicativa adicional, y los actos por notaría se utilizan como
-indicador descriptivo de saturación del servicio en territorios con
+asociativa adicional, y los actos por notaría se utilizan como
+indicador descriptivo de concentración del servicio en territorios con
 oferta limitada. Los resultados de este análisis se presentan en la
 subsección~\ref{subsec:densidad}.
 
@@ -378,22 +417,66 @@ comercial, la implementación se realizó en Python con la librería
 mantiene todo el análisis en un pipeline replicable y de código 
 abierto.
 
-\textbf{Modelo estimado:}
+\textbf{Modelos estimados:}
 
 \begin{equation}
-\text{actos\_per\_cápita}_i = \beta_0 + 
-\beta_1 \cdot \text{IPM}_i + 
-\beta_2 \cdot \text{PIB\_per\_cápita}_i + 
-\varepsilon_i
+\text{actos\_pc}_i = \beta_0 +
+\beta_1 \cdot \text{IPM}_i +
+\beta_2 \cdot \text{PIB\_pc}_i +
+\varepsilon_i \quad \text{(M3)}
 \end{equation}
 
-\subsection{Power BI}
+\begin{equation}
+\text{actos\_pc}_i = \beta_0 +
+\beta_1 \cdot \text{IPM}_i +
+\beta_2 \cdot \text{PIB\_pc}_i +
+\beta_3 \cdot \text{pct\_inmobiliario}_i +
+\varepsilon_i \quad \text{(M4)}
+\end{equation}
 
-En etapas posteriores del proyecto se propone construir un dashboard 
-interactivo con mapa de Colombia coloreado 
-por índice de utilización notarial, ranking departamental 
-y evolución temporal 2021--2026, conectado directamente 
-a la base de datos SQLite.
+\noindent donde $\text{pct\_inmobiliario}_i$ es la participación porcentual
+de actos inmobiliarios (compraventas, hipotecas, VIS/VIP, permutas)
+sobre el total de actos del departamento $i$. El modelo M4 permite
+evaluar si la composición del portafolio notarial se asocia con
+varianza adicional más allá de las condiciones socioeconómicas.
+
+\medskip
+\noindent La influencia de observaciones atípicas se cuantifica
+mediante la \textbf{Distancia de Cook}:
+\begin{equation}
+D_i = \frac{(\hat{\boldsymbol{\beta}}_{(-i)} - \hat{\boldsymbol{\beta}})^{\top}
+            (X^{\top}X)
+            (\hat{\boldsymbol{\beta}}_{(-i)} - \hat{\boldsymbol{\beta}})}
+           {p \cdot \hat{\sigma}^2}
+\end{equation}
+\noindent El umbral convencional es $D_i > 4/n$. Las observaciones que
+lo superan se reportan como influyentes y se analizan individualmente.
+
+\subsection{Dashboard interactivo — Python con Plotly}
+
+Inicialmente se propuso construir el dashboard en una herramienta de
+BI. Sin embargo, al implementar el proyecto en macOS se verificó que
+el servicio cartográfico utilizado por dicha herramienta no incluye
+por defecto los polígonos administrativos de los departamentos
+colombianos, lo que imposibilitó la construcción del mapa coroplético
+en esa plataforma. Por coherencia con el stack tecnológico abierto
+del proyecto y siguiendo el mismo criterio aplicado al cambio
+Stata~$\to$~statsmodels, el dashboard se implementó en Python con
+la biblioteca \texttt{plotly}.
+
+\textbf{Descripción técnica:} El script \texttt{dashboard.py} lee
+los datos directamente desde la base SQLite central mediante consultas
+SQL, descarga el GeoJSON oficial de departamentos colombianos y genera
+un archivo \texttt{index.html} autocontenido con cinco visualizaciones
+interactivas: mapa coroplético de Colombia coloreado por índice de
+utilización, ranking horizontal de los 33 entes territoriales,
+diagrama de dispersión PIB per~cápita vs. utilización, diagrama de
+dispersión densidad notarial vs. utilización, y evolución temporal
+2021--2025 para los casos extremos. El dashboard se publica en
+GitHub~Pages como URL pública asociada al repositorio.
+
+\textbf{Repositorio:}
+\url{https://github.com/juanguti1231/acceso-notarial-colombia}
 
 \subsection{LaTeX con Tectonic}
 
@@ -412,7 +495,7 @@ automática. Versionado en GitHub.
 
 El dataset del SNR cubre enero 2021 -- abril 2026, 
 con datos mensuales para las 33 entidades territoriales 
-de Colombia. El total supera las 57,000 filas con 
+de Colombia. El total supera las 57.000 filas con 
 40 variables de tipos de actos notariales.
 
 \subsection{Participación de Bogotá en compraventas}
@@ -460,12 +543,11 @@ notariales nacionales 2021--2026}
 notariales 2025}
 \end{table}
 
-\subsection{Hallazgo clave: Bogotá vs Antioquia}
+\subsection{Comparación entre Bogotá D.C. y Antioquia}
 
 Aunque Bogotá lidera en total de actos (12.49M vs 6.25M), 
 \textbf{Antioquia supera a Bogotá en compraventas} 
-(112,231 vs 96,795), lo que evidencia una 
-mayor cantidad de compraventas registradas en Antioquia durante 2025. 
+(112,231 vs 96,795), lo que refleja una composición diferente de la actividad notarial entre ambos territorios. 
 Bogotá concentra su actividad principalmente en 
 \textbf{autenticaciones} (10.89 millones — 87\% 
 de su total).
@@ -493,18 +575,21 @@ Registros Civiles Matrimonio &     23,150 \\
 \caption{Top 10 actos notariales en Bogotá D.C. 2025}
 \end{table}
 
-\subsection{Próximos pasos}
+\subsection{Estado del proyecto}
 
-Con el índice calculado, el análisis diagnóstico realizado
-(correlaciones, clustering, regresión, panel temporal y densidad
-notarial) y la oferta institucional ya incorporada al modelo, los
-siguientes pasos del proyecto son:
+Las tres fases implementadas se encuentran completadas. El pipeline
+es reproducible desde el repositorio público.
 
 \begin{enumerate}
-    \item Redactar las recomendaciones de política pública con base
-    en los hallazgos consolidados.
-    \item Construir el dashboard interactivo de soporte visual.
-    \item Publicar el repositorio con documentación de replicabilidad.
+    \item \textbf{Completado:} IIAN 2025 (tres variantes A/B/C),
+    correlaciones, clustering exploratorio K-Means, regresión OLS
+    (M3/M4/M5), análisis de panel 2021--2025, Moran's I, Cook's D
+    y oferta notarial.
+    \item \textbf{Completado:} Análisis prescriptivo con insumos para
+    política pública (sección~\ref{sec:recomendaciones}).
+    \item \textbf{Completado:} Dashboard interactivo (Plotly,
+    GitHub Pages).
+    \item \textbf{Pendiente (trabajo futuro):} Componente predictivo.
 \end{enumerate}
 
 \newpage
@@ -566,10 +651,10 @@ según la clasificación del índice.
 
 El cruce de los datos del SNR con las proyecciones 
 de población del DANE para 2025 permite calcular 
-el índice de actos notariales per cápita por 
-departamento y evaluar las desviaciones respecto 
-al promedio nacional 
-($\bar{x} = 0.539$ actos per cápita).
+el índice de actos notariales per cápita por
+departamento correspondiente al año 2025 y evaluar
+las desviaciones respecto al promedio nacional
+($\bar{x} = 0.539$ actos per cápita en 2025).
 
 \begin{table}[H]
 \centering
@@ -580,13 +665,13 @@ al promedio nacional
 \textbf{Per cápita} & \textbf{Desviación (\%)} & 
 \textbf{Clasificación} & \textbf{IPM (\%)} \\
 \midrule
-1  & Bogotá, D.C.        & 1.5728 & +192.09 & Alta utilización &  2.2 \\
-2  & Guaviare            & 1.3539 & +151.44 & Alta utilización & 20.0 \\
-3  & Risaralda           & 1.1773 & +118.64 & Alta utilización &  4.9 \\
-4  & Meta                & 1.1018 & +104.62 & Alta utilización & 12.3 \\
-5  & Quindío             & 1.0864 & +101.76 & Alta utilización &  6.7 \\
-6  & Antioquia           & 0.9021 &  +67.53 & Alta utilización &  9.5 \\
-7  & Valle Del Cauca     & 0.8408 &  +56.15 & Alta utilización &  4.9 \\
+1  & Bogotá, D.C.        & 1.5728 & +192.09 & Alta intensidad &  2.2 \\
+2  & Guaviare            & 1.3539 & +151.44 & Alta intensidad & 20.0 \\
+3  & Risaralda           & 1.1773 & +118.64 & Alta intensidad &  4.9 \\
+4  & Meta                & 1.1018 & +104.62 & Alta intensidad & 12.3 \\
+5  & Quindío             & 1.0864 & +101.76 & Alta intensidad &  6.7 \\
+6  & Antioquia           & 0.9021 &  +67.53 & Alta intensidad &  9.5 \\
+7  & Valle Del Cauca     & 0.8408 &  +56.15 & Alta intensidad &  4.9 \\
 8  & Santander           & 0.7569 &  +40.57 & Sobre promedio   &  6.9 \\
 9  & Tolima              & 0.7533 &  +39.90 & Sobre promedio   & 12.2 \\
 10 & Caldas              & 0.6968 &  +29.41 & Sobre promedio   &  7.9 \\
@@ -597,47 +682,43 @@ al promedio nacional
 15 & Cundinamarca        & 0.5366 &   -0.34 & Promedio         &  4.1 \\
 16 & Arauca              & 0.5247 &   -2.55 & Promedio         & 12.7 \\
 17 & Boyacá              & 0.5114 &   -5.03 & Promedio         &  6.4 \\
-18 & Norte De Santander  & 0.4214 &  -21.74 & Bajo promedio    & 13.3 \\
-19 & Cesar               & 0.3420 &  -36.49 & Bajo promedio    & 14.8 \\
-20 & Caquetá             & 0.3173 &  -41.07 & Bajo promedio    & 15.0 \\
-21 & Nariño              & 0.3075 &  -42.89 & Bajo promedio    & 13.2 \\
-22 & Guainía             & 0.3004 &  -44.21 & Bajo promedio    & 51.8 \\
-23 & Córdoba             & 0.2950 &  -45.21 & Bajo promedio    & 19.8 \\
-24 & Cauca               & 0.2891 &  -46.31 & Bajo promedio    & 13.0 \\
-25 & Magdalena           & 0.2264 &  -57.95 & Utilización crítica & 17.6 \\
-26 & Sucre               & 0.2176 &  -59.59 & Utilización crítica & 25.4 \\
-27 & Amazonas            & 0.2011 &  -62.65 & Utilización crítica & 18.1 \\
-28 & Chocó               & 0.1440 &  -73.26 & Utilización crítica & 30.8 \\
-29 & Putumayo            & 0.1085 &  -79.85 & Utilización crítica & 13.6 \\
-30 & La Guajira          & 0.0976 &  -81.87 & Utilización crítica & 40.1 \\
-31 & Vaupés              & 0.0962 &  -82.13 & Utilización crítica & 41.7 \\
-32 & San Andrés          & 0.0847 &  -84.27 & Utilización crítica & --- \\
-33 & Vichada             & 0.0812 &  -84.92 & Utilización crítica & 55.2 \\
+18 & Norte De Santander  & 0.4214 &  -21.74 & Baja intensidad    & 13.3 \\
+19 & Cesar               & 0.3420 &  -36.49 & Baja intensidad    & 14.8 \\
+20 & Caquetá             & 0.3173 &  -41.07 & Baja intensidad    & 15.0 \\
+21 & Nariño              & 0.3075 &  -42.89 & Baja intensidad    & 13.2 \\
+22 & Guainía             & 0.3004 &  -44.21 & Baja intensidad    & 51.8 \\
+23 & Córdoba             & 0.2950 &  -45.21 & Baja intensidad    & 19.8 \\
+24 & Cauca               & 0.2891 &  -46.31 & Baja intensidad    & 13.0 \\
+25 & Magdalena           & 0.2264 &  -57.95 & Muy baja intensidad & 17.6 \\
+26 & Sucre               & 0.2176 &  -59.59 & Muy baja intensidad & 25.4 \\
+27 & Amazonas            & 0.2011 &  -62.65 & Muy baja intensidad & 18.1 \\
+28 & Chocó               & 0.1440 &  -73.26 & Muy baja intensidad & 30.8 \\
+29 & Putumayo            & 0.1085 &  -79.85 & Muy baja intensidad & 13.6 \\
+30 & La Guajira          & 0.0976 &  -81.87 & Muy baja intensidad & 40.1 \\
+31 & Vaupés              & 0.0962 &  -82.13 & Muy baja intensidad & 41.7 \\
+32 & San Andrés          & 0.0847 &  -84.27 & Muy baja intensidad & --- \\
+33 & Vichada             & 0.0812 &  -84.92 & Muy baja intensidad & 55.2 \\
 \bottomrule
 \end{tabular}
 \caption{Índice de utilización notarial per cápita 
 por departamento, Colombia 2025}
 \end{table}
 
-\textit{Nota metodológica: una versión preliminar del 
-procesamiento incluía erróneamente la columna de año 
-en la suma de actos. El error fue detectado mediante 
-validación cruzada con el análisis de panel y corregido; 
-todas las cifras de este documento corresponden al 
-cálculo corregido.}
+
 
 \subsection{Hallazgos principales}
 
 \begin{itemize}
-    \item \textbf{Bogotá D.C.} lidera el índice con 
-    1.57 actos per cápita (+192\% sobre el promedio 
-    nacional) y el IPM más bajo del país (2.2\%).
+    \item \textbf{Bogotá D.C.} lidera el índice con
+    1.57 actos per cápita durante 2025 (+192\% sobre
+    el promedio nacional) y el IPM más bajo del país (2.2\%).
 
-    \item \textbf{Guaviare} es la principal anomalía 
-    del análisis: ocupa el segundo lugar nacional 
-    (1.35 actos per cápita) pese a un IPM de 20\%. 
-    Podrían existir factores asociados a su actividad 
-    notarial no capturados por las variables analizadas.
+    \item \textbf{Guaviare} constituye el caso más atípico del análisis
+    (ver sección~\ref{subsec:guaviare}): ocupa el segundo lugar
+    nacional en 2025 (1.35 actos per cápita durante 2025) pese a un IPM de 20\%.
+    El análisis formal de influencia y la comparación de índices
+    revela que esta posición está determinada casi exclusivamente
+    por la composición de sus actos.
 
     \item \textbf{9 departamentos} —más de una cuarta 
     parte del país— presentan utilización crítica 
@@ -645,69 +726,368 @@ cálculo corregido.}
     Amazonas, Chocó, Putumayo, La Guajira, Vaupés, 
     San Andrés y Vichada.
 
-    \item \textbf{Vichada} presenta la menor utilización 
-    relativa observada (0.08 actos per cápita, $-84.9\%$), 
-    con el IPM más alto del país (55.2\%). La razón entre 
-    el departamento de mayor y menor utilización es de 
-    aproximadamente 19 a 1.
+    \item \textbf{Vichada} presenta la menor intensidad
+    relativa observada durante 2025 (0.08 actos per cápita,
+    $-84.9\%$ respecto al promedio nacional), con el IPM
+    más alto del país (55.2\%). La razón entre el departamento
+    de mayor y menor intensidad es de aproximadamente 19 a 1.
 
-    \item Los departamentos de utilización crítica 
-    coinciden mayoritariamente con territorios de 
-    frontera, insulares o de alta dispersión rural, 
-    con elevada proporción de población indígena.
+    \item Se observa que los departamentos clasificados con utilización crítica corresponden, en su mayoría, a territorios de frontera, insulares o con elevada dispersión geográfica. La caracterización detallada de estos territorios requeriría incorporar variables adicionales que no fueron consideradas en el presente estudio.
 \end{itemize}
 
 \section{Análisis diagnóstico: correlaciones, clusters y regresión}
 
 \subsection{Matriz de correlaciones}
 
-La matriz de correlaciones muestra las siguientes relaciones destacadas: \textbf{PIB per cápita} con \textbf{actos per cápita} ($r = +0.70$, $p < 0.01$); \textbf{IPM} con \textbf{actos per cápita} presenta correlación Pearson $r = -0.58$ y Spearman $\rho = -0.74$, lo que sugiere una relación monótona no lineal; la variable \textbf{población} resulta significativa en correlación simple ($r = +0.48$, $p < 0.01$), aunque con menor fuerza que las variables económicas. La figura \texttt{matriz\_correlaciones.png} resume visualmente estos coeficientes.
+La matriz de correlaciones muestra las siguientes relaciones
+destacadas: \textbf{PIB per cápita (2024)} con \textbf{actos per
+cápita (2025)} ($r = +0.70$, $p < 0.01$); \textbf{IPM (2025)} con
+\textbf{actos per cápita (2025)} presenta correlación Pearson
+$r = -0.58$ y Spearman $\rho = -0.74$, lo que sugiere una relación
+monótona no lineal; la variable \textbf{población (2025)} resulta
+significativa en correlación simple ($r = +0.48$, $p < 0.01$), aunque
+con menor fuerza que las variables económicas. La figura
+\texttt{matriz\_correlaciones.png} resume visualmente estos
+coeficientes.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{matriz_correlaciones.png}
-    \caption{Matriz de correlaciones entre PIB per cápita, IPM, población y actos per cápita}
+    \caption{Matriz de correlaciones entre PIB per cápita (2024), IPM (2025), población (2025) y actos per cápita (2025)}
     \label{fig:matriz_correlaciones}
 \end{figure}
 
-\subsection{Agrupación por K-Means}
+\subsection{Agrupación por K-Means y clustering jerárquico}
 
-Se aplicó K-Means para identificar agrupamientos territoriales con $k=4$ (seleccionado usando el método del codo mostrado en \texttt{metodo\_codo.png}). Los cuatro clusters obtenidos son interpretados como:
+Se aplicó K-Means como \textbf{herramienta exploratoria} para
+identificar agrupamientos territoriales; los grupos resultantes
+no constituyen evidencia confirmatoria sino una descripción
+estructurada de patrones en los datos. El número óptimo de grupos
+$k$ se determinó mediante el \textbf{Silhouette Score}, más
+robusto que el método del codo para $n=33$: maximiza la cohesión interna
+y minimiza la dependencia de la elección subjetiva del punto de
+inflexión. El valor $k$ que maximize el coeficiente se adoptó como
+óptimo.
 
+Como validación independiente, se aplicó \textbf{clustering jerárquico
+con criterio de Ward}, cuyos grupos se representan en el dendrograma.
+La convergencia entre ambos métodos refuerza la estabilidad de
+los agrupamientos reportados.
+
+Los grupos obtenidos se interpretan como:
 \begin{itemize}
-    \item Economías potentes (4): Bogotá, Meta, Santander, Casanare.
-    \item Región andina y centro consolidado (13): incluye la anomalía Guaviare.
-    \item Periferia de baja utilización (10): Caribe y sur del país.
-    \item Frontera en pobreza extrema (5): Guainía, Chocó, La Guajira, Vaupés, Vichada.
+    \item Economías potentes: Bogotá, Meta, Santander, Casanare.
+    \item Región andina y centro consolidado: incluye a Guaviare
+          como observación influyente (ver sección~\ref{subsec:atipicos}).
+    \item Periferia de baja intensidad notarial: Caribe y sur del país.
+    \item Frontera en pobreza extrema: Guainía, Chocó, La Guajira, Vaupés, Vichada.
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.48\textwidth]{metodo_codo.png}
+    \includegraphics[width=0.48\textwidth]{silhouette_score.png}
     \includegraphics[width=0.48\textwidth]{clusters_kmeans.png}
-    \caption{Izquierda: método del codo para selección de $k$. Derecha: mapa/clustering resultante (K-Means, $k=4$).}
+    \caption{Izquierda: Silhouette Score por valor de $k$ (el
+    mayor determina el óptimo). Derecha: agrupación resultante
+    K-Means con el $k$ seleccionado.}
     \label{fig:kmeans}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{dendrograma.png}
+    \caption{Dendrograma — clustering jerárquico Ward.
+    La línea de corte horizontal delimita el mismo número de grupos
+    que el K-Means; la convergencia entre métodos aporta evidencia de
+    consistencia en los agrupamientos.}
+    \label{fig:dendrograma}
 \end{figure}
 
 \subsection{Regresión múltiple}
 
-El modelo completo reporta $R^{2}=0.51$. Resultados:
+El modelo M3 reporta $R^{2}=0.514$. El modelo M4, al incorporar la
+participación porcentual de actos inmobiliarios (\texttt{pct\_inmobiliario}),
+eleva el $R^{2}$ a $0.648$ con todos los coeficientes estadísticamente
+significativos al 5\%.
+Los resultados se resumen en la tabla~\ref{tab:modelos}.
 
+\begin{table}[H]
+\centering
+\small
+\caption{Comparación de modelos OLS — variable dependiente: actos per cápita (2025). Regresores: PIB pc (2024), IPM (2025), pct\_inm (2025)}
+\label{tab:modelos}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Modelo} & \textbf{$R^2$} & \textbf{$R^2$ adj.} & \textbf{AIC} & \textbf{VIF máx.} \\
+\midrule
+M1: Solo IPM            & 0.331 & 0.309 & 20.61 & — \\
+M2: Solo PIB pc         & 0.492 & 0.476 & 11.77 & — \\
+M3: IPM + PIB pc        & 0.514 & 0.481 & 12.37 & 1.78 \\
+M4: IPM + PIB + pct\_inm & 0.648 & 0.610 &  4.10 & 1.99 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Resultados del modelo M4:
 \begin{itemize}
-    \item \textbf{PIB per cápita}: $\hat{\beta}=0.018$ (p = 0.003), estadísticamente significativo.
-    \item \textbf{IPM}: no significativo al incluir PIB (p = 0.26), consistente con la correlación entre ambas variables ($r = -0.66$): el PIB absorbe el efecto asociado a pobreza.
-    \item El mejor modelo según AIC incluye únicamente PIB per cápita ($R^{2}=0.49$, AIC = 11.77).
-    \item VIF = 1.78 descarta multicolinealidad severa.
-    \item Cerca del 49\% de la varianza permanece sin explicar. La incorporación posterior de la densidad notarial (subsección~\ref{subsec:densidad}) no mejora el ajuste, lo que sugiere que los factores no observados son de demanda u otra naturaleza estructural (ruralidad, distancias municipales, características productivas locales) y no de oferta del servicio.
+    \item \textbf{PIB per cápita}: $\hat{\beta}=0.013$ (p = 0.017), positivo y significativo.
+    \item \textbf{IPM}: $\hat{\beta}=-0.011$ (p = 0.030), negativo y significativo —
+    al controlar por composición, el IPM recupera relevancia estadística.
+    \item \textbf{pct\_inmobiliario}: $\hat{\beta}=-0.084$ (p = 0.003), negativo y
+    significativo al 5\%. El signo negativo es contraintuitivo pero
+    tiene explicación estructural: los departamentos con mayor proporción
+    de actos inmobiliarios presentan menor frecuencia total de actos por habitante
+    porque las \emph{autenticaciones} —que representan el 88\% del volumen
+    nacional— son el componente dominante del agregado per cápita. Un departamento
+    con perfil inmobiliario alto tiene relativamente menos autenticaciones, y
+    por eso su total per cápita es menor, no mayor.
+    \item VIF máximo = 1.99, sin evidencia de multicolinealidad.
+    \item El AIC cae de 12.4 (M3) a 4.1 (M4), confirmando la mejora de ajuste.
 \end{itemize}
 
-La figura \texttt{regresion\_observado\_predicho.png} muestra el ajuste observado vs. predicho del modelo final y evidencia la variabilidad no explicada por el conjunto reducido de covariables.
+\subsubsection*{Diagnóstico de supuestos OLS}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Pruebas de diagnóstico — Modelo M4}
+\begin{tabular}{llrrl}
+\toprule
+\textbf{Prueba} & \textbf{Supuesto evaluado} & \textbf{Estadístico} &
+\textbf{p-valor} & \textbf{Conclusión} \\
+\midrule
+Shapiro-Wilk   & Normalidad de residuos   & $W=0.896$ & 0.005 &
+Se rechaza$^{*}$ \\
+Breusch-Pagan  & Homocedasticidad         & $LM=4.39$ & 0.222 &
+No se rechaza \\
+Durbin-Watson  & Dependencia entre residuos & $DW=0.994$ & — &
+Ver nota$^{**}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent$^{*}$ El rechazo de normalidad es consistente con la asimetría
+positiva de la distribución de actos per cápita (Bogotá y Guaviare
+jalan la cola derecha). El resultado debe interpretarse con cautela
+debido al tamaño reducido de la muestra y a la presencia de
+observaciones influyentes; los coeficientes OLS son insesgados bajo
+muestras finitas aunque los residuos no sean normales.\\[2pt]
+\noindent$^{**}$ Aunque el Durbin-Watson fue concebido para datos
+temporales, el valor cercano a 1 sugiere dependencia entre residuos;
+esta observación es consistente con la autocorrelación espacial
+detectada mediante Moran's I (sección~\ref{subsec:espacial}):
+departamentos vecinos tienden a tener residuos similares. Los errores
+estándar reportados deben interpretarse con esta limitación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{diagnostico_residuos.png}
+    \caption{Izquierda: QQ-plot (Shapiro-Wilk $p=0.005$, cola derecha por
+    Bogotá y Guaviare). Derecha: histograma de residuos con curva normal
+    teórica (Breusch-Pagan $p=0.222$, homocedasticidad no rechazada).}
+    \label{fig:diagnostico_residuos}
+\end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{regresion_observado_predicho.png}
-    \caption{Comparación observado vs. predicho — modelo OLS (PIB per cápita ± IPM)}
+    \caption{Comparación observado vs.\ predicho — modelo OLS M4
+    (IPM + PIB per cápita + pct\_inmobiliario, $R^2=0.648$).
+    Puntos rojos: observaciones con $D_i > 4/n$ (influyentes).}
     \label{fig:regresion_obs_pred}
+\end{figure}
+
+% ─────────────────────────────────────────
+\subsection{Observaciones influyentes — Distancia de Cook}
+\label{subsec:atipicos}
+% ─────────────────────────────────────────
+
+Para identificar departamentos que ejercen influencia desproporcionada
+sobre los estimadores OLS se calculó la \textbf{Distancia de Cook} para
+cada observación. El umbral convencional $D_i > 4/n$ (con $n=33$) delimita
+las observaciones influyentes.
+
+Este análisis permite ir más allá de señalar que un departamento
+``parece atípico'' y afirmar formalmente que constituye una
+\emph{observación influyente} en el sentido estadístico: su exclusión
+modifica apreciablemente los coeficientes estimados.
+
+Con umbral $4/n = 4/33 \approx 0.121$, tres departamentos resultan
+influyentes:
+
+\begin{table}[H]
+\centering
+\small
+\caption{Observaciones influyentes — Distancia de Cook (M4)}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Departamento} & \textbf{Cook's D} & \textbf{Leverage} &
+\textbf{Resid. std.} & \textbf{Hipótesis principal} \\
+\midrule
+Bogotá D.C.  & 0.267 & 0.230 & $+1.64$ & Alto PIB, alto volumen \\
+Guaviare     & 0.212 & 0.048 & $+3.54$ & Residuo extremo \\
+Casanare     & 0.207 & 0.199 & $-1.58$ & Alto PIB, bajo volumen \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Guaviare} constituye el caso más relevante:
+leverage bajo (no es extremo en $X$) pero residuo estandarizado
+de $3.54\sigma$, el mayor del modelo. El modelo predice niveles
+moderados dados su PIB e IPM, pero observa el segundo mayor valor
+per cápita del país ($1.35$ actos). Una posible explicación es la composición atípica: el 97.6\% de sus
+actos corresponde a autenticaciones (calculado directamente a partir
+del desglose SNR 2025), frente a un promedio nacional del 88\%.
+
+Los departamentos que superan el umbral se analizan con
+respecto a tres hipótesis no excluyentes:
+\begin{enumerate}
+    \item \textbf{Sesgo del denominador}: población pequeña amplifica
+    el ratio per cápita ante variaciones moderadas del numerador.
+    \item \textbf{Composición atípica de actos}: participación inusual
+    de autenticaciones respecto a la media nacional.
+    \item \textbf{Condiciones estructurales particulares}: minería,
+    propiedad colectiva, conflicto armado u otras variables no
+    capturadas por el modelo.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{cook_distance.png}
+    \caption{Distancia de Cook por departamento. Barras rojas superan
+    el umbral $4/n$; la línea naranja marca dicho umbral.}
+    \label{fig:cook}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{leverage_residuos.png}
+    \caption{Leverage vs residuos estandarizados. El tamaño de cada
+    burbuja es proporcional a la Distancia de Cook.
+    Puntos en rojo: $D_i > 4/n$.}
+    \label{fig:leverage}
+\end{figure}
+
+% ─────────────────────────────────────────
+% ─────────────────────────────────────────
+\subsection{Caso especial: Guaviare}
+\label{subsec:guaviare}
+% ─────────────────────────────────────────
+
+Guaviare concentra la mayor parte de la evidencia atípica del análisis.
+Los distintos instrumentos metodológicos convergen en la misma dirección:
+
+\begin{itemize}
+    \item \textbf{IIAN-A}: posición \#2 nacional durante 2025
+    (1.35 actos per cápita en 2025), muy por encima de lo que
+    su PIB (2024) e IPM (2025) predicen.
+    \item \textbf{IIAN-B} (sin autenticaciones): cae al puesto \#23.
+    Una caída de 21 posiciones al excluir un solo tipo de acto es la
+    prueba directa de que su alta posición en el índice general está
+    determinada por la composición, no por el volumen general de
+    actividad jurídica formal.
+    \item \textbf{Cook's D}: $D = 0.212 > 4/n = 0.121$, con residuo
+    estandarizado de $3.54\sigma$ — el mayor del modelo. Leverage bajo
+    (0.048), lo que indica que el problema es la respuesta, no los
+    regresores.
+    \item \textbf{Composición}: el 97.6\% de sus actos son
+    autenticaciones, frente al 88\% del promedio nacional y al 2.19\%
+    de Bogotá en actos inmobiliarios. Su portafolio notarial es el
+    más concentrado del país.
+    \item \textbf{Contexto}: Guaviare tiene una sola notaría para una
+    superficie de 53.460 km² y una población de 84.696 habitantes.
+    La combinación de notaría única, población pequeña y alto volumen
+    de autenticaciones produce el efecto observado.
+\end{itemize}
+
+\noindent La interpretación más parsimoniosa es que Guaviare no
+presenta \emph{alta actividad notarial} en sentido amplio, sino
+\emph{alta concentración de autenticaciones} relativa a su población,
+probablemente asociada a dinámicas locales específicas no capturadas
+por el PIB departamental.
+
+% ─────────────────────────────────────────
+\subsection{Análisis espacial — Moran's I}
+\label{subsec:espacial}
+% ─────────────────────────────────────────
+
+Dado que la pregunta de investigación es territorial, se evalúa si la
+intensidad notarial presenta \textbf{autocorrelación espacial}: es decir,
+si departamentos vecinos tienden a compartir niveles similares de actividad
+notarial (autocorrelación positiva) o a diferenciarse sistemáticamente
+(negativa).
+
+\paragraph{Matriz de pesos espaciales.}
+La opción natural para Colombia sería contigüidad Queen (vecinos que
+comparten frontera). Sin embargo, el GeoJSON disponible no garantiza
+topología exacta entre polígonos: al construir la matriz Queen se
+producen islas artificiales para prácticamente todos los departamentos,
+lo que invalida el estadístico. Por esta razón se optó por
+\textbf{$k$-vecinos más cercanos ($k=5$)} sobre centroides proyectados
+en MAGNA-SIRGAS / Colombia Bogotá (EPSG:3116). El valor $k=5$ refleja
+el número promedio de vecinos que tendría un departamento colombiano
+bajo contigüidad real, y los resultados son estables al variar $k$
+entre 4 y 7.
+
+\paragraph{Moran's I global.}
+La significancia empírica se estima por permutación ($B=999$ iteraciones):
+
+\begin{equation}
+I = \frac{n}{\sum_{i}\sum_{j} w_{ij}}
+    \cdot
+    \frac{\sum_{i}\sum_{j} w_{ij}(x_i - \bar{x})(x_j - \bar{x})}
+         {\sum_{i}(x_i - \bar{x})^2}
+\end{equation}
+
+Un $I > 0$ con $p < 0.05$ indicaría que los departamentos con alta
+(o baja) intensidad notarial tienden a ser vecinos entre sí; un resultado
+no significativo sugeriría distribución espacialmente aleatoria.
+
+\paragraph{LISA — Indicadores Locales de Asociación Espacial.}
+Los indicadores LISA descomponen el Moran's I global en contribuciones
+locales, identificando cuatro tipos de clusters:
+\begin{itemize}
+    \item \textbf{Alto-Alto (HH)}: departamento con alta intensidad
+    rodeado de vecinos de alta intensidad.
+    \item \textbf{Bajo-Bajo (LL)}: departamento con baja intensidad
+    rodeado de vecinos de baja intensidad.
+    \item \textbf{Alto-Bajo (HL) / Bajo-Alto (LH)}: valores atípicos
+    espaciales, departamentos que contrastan con su vecindad.
+\end{itemize}
+
+\paragraph{Resultado.}
+El análisis arroja $I = 0.151$ con $p = 0.045$ (permutaciones, $B=999$),
+lo que permite rechazar la hipótesis nula de distribución espacialmente
+aleatoria al nivel del 5\%. La autocorrelación es \textbf{positiva}: los
+departamentos con alta intensidad notarial tienden a ser vecinos
+de otros departamentos con alta intensidad.
+
+Los clusters LISA significativos ($p < 0.05$) identifican:
+\begin{itemize}
+    \item \textbf{Alto-Alto (HH):} Caldas, Cundinamarca, Meta, Quindío,
+    Tolima y Valle del Cauca — región andina central y Eje Cafetero.
+    \item \textbf{Bajo-Alto (LH):} Chocó — valor atípico espacial:
+    baja intensidad notarial rodeado de departamentos de intensidad
+    más alta.
+\end{itemize}
+
+Este resultado tiene implicaciones metodológicas relevantes: la
+presencia de autocorrelación espacial sugiere que la dimensión
+geográfica constituye un componente relevante del fenómeno analizado,
+y que los departamentos no pueden tratarse como unidades
+completamente independientes entre sí. Cualquier análisis de política
+pública debería incorporar la vecindad departamental como factor
+de contexto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{moran_scatterplot.png}
+    \includegraphics[width=0.48\textwidth]{mapa_lisa.png}
+    \caption{Izquierda: diagrama de dispersión de Moran ($I=0.151$,
+    $p=0.045$, pendiente = $I$). Derecha: clusters LISA
+    significativos ($p < 0.05$); HH en rojo (Eje Cafetero + Andina
+    central), LH en rosa claro (Chocó).}
+    \label{fig:moran}
 \end{figure}
 
 \subsection{Densidad notarial y oferta del servicio}
@@ -715,9 +1095,10 @@ La figura \texttt{regresion\_observado\_predicho.png} muestra el ajuste observad
 
 Una hipótesis intuitiva sobre las diferencias de utilización notarial
 entre departamentos es que estas podrían reflejar diferencias en la
-oferta disponible: es decir, que los departamentos con menor número de
+oferta observada: es decir, que los departamentos con menor número de
 notarías por habitante presentarían menor número de actos per cápita
-por una restricción estructural de acceso. Esta hipótesis se evaluó
+por una menor intensidad de utilización asociada a la distribución de
+la oferta. Esta hipótesis se evaluó
 con los dos indicadores construidos a partir del directorio de la SNR.
 
 \subsubsection*{Distribución de la oferta}
@@ -758,13 +1139,12 @@ La Guajira         &  8 & 0.75 &  13.011 \\
 La correlación entre densidad notarial y actos per cápita resulta débil
 y no estadísticamente significativa (Pearson $r = -0.19$, $p = 0.29$;
 Spearman $\rho = -0.15$, $p = 0.40$; $n = 33$). La
-figura~\ref{fig:densidad-utilizacion} hace evidente la ausencia de
-patrón: Bogotá D.C., con la segunda menor densidad del país, exhibe la
-mayor utilización; Boyacá, con la mayor densidad, presenta utilización
-media; y La Guajira combina la menor densidad con utilización baja,
-mientras Atlántico, con densidad igualmente baja, alcanza utilización
-media. No se observa una relación monotónica entre oferta y
-utilización.
+figura~\ref{fig:densidad-utilizacion} sugiere la ausencia de un
+patrón monotónico claro: Bogotá D.C., con la segunda menor densidad
+del país, exhibe la mayor utilización; Boyacá, con la mayor densidad,
+presenta utilización media; y La Guajira combina la menor densidad con
+utilización baja, mientras Atlántico, con densidad igualmente baja,
+alcanza utilización media.
 
 \begin{figure}[H]
     \centering
@@ -779,13 +1159,13 @@ asociación con las variables socioeconómicas del análisis:
 $r = -0.05$ ($p = 0.77$) respecto al PIB per cápita y
 $r = +0.14$ ($p = 0.43$) respecto al IPM. Esto sugiere que la
 distribución actual de notarías en el territorio no sigue un patrón
-económico marcado, y por tanto no opera como un mecanismo
-diferenciador adicional entre departamentos con distintos niveles de
-desarrollo.
+económico marcado y, por tanto, no se observa evidencia estadística
+suficiente de asociación con diferencias entre departamentos de
+distinto nivel de desarrollo.
 
 \subsubsection*{Inclusión en el modelo de regresión}
 
-Para evaluar formalmente si la oferta aporta capacidad explicativa
+Para evaluar formalmente si la oferta aporta capacidad asociativa
 incremental, se estimaron dos especificaciones OLS: un modelo base con
 PIB per cápita e IPM como regresores, y un modelo extendido que añade
 la densidad notarial. Ambos se estiman sobre $n = 32$ entes (se excluye
@@ -815,20 +1195,20 @@ $\Delta R^{2}$            & ---                & $+0.007$ \\
 \end{tabular}
 \end{table}
 
-La incorporación de la densidad notarial al modelo \emph{no mejora} la
-capacidad explicativa: el incremento en $R^{2}$ es marginal
-($+0.007$), el coeficiente del nuevo regresor no es
-estadísticamente significativo ($p = 0.53$), el $R^{2}$ ajustado
-disminuye y el AIC aumenta. En conjunto, estos resultados son
-consistentes con que la oferta estructural de notarías no constituye un
-determinante relevante de las diferencias departamentales de
-utilización una vez controladas las condiciones económicas.
+La incorporación de la densidad notarial al modelo \emph{no mejora}
+el ajuste: el incremento en $R^{2}$ es marginal ($+0.007$), el
+coeficiente del nuevo regresor no es estadísticamente significativo
+($p = 0.53$), el $R^{2}$ ajustado disminuye y el AIC aumenta. En
+conjunto, estos resultados son consistentes con que la oferta
+estructural de notarías no se asocia de manera relevante con las
+diferencias departamentales de utilización una vez controladas las
+condiciones económicas.
 
 \subsubsection*{Saturación por punto único de servicio}
 
 Si bien la densidad notarial no resulta predictiva, el indicador
-complementario \emph{actos por notaría} permite identificar un fenómeno
-diferenciado: la concentración del servicio en territorios con notaría
+complementario \emph{actos por notaría} permite identificar un patrón
+distintivo: la concentración de los actos en territorios con notaría
 única. En Guaviare, Amazonas y Vaupés (una sola notaría cada uno) el
 volumen de actos por notaría refleja la totalidad de la demanda
 departamental sin redistribución posible. El caso de Guaviare es
@@ -836,11 +1216,9 @@ particularmente notable, pues registra 114.669 actos por notaría en
 2025 ---tercera carga más alta del país, solo detrás de Bogotá D.C.
 (154.230) y Atlántico (62.195)--- pese a contar con una población
 pequeña y un IPM elevado. Esto matiza la interpretación de su elevado
-índice departamental: el volumen por habitante no refleja
-necesariamente un nivel de utilización comparable al de los
-departamentos económicamente más desarrollados, sino que puede estar
-reflejando una concentración estructural del servicio en un único
-punto territorial. Una caracterización plena de este fenómeno
+índice departamental, sugiriendo que el mismo podría estar influenciado 
+por la concentración estructural del servicio en un único punto territorial. Una 
+caracterización plena de este fenómeno
 requeriría datos a nivel municipal, que escapan al alcance del presente
 trabajo.
 
@@ -898,24 +1276,186 @@ frente al promedio nacional.
     \label{fig:evolucion_panel}
 \end{figure}
 
+% ─────────────────────────────────────────
+\subsection{Tabla de hipótesis y resultados}
+% ─────────────────────────────────────────
+
+\begin{table}[H]
+\centering
+\small
+\caption{Hipótesis del estudio y evidencia encontrada}
+\label{tab:hipotesis}
+\begin{tabular}{p{6cm}p{3.5cm}p{4cm}}
+\toprule
+\textbf{Hipótesis} & \textbf{Resultado} & \textbf{Evidencia} \\
+\midrule
+Mayor PIB pc $\to$ mayor intensidad notarial
+  & Soportada
+  & $r=+0.70$; $\hat\beta$ sig. (p=0.003) \\[4pt]
+Mayor IPM $\to$ menor intensidad notarial
+  & Parcialmente soportada
+  & Sig. en M4 (p=0.030); no sig. en M3 \\[4pt]
+Mayor densidad de notarías $\to$ mayor intensidad
+  & No soportada
+  & $r=-0.19$, $p=0.29$; $\Delta R^2=0.007$ \\[4pt]
+Existen patrones espaciales significativos
+  & Soportada
+  & Moran's $I=0.151$, $p=0.049$ \\[4pt]
+La composición de actos afecta el índice
+  & Soportada
+  & pct\_inm. sig. (p=0.003); $R^2$ sube a 0.648 \\[4pt]
+Las diferencias disminuyen con el tiempo
+  & No soportada
+  & Panel 2021--2025: brecha se mantiene \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ─────────────────────────────────────────
+\subsection{Robustez de resultados}
+\label{subsec:robustez}
+% ─────────────────────────────────────────
+
+Para evaluar si los patrones observados dependen de la definición del
+índice, se construyeron tres versiones del IIAN y se compararon los
+rankings departamentales:
+
+\begin{itemize}
+    \item \textbf{IIAN-A} (todos los actos): índice base del análisis.
+    \item \textbf{IIAN-B} (sin autenticaciones/declaraciones): excluye
+    el componente de mayor frecuencia para aislar el comportamiento
+    del resto del portafolio notarial.
+    \item \textbf{IIAN-C} (solo actos patrimoniales — compraventas,
+    hipotecas, VIS/VIP, permutas, cancelaciones): índice de actividad
+    del mercado inmobiliario formal.
+\end{itemize}
+
+Los hallazgos clave de la comparación son:
+
+\begin{itemize}
+    \item \textbf{Bogotá D.C.} mantiene el primer lugar en IIAN-A e
+    IIAN-C, aunque cae al segundo en el índice patrimonial. El patrón
+    de alta intensidad es robusto independientemente de la definición.
+    \item \textbf{Guaviare} es el caso de mayor variación:
+    posición \#2 en IIAN-A, \#23 en IIAN-B. La caída de 21 puestos
+    al excluir autenticaciones ---resultado consistente e independiente
+    del análisis Cook's D--- aporta evidencia de que su alta posición
+    en el índice general se asocia casi exclusivamente con
+    autenticaciones (97.6\% de sus actos).
+    \item \textbf{Boyacá} pasa del puesto \#17 (IIAN-A) al \#1
+    (IIAN-C), lo que indica que tiene la mayor actividad patrimonial
+    per cápita del país, aunque el dominio de autenticaciones en otros
+    departamentos lo oculta en el índice general.
+    \item Los departamentos de muy baja intensidad (Vichada, La
+    Guajira, Vaupés) mantienen sus posiciones en los tres índices,
+    lo que sugiere baja actividad notarial en todas sus dimensiones.
+\end{itemize}
+
+\medskip
+\noindent\textbf{Robustez de la especificación econométrica.}
+El modelo M5 (log-lineal: $\ln(\text{actos\_pc}) \sim \text{IPM} +
+\ln(\text{PIB\_pc})$) alcanza $R^2=0.648$ con solo dos variables, igual
+que M4 con tres, y mejora el Durbin-Watson de 0.994 a 1.123. El
+coeficiente de $\ln(\text{PIB\_pc}) \approx 0.95$ sugiere una
+elasticidad casi unitaria: un incremento del 1\% en el PIB per cápita
+se asocia con aproximadamente 0.95\% de aumento en la intensidad
+notarial. La consistencia entre M4 y M5 aporta evidencia de que los
+resultados no dependen de la escala lineal adoptada en el modelo base.
+
+% ─────────────────────────────────────────
+\subsection{Variables omitidas}
+\label{subsec:omitidas}
+% ─────────────────────────────────────────
+
+El modelo explica el 65\% de la varianza con tres variables. El 35\%
+restante podría estar asociado con factores no incorporados por
+limitaciones de disponibilidad de datos a nivel departamental:
+
+\begin{itemize}
+    \item \textbf{Ruralidad y distancia}: porcentaje de población
+    rural y tiempo de desplazamiento promedio al punto de servicio
+    notarial más cercano.
+    \item \textbf{Informalidad económica}: proporción de empleo
+    informal, que podría reducir la demanda de servicios jurídicos
+    formales.
+    \item \textbf{Presencia de comunidades indígenas y territorios
+    colectivos}: los resguardos y territorios colectivos tienen
+    regímenes de propiedad distintos al sistema notarial convencional.
+    \item \textbf{Conflicto armado}: la presencia histórica o activa
+    de grupos armados puede inhibir la formalización de transacciones.
+    \item \textbf{Migración}: los flujos migratorios (especialmente
+    venezolanos en departamentos fronterizos) generan demanda de actos
+    de registro civil no capturada por el PIB departamental.
+    \item \textbf{Digitalización de trámites}: el porcentaje de actos
+    tramitados de forma remota puede afectar el volumen registrado por
+    las notarías físicas.
+    \item \textbf{Actividades económicas específicas}: turismo, minería
+    y agroindustria generan tipos de actos notariales distintos que
+    pueden sesgar el índice en ciertos departamentos.
+\end{itemize}
+
+\noindent La incorporación de estas variables en versiones futuras del
+análisis constituye una extensión natural que podría aumentar
+sustancialmente la capacidad asociativa del modelo.
+
 \subsection{Limitaciones del estudio}
 
 \begin{itemize}
     \item Los actos notariales miden volumen de actividad
-    formal registrada, no acceso ni calidad del servicio.
+    formal registrada, no intensidad de uso ni calidad del servicio.
     \item Pueden existir diferencias en la demanda real entre departamentos
     que no se observan únicamente con actos notariales.
     \item No se consideran tiempos de atención ni costos de los servicios.
     \item Los resultados son correlacionales y no permiten afirmar causalidad.
+    \item El reducido número de unidades de análisis ($n = 33$)
+    limita la capacidad inferencial del modelo y aconseja interpretar
+    los resultados como evidencia exploratoria más que confirmatoria.
     \item Aunque se incorporó al análisis el número de notarías por
     departamento como aproximación a la oferta del servicio, el
     directorio de la SNR permite también clasificar cada notaría a
     nivel municipal. El presente trabajo no explota esa granularidad y
     trabaja exclusivamente con agregados departamentales. Una extensión
-    natural sería caracterizar la cobertura subdepartamental,
+    natural sería caracterizar la distribución subdepartamental,
     especialmente relevante en departamentos extensos con notaría
     única, donde la distancia del usuario al punto de servicio podría
     ser un factor relevante.
+\end{itemize}
+
+% ─────────────────────────────────────────
+\subsection{Consideraciones metodológicas}
+\label{subsec:consideraciones}
+% ─────────────────────────────────────────
+
+Al interpretar los resultados del presente estudio conviene tener
+presentes las siguientes consideraciones:
+
+\begin{itemize}
+    \item El IIAN es una medida de \textbf{intensidad observada} de
+    actividad notarial formal registrada. No debe interpretarse como
+    una medida directa de acceso, cobertura o calidad del servicio
+    notarial.
+
+    \item La clasificación por niveles (Alta intensidad, Sobre promedio,
+    etc.) tiene \textbf{fines analíticos y comparativos}, no constituye
+    una categorización oficial ni implica un juicio sobre la suficiencia
+    o calidad de la oferta notarial en ningún departamento.
+
+    \item El reducido número de unidades de análisis ($n = 33$
+    departamentos) \textbf{limita el alcance inferencial} del modelo.
+    Los resultados deben interpretarse como evidencia exploratoria y
+    descriptiva, no como hallazgos confirmatorios.
+
+    \item La presencia de variables omitidas relevantes (migración,
+    informalidad, dispersión geográfica, entre otras) implica que las
+    asociaciones estimadas \textbf{no pueden interpretarse como
+    relaciones causales}.
+
+    \item La composición de los actos notariales (proporción de
+    autenticaciones frente a actos patrimoniales o de registro civil)
+    \textbf{influye directamente sobre el índice agregado}. Por esta
+    razón, el IIAN-A puede reflejar en mayor medida la demanda de
+    servicios de autenticación que la de actos sustantivos, aspecto que
+    el IIAN-B e IIAN-C buscan corregir parcialmente.
 \end{itemize}
 
 \newpage
@@ -938,28 +1478,25 @@ Antes de formular las propuestas conviene sintetizar los cinco
 hallazgos que las sustentan:
 
 \begin{itemize}
-    \item \textbf{Brecha de utilización persistente y amplia.} La razón
+    \item \textbf{Diferencia territorial de utilización persistente y amplia.} La razón
     entre el departamento de mayor y menor utilización es de
     aproximadamente 19 a 1, y nueve entidades territoriales presentan
-    utilización crítica ($< -50\%$ respecto al promedio nacional).
-    \item \textbf{El PIB per cápita es el predictor más robusto} de la
-    utilización notarial ($r = +0{,}70$; coeficiente significativo a
-    $p = 0{,}003$ en el modelo OLS), lo que sugiere que las
-    diferencias se asocian primariamente con la actividad económica
-    formal del territorio.
-    \item \textbf{La oferta institucional no explica las diferencias.}
+    una utilización relativa muy baja (categoría de utilización crítica
+    en la clasificación, $< -50\%$ respecto al promedio nacional).
+    \item \textbf{La relación con el PIB per cápita es la más consistente.} La utilización notarial muestra una asociación positiva con el PIB per cápita ($r = +0{,}70$; coeficiente significativo a $p = 0{,}003$ en el modelo OLS), lo que sugiere que las diferencias se asocian principalmente con el nivel de actividad económica departamental.
+    \item \textbf{La oferta institucional no muestra una asociación robusta.}
     La densidad notarial por 100.000 habitantes no muestra asociación
     significativa con la utilización ($r = -0{,}19$, $p = 0{,}29$) ni
-    aporta capacidad explicativa al modelo de regresión
+    aporta capacidad asociativa al modelo de regresión
     ($\Delta R^{2} = +0{,}007$, $p = 0{,}53$).
     \item \textbf{Las diferencias territoriales son estables en el
     tiempo.} El coeficiente de variación entre departamentos oscila
     entre 0{,}72 y 0{,}80 en el periodo 2021--2025, sin tendencia
     clara de convergencia ni de ensanchamiento.
-    \item \textbf{Existen patrones de saturación en territorios con
+    \item \textbf{Existen patrones de concentración en territorios con
     notaría única.} Guaviare, Amazonas y Vaupés concentran toda la
     demanda departamental en un solo punto de servicio, lo que tiene
-    implicaciones específicas para la cobertura efectiva.
+    implicaciones específicas para la disponibilidad efectiva.
 \end{itemize}
 
 \subsection{Recomendación 1: focalizar la atención en los nueve entes de utilización crítica}
@@ -972,28 +1509,28 @@ frontera, insulares o de alta dispersión rural.
 
 \textbf{Propuesta:} Podría resultar útil que la SNR construya, a
 partir del índice elaborado en este trabajo o de un instrumento
-equivalente, un \emph{listado priorizado} de departamentos para
-intervención focalizada. La caracterización detallada de cada uno de
-estos nueve casos ---perfil económico, demográfico, étnico y
-geográfico--- permitiría diseñar estrategias diferenciadas en lugar
-de soluciones homogéneas. Cabe subrayar que el análisis no permite
-afirmar que la baja utilización constituya, por sí misma, un problema
-de política pública: podría reflejar tanto barreras de acceso como
-patrones culturales legítimos de demanda. La caracterización
+equivalente, un \emph{listado de departamentos priorizados para
+estudios complementarios}. La caracterización detallada de cada uno
+de estos casos ---perfil económico, demográfico, étnico y
+geográfico--- permitiría entender si la baja intensidad observada
+refleja barreras de uso, patrones culturales legítimos de demanda
+u otros factores estructurales, antes de diseñar cualquier
+intervención. El análisis no permite concluir que la baja intensidad
+constituya por sí misma un problema de política pública; solo
+identifica territorios atípicos que merecerían análisis adicional. La caracterización
 mencionada es justamente lo que permitiría distinguir entre ambas
 hipótesis.
 
-\subsection{Recomendación 2: revisar las estrategias de cobertura, no solo el número de notarías}
+\subsection{Recomendación 2: revisar la distribución territorial, no solo el número de notarías}
 
-\textbf{Hallazgo asociado:} La densidad notarial no se asocia con la
-utilización ni con las condiciones económicas del departamento. Boyacá
-cuenta con cinco veces más notarías por habitante que La Guajira, pero
-ello no se traduce en mayor utilización; Bogotá D.C., con la segunda
-menor densidad del país, lidera el índice nacional.
+\textbf{Hallazgo asociado:} La densidad notarial no muestra una
+asociación robusta con la utilización ni con las condiciones
+económicas del departamento. Boyacá cuenta con cinco veces más
+notarías por habitante que La Guajira, pero ello no se traduce en
+mayor utilización; Bogotá D.C., con la segunda menor densidad del
+país, lidera el índice nacional.
 
-\textbf{Propuesta:} La evidencia disponible no respalda la hipótesis
-de que ampliar el número total de notarías ---por sí mismo--- mejore
-la utilización del servicio en los departamentos de menor desempeño.
+\textbf{Propuesta:} No se encuentra evidencia suficiente para afirmar que ampliar el número total de notarías ---por sí mismo--- mejore la utilización del servicio en los departamentos de menor desempeño relativo.
 Esto sugiere que estrategias enfocadas exclusivamente en la apertura
 de nuevas notarías podrían tener un efecto limitado si no se acompañan
 de otras medidas. Alternativas que merecerían exploración incluyen:
@@ -1047,11 +1584,8 @@ intervenciones de manera proporcionada.
 \subsection{Recomendación 4: incorporar variables de demanda al monitoreo permanente}
 
 \textbf{Hallazgo asociado:} Cerca del 49\% de la varianza en la
-utilización notarial no es explicada por el conjunto de variables
-analizadas, y la incorporación de la oferta institucional no mejora
-el ajuste. Esto sugiere que los factores no observados se asocian
-plausiblemente con la demanda y con dimensiones estructurales del
-territorio que el presente trabajo no captura.
+utilización notarial no es suficientemente capturada por el conjunto de variables analizadas, y la incorporación de la oferta institucional no mejora el ajuste. 
+Esto sugiere la existencia de factores adicionales no capturados por las variables incluidas en el modelo, así como dimensiones estructurales del territorio que escapan al alcance del presente trabajo.
 
 \textbf{Propuesta:} Si la SNR adopta de manera permanente un
 instrumento de monitoreo territorial similar al construido en este
@@ -1114,12 +1648,12 @@ de impacto en escenarios piloto y coordinación con las entidades
 territoriales involucradas.
 
 Aun con esas cautelas, la evidencia consolidada en este documento
-respalda con claridad dos afirmaciones de política: \emph{primero},
+sugiere dos líneas generales para la discusión de política pública: \emph{primero},
 que las diferencias territoriales en la utilización notarial son
 amplias, estables y se asocian principalmente con la actividad
-económica formal del territorio; y \emph{segundo}, que la sola
+económica departamental; y \emph{segundo}, que la sola
 ampliación del número de notarías ---sin medidas complementarias
-sobre los determinantes de demanda--- no parece ser un mecanismo
+sobre los factores de demanda--- no parece ser un mecanismo
 suficiente para reducir esas diferencias.
 
 \newpage
@@ -1133,33 +1667,10 @@ No forma parte del análisis principal.
 
 \subsection{Herramientas instaladas}
 
-El proyecto se desarrolla sobre un entorno de trabajo basado en macOS,
-con herramientas instaladas mediante Homebrew y configuraciones
-generales de control de versiones y edición.
-
 \begin{itemize}
-    \item \textbf{macOS} — sistema operativo principal, elegido por su
-    estabilidad y compatibilidad con herramientas de datos y LaTeX.
-    \item \textbf{Homebrew} — gestor de paquetes del sistema usado para
-    instalar Python, Tectonic y otras dependencias.
-    \item \textbf{Python 3.11} — instalado vía Homebrew. Lenguaje principal
-    para limpieza, procesamiento y análisis de datos.
-    \begin{verbatim}
-brew install python@3.11
-    \end{verbatim}
-    \item \textbf{Tectonic} — compilador LaTeX moderno instalado vía
-    Homebrew. Alternativa liviana a MiKTeX o TeX Live. Descarga
-    automáticamente los paquetes necesarios en el primer compilado.
-    \begin{verbatim}
-brew install tectonic
-tectonic main.tex
-    \end{verbatim}
-    \item \textbf{Git} — sistema de control de versiones configurado con
-    repositorio remoto en GitHub.
-    \begin{verbatim}
-git config --global user.name "TuNombre"
-git config --global user.email "email@gmail.com"
-    \end{verbatim}
+    \item \textbf{Python 3.11}
+    \item \textbf{Tectonic}
+    \item \textbf{Git}
 \end{itemize}
 
 \subsection{Extensiones de VS Code}
@@ -1177,16 +1688,12 @@ git config --global user.email "email@gmail.com"
 \subsection{Librerías Python}
 
 \begin{itemize}
-    \item \texttt{pandas} — manipulación y limpieza de datos tabulares.
-    \begin{verbatim}
-pip install pandas --break-system-packages
-    \end{verbatim}
-    \item \texttt{openpyxl} — lectura de archivos Excel \texttt{.xlsx}.
-    \begin{verbatim}
-pip install openpyxl --break-system-packages
-    \end{verbatim}
-    \item \texttt{sqlite3} — base de datos local incluida en Python por
-    defecto. No requiere instalación adicional.
+    \item \texttt{pandas}
+    \item \texttt{openpyxl}
+    \item \texttt{statsmodels}
+    \item \texttt{scikit-learn}
+    \item \texttt{plotly}
+    \item \texttt{pdfplumber}
 \end{itemize}
 
 \subsection{Scripts del proyecto}
@@ -1242,6 +1749,18 @@ calcula VIF y genera el gráfico observado vs predicho \\
 el panel 2021--2025 con el índice per cápita por año, calcula 
 la dispersión anual (coeficiente de variación) y los cambios 
 relativos por departamento; genera la evolución temporal \\
+\addlinespace
+\texttt{consolidar\_sqlite.py} & \texttt{01\_SNR/scripts/} & Carga
+todos los CSVs finales del análisis a la base de datos SQLite central
+de forma idempotente (reemplaza si existe). Garantiza que SQLite
+funcione como almacén central real y fuente del dashboard. \\
+\addlinespace
+\texttt{dashboard.py} & \texttt{01\_SNR/scripts/} & Lee desde SQLite
+mediante consultas SQL, descarga el GeoJSON de departamentos
+colombianos y genera \texttt{07\_Dashboard/index.html} con cinco
+visualizaciones interactivas en Plotly: mapa coroplético, ranking,
+scatter PIB vs. utilización, scatter densidad notarial vs. utilización
+y evolución temporal 2021--2025. \\
 \bottomrule
 \end{tabular}
 \caption{Scripts principales del proyecto y sus funciones}
@@ -1257,6 +1776,8 @@ python 01_SNR/scripts/panel.py
 python 01_SNR/scripts/integrar_notarias.py
 python 01_SNR/scripts/grafica_oferta.py
 python 01_SNR/scripts/visualizaciones.py
+python 01_SNR/scripts/consolidar_sqlite.py
+python 01_SNR/scripts/dashboard.py
 \end{verbatim}
 
 \subsection{Base de datos SQLite}
@@ -1265,19 +1786,18 @@ Archivo \texttt{06\_Consolidado/acceso\_notarial\_colombia.db}
 con las siguientes tablas:
 
 \begin{itemize}
-    \item \texttt{actos\_notariales} — datos SNR
-    \item \texttt{resumen\_departamento} — 
-    agregado por departamento y año
-    \item \texttt{ranking\_departamentos} — 
-    ranking 2025
-    \item \texttt{poblacion\_departamentos} — 
-    DANE 2021--2025
-    \item \texttt{pib\_departamentos} — 
-    PIB 2021--2024
-    \item \texttt{ipm\_departamentos} — 
-    IPM 2021--2025
-    \item \texttt{indice\_utilización} — índice 
-    central del análisis
+    \item \texttt{actos\_notariales} — datos crudos SNR (58.114 filas)
+    \item \texttt{resumen\_departamento} — agregado por departamento y año
+    \item \texttt{poblacion\_departamentos} — DANE 2021--2025
+    \item \texttt{pib\_departamentos} — PIB departamental
+    \item \texttt{ipm\_departamentos} — IPM por departamento
+    \item \texttt{indice\_2025} — índice de utilización per cápita 2025
+    \item \texttt{indice\_con\_notarias} — índice enriquecido con
+    densidad notarial y actos por notaría
+    \item \texttt{panel\_temporal} — serie 2021--2025 por departamento
+    \item \texttt{clusters} — asignación K-Means por departamento
+    \item \texttt{ranking} — ranking completo 2025
+    \item \texttt{notarias\_por\_departamento} — directorio SNR agregado
 \end{itemize}
 
 \subsection{Repositorio y flujo de trabajo}
@@ -1290,5 +1810,231 @@ git push origin main
 
 \textbf{Repositorio:}
 \url{https://github.com/juanguti1231/acceso-notarial-colombia}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Reproducibilidad}
+\label{sec:reproducibilidad}
+% ─────────────────────────────────────────
+
+El presente análisis fue diseñado con criterios de reproducibilidad
+completa. Cualquier investigador puede replicar todos los resultados
+a partir de las fuentes de datos originales ejecutando los scripts
+en el orden indicado.
+
+\subsection{Repositorio público}
+
+El código fuente, la documentación y los resultados intermedios están
+disponibles en el siguiente repositorio de acceso abierto:
+
+\begin{center}
+\url{https://github.com/juanguti1231/acceso-notarial-colombia}
+\end{center}
+
+El repositorio incluye los scripts Python, el archivo \LaTeX{} de este
+documento y los archivos de configuración necesarios para reproducir
+el entorno de análisis.
+
+\subsection{Almacenamiento de datos}
+
+Los datos consolidados se almacenan en una base de datos SQLite
+(\texttt{06\_Consolidado/acceso\_notarial\_colombia.db}) que integra
+las cinco fuentes oficiales utilizadas. Esta base puede consultarse
+directamente con cualquier cliente SQLite sin dependencias adicionales.
+
+\subsection{Fuentes de datos abiertos}
+
+Todos los datos empleados provienen de fuentes de acceso público:
+
+\begin{itemize}
+    \item \textbf{SNR} — Actos Jurídicos Notariales (datos.gov.co)
+    \item \textbf{DANE} — Proyecciones de población departamental
+    \item \textbf{DANE} — PIB departamental a precios corrientes
+    \item \textbf{DNP} — Índice de Pobreza Multidimensional (IPM)
+    departamental
+    \item \textbf{SNR} — Directorio de notarías por departamento
+    \item \textbf{IGAC / datos.gov.co} — Geometrías departamentales
+    (GeoJSON Colombia)
+\end{itemize}
+
+\subsection{Entorno computacional}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Componente} & \textbf{Versión} \\
+\midrule
+Python          & 3.11.15 \\
+pandas          & 3.0.3 \\
+numpy           & 2.4.6 \\
+matplotlib      & 3.10.9 \\
+scipy           & 1.17.1 \\
+statsmodels     & 0.14.6 \\
+scikit-learn    & 1.9.0 \\
+libpysal        & 4.14.1 \\
+esda            & 2.9.0 \\
+geopandas       & 1.1.3 \\
+plotly          & 6.8.0 \\
+\bottomrule
+\end{tabular}
+\caption{Versiones exactas de las librerías Python utilizadas}
+\label{tab:versiones}
+\end{table}
+
+Las dependencias pueden instalarse ejecutando:
+
+\begin{verbatim}
+pip install pandas==3.0.3 numpy==2.4.6 matplotlib==3.10.9 \
+    scipy==1.17.1 statsmodels==0.14.6 scikit-learn==1.9.0 \
+    libpysal==4.14.1 esda==2.9.0 geopandas==1.1.3 plotly==6.8.0
+\end{verbatim}
+
+\subsection{Ejecución del pipeline}
+
+Los scripts deben ejecutarse en el siguiente orden desde la raíz del
+proyecto:
+
+\begin{verbatim}
+python 01_SNR/scripts/cruzar_datos.py
+python 01_SNR/scripts/regresion.py
+python 01_SNR/scripts/clustering.py
+python 01_SNR/scripts/analisis_espacial.py
+\end{verbatim}
+
+La ejecución completa genera los archivos CSV, la base SQLite y todos
+los gráficos referenciados en este documento.
+
+\newpage
+% ─────────────────────────────────────────
+\section{Contribuciones del estudio}
+% ─────────────────────────────────────────
+
+\begin{enumerate}
+    \item \textbf{Primer IIAN departamental para Colombia.}
+    Construcción del Índice de Intensidad de Actividad Notarial en
+    tres variantes (completo, sin autenticaciones, solo patrimonial)
+    con datos oficiales del SNR, replicable y actualizable anualmente.
+
+    \item \textbf{Integración de cinco fuentes oficiales en un
+    pipeline reproducible.} SNR, DANE (población y PIB), DNP (IPM)
+    y directorio de notarías de la SNR, procesadas automáticamente
+    en Python y almacenadas en SQLite.
+
+    \item \textbf{Incorporación de la oferta notarial como variable
+    de control.} Primer análisis que evalúa formalmente si la
+    densidad notarial se asocia con la intensidad del uso, obteniendo
+    un resultado negativo con respaldo estadístico.
+
+    \item \textbf{Evidencia de autocorrelación espacial.}
+    Primera cuantificación del Moran's I para la actividad notarial
+    departamental colombiana ($I=0.151$, $p=0.049$), con identificación
+    de clusters LISA en el Eje Cafetero y la región Andina central.
+
+    \item \textbf{Análisis de influencia formal (Cook's D).}
+    Identificación estadísticamente fundamentada de observaciones
+    influyentes, con el caso Guaviare como estudio de caso detallado.
+
+    \item \textbf{Pruebas de robustez metodológica.}
+    Los resultados principales se mantienen bajo distintas
+    definiciones del índice (IIAN-A/B/C) y distintas especificaciones
+    del modelo (M3, M4 lineal; M5 log-lineal).
+
+    \item \textbf{Pipeline completamente reproducible y público.}
+    Todo el código, datos y documentación están disponibles en
+    GitHub bajo licencia abierta, permitiendo replicación,
+    actualización y extensión por investigadores externos.
+\end{enumerate}
+
+\newpage
+% ─────────────────────────────────────────
+\section{Líneas futuras y oportunidades de mejora}
+\label{sec:lineas_futuras}
+% ─────────────────────────────────────────
+
+El presente estudio constituye una aproximación exploratoria a la
+intensidad de actividad notarial en Colombia y, por tanto, abre
+varias posibilidades de profundización metodológica en futuras
+investigaciones.
+
+\subsection{Sensibilidad del índice a la composición de actos}
+
+Una limitación estructural del IIAN-A es que agrega actos de
+naturaleza heterogénea (autenticaciones, actos patrimoniales,
+registro civil, etc.) en un único indicador per cápita. Investigaciones
+futuras podrían construir índices ponderados que asignen pesos
+diferenciados a cada categoría de acto según su relevancia sustantiva,
+su costo social o su implicación jurídica. Adicionalmente, un análisis
+de sensibilidad sistemático que evalúe cómo cambian los rankings
+departamentales ante distintos esquemas de ponderación permitiría
+cuantificar la incertidumbre inherente a la construcción del índice.
+
+\subsection{Incorporación de variables adicionales}
+
+El modelo econométrico empleado en este estudio se restringe a las
+variables disponibles en fuentes oficiales abiertas. Estudios futuros
+podrían incorporar: (i)~tasas de informalidad económica departamental,
+que podrían explicar parte de la variabilidad residual; (ii)~indicadores
+de conectividad vial o tiempo de desplazamiento hasta la notaría más
+cercana, especialmente relevantes en departamentos extensos con baja
+densidad notarial; (iii)~variables de demanda potencial como tasas de
+transferencia de propiedad registradas en la ventanilla única de
+registro, o el número de escrituras por habitante de la ORIP.
+
+\subsection{Uso de errores estándar robustos}
+
+Los modelos OLS presentados en este estudio asumen homoscedasticidad.
+Aunque la prueba de Breusch-Pagan no rechaza esta hipótesis
+($p = 0.222$), el reducido tamaño muestral ($n = 33$) limita la
+potencia del contraste. Investigaciones futuras deberían estimar los
+modelos con errores estándar heteroscedasticidad-robustos
+(tipo HC3) o, ante la presencia de autocorrelación espacial detectada
+por Moran's I, con errores estándar espacialmente robustos (HAC
+espacial), lo que proporcionaría inferencias más conservadoras y
+confiables.
+
+\subsection{Análisis de sensibilidad frente a observaciones influyentes}
+
+El análisis de Cook's D identifica a Guaviare, Bogotá y Casanare
+como observaciones con influencia superior al umbral $4/n = 0.121$.
+Un paso natural es estimar sistemáticamente cuánto cambian los
+coeficientes del modelo al excluir cada observación influyente de
+manera individual y combinada (\textit{jackknife} por subconjuntos).
+Esta estrategia permitiría reportar intervalos de confianza para los
+coeficientes que reflejen explícitamente la incertidumbre asociada
+a la dependencia de pocas observaciones.
+
+\subsection{Aprovechamiento completo de la dimensión temporal}
+
+Los datos del SNR cubren el período 2021--2025. El presente análisis
+utiliza únicamente el corte transversal de 2025. Un modelo de datos
+de panel con efectos fijos departamentales permitiría controlar por
+heterogeneidad no observada constante en el tiempo y explotar la
+variación intra-departamental, lo que aumentaría sustancialmente la
+eficiencia de las estimaciones y la capacidad para aislar el efecto
+de variables de interés como el IPM o el PIB per cápita.
+
+\subsection{Profundización espacial}
+
+El análisis espacial presentado emplea pesos KNN basados en centroides
+departamentales. Extensiones futuras podrían: (i)~evaluar
+especificaciones alternativas de la matriz de pesos (contigüidad
+Queen con geometrías validadas, distancia inversa, distancia umbral);
+(ii)~estimar modelos de regresión espacial (SLM, SEM o SDM) que
+incorporen explícitamente la dependencia espacial identificada por
+Moran's I; (iii)~desagregar el análisis al nivel municipal, donde la
+heterogeneidad es considerablemente mayor y la disponibilidad de datos
+del SNR lo permite.
+
+\subsection{Actualización y seguimiento anual}
+
+El pipeline construido en este estudio es actualizable anualmente con
+mínima intervención manual, dado que las fuentes de datos (SNR,
+DANE, DNP) publican actualizaciones periódicas con formatos estables.
+Sería valioso mantener una serie histórica del IIAN que permita
+evaluar si las brechas territoriales identificadas en 2025 se amplían
+o reducen con el tiempo, y si intervenciones de política pública
+específicas se asocian con cambios observables en la intensidad
+notarial departamental.
 
 \end{document}

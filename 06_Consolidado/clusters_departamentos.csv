@@ -1,33 +1,33 @@
-﻿Departamento,actos_per_capita,IPM,PIB_per_capita,clasificacion,cluster
-"Bogotá, D.C.",1.5728,2.2,54155639.0,Sobre-servido,1
-Guaviare,1.3539,20.0,16487471.0,Sobre-servido,3
-Risaralda,1.1773,4.9,28583134.0,Sobre-servido,3
-Meta,1.1018,12.3,47385425.0,Sobre-servido,1
-Quindío,1.0864,6.7,26146913.0,Sobre-servido,3
-Antioquia,0.9021,9.5,36550055.0,Sobre-servido,3
-Valle Del Cauca,0.8408,4.9,35330247.0,Sobre-servido,3
-Santander,0.7569,6.9,45670718.0,Sobre promedio,1
-Tolima,0.7533,12.2,26720578.0,Sobre promedio,3
-Caldas,0.6968,7.9,27332733.0,Sobre promedio,3
-Casanare,0.6556,8.9,49846436.0,Sobre promedio,1
-Atlántico,0.6078,8.2,26812382.0,Sobre promedio,3
-Huila,0.5879,9.7,24248639.0,Promedio,3
-Bolívar,0.573,17.0,27299042.0,Promedio,3
-Cundinamarca,0.5366,4.1,30608229.0,Promedio,3
-Arauca,0.5247,12.7,32985859.0,Promedio,3
-Boyacá,0.5114,6.4,35053265.0,Promedio,3
-Norte De Santander,0.4214,13.3,16023433.0,Sub-servido,0
-Cesar,0.342,14.8,21163247.0,Sub-servido,0
-Caquetá,0.3173,15.0,15921615.0,Sub-servido,0
-Nariño,0.3075,13.2,15076534.0,Sub-servido,0
-Guainía,0.3004,51.8,10140803.0,Sub-servido,2
-Córdoba,0.295,19.8,15531329.0,Sub-servido,0
-Cauca,0.2891,13.0,19449644.0,Sub-servido,0
-Magdalena,0.2264,17.6,15555677.0,Brecha crítica,0
-Sucre,0.2176,25.4,13315454.0,Brecha crítica,0
-Amazonas,0.2011,18.1,15643143.0,Brecha crítica,0
-Chocó,0.144,30.8,12783458.0,Brecha crítica,2
-Putumayo,0.1085,13.6,15588902.0,Brecha crítica,0
-La Guajira,0.0976,40.1,16516342.0,Brecha crítica,2
-Vaupés,0.0962,41.7,10690318.0,Brecha crítica,2
-Vichada,0.0812,55.2,7847260.0,Brecha crítica,2
+﻿Departamento,actos_per_capita,IPM,PIB_per_capita,clasificacion,cluster,cluster_jerarquico
+"Bogotá, D.C.",1.5728,2.2,54155639.0,Alta utilización,5,2
+Guaviare,1.3539,20.0,16487471.0,Alta utilización,4,4
+Risaralda,1.1773,4.9,28583134.0,Alta utilización,4,4
+Meta,1.1018,12.3,47385425.0,Alta utilización,3,1
+Quindío,1.0864,6.7,26146913.0,Alta utilización,4,4
+Antioquia,0.9021,9.5,36550055.0,Alta utilización,0,4
+Valle Del Cauca,0.8408,4.9,35330247.0,Alta utilización,0,4
+Santander,0.7569,6.9,45670718.0,Sobre promedio,3,1
+Tolima,0.7533,12.2,26720578.0,Sobre promedio,0,3
+Caldas,0.6968,7.9,27332733.0,Sobre promedio,0,3
+Casanare,0.6556,8.9,49846436.0,Sobre promedio,3,1
+Atlántico,0.6078,8.2,26812382.0,Sobre promedio,0,3
+Huila,0.5879,9.7,24248639.0,Promedio,0,3
+Bolívar,0.573,17.0,27299042.0,Promedio,0,3
+Cundinamarca,0.5366,4.1,30608229.0,Promedio,0,3
+Arauca,0.5247,12.7,32985859.0,Promedio,0,3
+Boyacá,0.5114,6.4,35053265.0,Promedio,0,3
+Norte De Santander,0.4214,13.3,16023433.0,Bajo promedio,2,5
+Cesar,0.342,14.8,21163247.0,Bajo promedio,2,5
+Caquetá,0.3173,15.0,15921615.0,Bajo promedio,2,5
+Nariño,0.3075,13.2,15076534.0,Bajo promedio,2,5
+Guainía,0.3004,51.8,10140803.0,Bajo promedio,1,6
+Córdoba,0.295,19.8,15531329.0,Bajo promedio,2,5
+Cauca,0.2891,13.0,19449644.0,Bajo promedio,2,5
+Magdalena,0.2264,17.6,15555677.0,Utilización crítica,2,5
+Sucre,0.2176,25.4,13315454.0,Utilización crítica,2,6
+Amazonas,0.2011,18.1,15643143.0,Utilización crítica,2,5
+Chocó,0.144,30.8,12783458.0,Utilización crítica,2,6
+Putumayo,0.1085,13.6,15588902.0,Utilización crítica,2,5
+La Guajira,0.0976,40.1,16516342.0,Utilización crítica,1,6
+Vaupés,0.0962,41.7,10690318.0,Utilización crítica,1,6
+Vichada,0.0812,55.2,7847260.0,Utilización crítica,1,6

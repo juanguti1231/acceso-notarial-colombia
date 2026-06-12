@@ -109,13 +109,39 @@ snr_2025['total_actos'] = snr_2025[cols_num].sum(axis=1)
 snr_2025 = normalizar(snr_2025, 'Departamento')
 
 # ─────────────────────────────────────────
+# 5b. COMPOSICIÓN DE ACTOS (grupos funcionales)
+# ─────────────────────────────────────────
+def _cols(df, *keywords):
+    """Suma las columnas cuyo nombre contiene alguna de las palabras clave."""
+    matched = [c for c in df.columns
+               if any(k.lower() in c.lower() for k in keywords)]
+    return df[matched].sum(axis=1) if matched else pd.Series(0, index=df.index)
+
+snr_2025['grp_inmobiliario']    = _cols(snr_2025,
+    'Compraventa', 'Hipotec', 'Cancelaci', 'Vivienda',
+    'Permuta', 'Bien Inmueble', 'Remate', 'Arrendamiento')
+snr_2025['grp_autenticaciones'] = _cols(snr_2025,
+    'Autenticaci', 'Actas de Comparecencia',
+    'Declaraci', 'Conciliaci')
+snr_2025['grp_registro_civil']  = _cols(snr_2025,
+    'Registro Civil', 'Copias del Registro',
+    'Legitimaci', 'Cambio de Nombre', 'Correci')
+snr_2025['grp_familia']         = _cols(snr_2025,
+    'Matrimoni', 'Divorcio', 'Disoluci', 'Capitulaci', 'Uniones')
+snr_2025['grp_sociedades']      = _cols(snr_2025,
+    'Sociedad', 'Fiducia', 'Leasing', 'Insolvencia')
+
+# ─────────────────────────────────────────
 # 6. CRUCE Y CÁLCULO DEL ÍNDICE
 # ─────────────────────────────────────────
 pob_2025 = pob[pob['Año'] == 2025][['Departamento', 'Poblacion']]
 pib_2024 = pib[pib['Año'] == 2024][['Departamento', 'PIB_miles_millones']]
 ipm_2025 = ipm[ipm['Año'] == 2025][['Departamento', 'IPM']]
 
-df = snr_2025[['Departamento', 'total_actos', 'Compraventa']].merge(
+comp_cols = ['grp_inmobiliario', 'grp_autenticaciones',
+             'grp_registro_civil', 'grp_familia', 'grp_sociedades']
+
+df = snr_2025[['Departamento', 'total_actos', 'Compraventa'] + comp_cols].merge(
     pob_2025, on='Departamento', how='left').merge(
     pib_2024, on='Departamento', how='left').merge(
     ipm_2025, on='Departamento', how='left')
@@ -126,25 +152,73 @@ df['compraventas_per_capita'] = (
 df['PIB_per_capita'] = (
     df['PIB_miles_millones'] * 1e9 / df['Poblacion']).round(0)
 
-promedio = df['actos_per_capita'].mean()
-df['desviacion_pct'] = (
-    (df['actos_per_capita'] - promedio) / promedio * 100).round(2)
+# Participaciones porcentuales de composición
+for g in comp_cols:
+    df[g.replace('grp_', 'pct_')] = (
+        df[g] / df['total_actos'] * 100).round(2)
+
+# ─────────────────────────────────────────
+# ÍNDICE A — todos los actos (IIAN completo)
+# ÍNDICE B — sin autenticaciones/declaraciones
+# ÍNDICE C — solo actos patrimoniales
+# ─────────────────────────────────────────
+df['iian_a_pc'] = (df['total_actos'] / df['Poblacion']).round(4)
+
+total_sin_aut = df['total_actos'] - df['grp_autenticaciones']
+df['iian_b_pc'] = (total_sin_aut / df['Poblacion']).round(4)
+
+df['iian_c_pc'] = (df['grp_inmobiliario'] / df['Poblacion']).round(6)
+
+# Calcular desviación y clasificación para los tres índices
+def desviacion_y_clasificacion(serie, prefijo, df_out):
+    prom = serie.mean()
+    desv = ((serie - prom) / prom * 100).round(2)
+    df_out[f'{prefijo}_desv_pct'] = desv
+    df_out[f'{prefijo}_pos'] = serie.rank(ascending=False).astype(int)
+    return desv
 
 def clasificar(d):
-    if d > 50:     return 'Alta utilización'
+    if d > 50:     return 'Alta intensidad'
     elif d > 10:   return 'Sobre promedio'
     elif d >= -10: return 'Promedio'
-    elif d >= -50: return 'Bajo promedio'
-    else:          return 'Utilización crítica'
+    elif d >= -50: return 'Baja intensidad'
+    else:          return 'Muy baja intensidad'
 
-df['clasificacion'] = df['desviacion_pct'].apply(clasificar)
-df = df.sort_values(
-    'actos_per_capita', ascending=False).reset_index(drop=True)
+desv_a = desviacion_y_clasificacion(df['iian_a_pc'], 'iian_a', df)
+desv_b = desviacion_y_clasificacion(df['iian_b_pc'], 'iian_b', df)
+desv_c = desviacion_y_clasificacion(df['iian_c_pc'], 'iian_c', df)
+
+df['clasificacion']   = desv_a.apply(clasificar)
+df['clasificacion_b'] = desv_b.apply(clasificar)
+df['clasificacion_c'] = desv_c.apply(clasificar)
+
+# Mantener compatibilidad con código existente
+df['actos_per_capita'] = df['iian_a_pc']
+df['desviacion_pct']   = df['iian_a_desv_pct']
+
+df = df.sort_values('iian_a_pc', ascending=False).reset_index(drop=True)
 df['posicion'] = df.index + 1
 
-print("=== ÍNDICE DE ACCESO NOTARIAL 2025 ===")
-print(df[['posicion', 'Departamento', 'actos_per_capita',
-          'desviacion_pct', 'clasificacion', 'IPM']].to_string())
+print("=== ÍNDICE DE INTENSIDAD DE ACTIVIDAD NOTARIAL (IIAN) 2025 ===")
+print("\n--- IIAN-A (todos los actos) ---")
+print(df[['posicion', 'Departamento', 'iian_a_pc',
+          'iian_a_desv_pct', 'clasificacion']].head(10).to_string())
+
+print("\n--- IIAN-B (sin autenticaciones) — top 10 ---")
+df_b = df.sort_values('iian_b_pc', ascending=False)
+print(df_b[['Departamento', 'iian_b_pc', 'iian_b_desv_pct',
+            'clasificacion_b']].head(10).to_string(index=False))
+
+print("\n--- IIAN-C (solo patrimonial) — top 10 ---")
+df_c = df.sort_values('iian_c_pc', ascending=False)
+print(df_c[['Departamento', 'iian_c_pc', 'iian_c_desv_pct',
+            'clasificacion_c']].head(10).to_string(index=False))
+
+print("\n--- Comparación de rankings (¿cambia quién es top?) ---")
+comp = df[['Departamento', 'iian_a_pos', 'iian_b_pos', 'iian_c_pos']].copy()
+comp['var_ab'] = (comp['iian_a_pos'] - comp['iian_b_pos']).abs()
+comp['var_ac'] = (comp['iian_a_pos'] - comp['iian_c_pos']).abs()
+print(comp.sort_values('var_ac', ascending=False).head(10).to_string(index=False))
 
 # ─────────────────────────────────────────
 # 7. EXPORTAR
@@ -156,7 +230,8 @@ df.to_csv(
     index=False, encoding='utf-8-sig')
 
 conn = sqlite3.connect('06_Consolidado/acceso_notarial_colombia.db')
-df.to_sql('indice_acceso', conn, if_exists='replace', index=False)
+df.to_sql('indice_iian_2025', conn, if_exists='replace', index=False)
+df.to_sql('indice_acceso',    conn, if_exists='replace', index=False)
 pob.to_sql('poblacion_departamentos', conn,
            if_exists='replace', index=False)
 pib.to_sql('pib_departamentos', conn,
