@@ -4,6 +4,7 @@
 
 # LaTeX
 *.pdf
+!main.pdf
 *.aux
 *.log
 *.out
